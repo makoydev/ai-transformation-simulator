@@ -14,6 +14,8 @@ A corporate strategy game that teaches how real enterprise AI transformation wor
 ![Tests](https://img.shields.io/badge/tests-vitest-6e9f18?logo=vitest&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
+### [▶ Play it live](https://makoydev.github.io/ai-transformation-simulator/)
+
 ![Dashboard](docs/screenshots/dashboard.jpg)
 
 </div>

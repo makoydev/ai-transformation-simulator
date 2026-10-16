@@ -33,13 +33,13 @@ export function TitleScreen() {
     <div className="relative min-h-screen overflow-hidden">
       <div className="grid-bg absolute inset-0 opacity-70" aria-hidden />
       <motion.div
-        className="absolute -left-40 top-20 h-112 w-md rounded-full bg-brand-violet/25 blur-3xl"
+        className="absolute -left-40 top-20 h-112 w-md rounded-full bg-brand-violet/10 blur-3xl"
         animate={{ x: [0, 60, 0], y: [0, 40, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
         aria-hidden
       />
       <motion.div
-        className="absolute -right-40 bottom-0 h-120 w-120 rounded-full bg-brand-cyan/20 blur-3xl"
+        className="absolute -right-40 bottom-0 h-120 w-120 rounded-full bg-brand-cyan/8 blur-3xl"
         animate={{ x: [0, -50, 0], y: [0, -30, 0] }}
         transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
         aria-hidden

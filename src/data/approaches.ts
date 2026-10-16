@@ -61,7 +61,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 0.35,
     dataMult: 0.3,
     startAdoption: 20,
-    color: '#34d399',
+    color: '#6db894',
   },
   rag: {
     id: 'rag',
@@ -80,7 +80,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 0.55,
     dataMult: 0.9,
     startAdoption: 25,
-    color: '#38bdf8',
+    color: '#6fa8c9',
   },
   agentic: {
     id: 'agentic',
@@ -99,7 +99,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 1,
     dataMult: 0.8,
     startAdoption: 22,
-    color: '#a78bfa',
+    color: '#a29ad4',
   },
   finetune: {
     id: 'finetune',
@@ -118,7 +118,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 0.6,
     dataMult: 1.2,
     startAdoption: 25,
-    color: '#f472b6',
+    color: '#cf8db0',
   },
   predictive: {
     id: 'predictive',
@@ -137,7 +137,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 0.45,
     dataMult: 1,
     startAdoption: 30,
-    color: '#fbbf24',
+    color: '#d6ab5e',
   },
 };
 

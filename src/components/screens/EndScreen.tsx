@@ -89,7 +89,7 @@ function Scorecard({ game }: { game: GameState }) {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="glass relative overflow-hidden p-6">
-            <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand-violet/25 blur-3xl" aria-hidden />
+            <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand-violet/10 blur-3xl" aria-hidden />
             <div className="label-caps flex items-center gap-1.5">
               <Sparkles size={13} aria-hidden /> Your leadership archetype
             </div>

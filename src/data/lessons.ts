@@ -9,11 +9,11 @@ export interface LessonDef {
 }
 
 export const LESSON_CATEGORIES: Record<LessonCategory, { label: string; color: string }> = {
-  discovery: { label: 'Discovery & Triage', color: '#38bdf8' },
-  'build-buy': { label: 'Build vs. Buy', color: '#a78bfa' },
-  governance: { label: 'Governance & Risk', color: '#fb7185' },
-  change: { label: 'Change & Adoption', color: '#f472b6' },
-  roi: { label: 'ROI & Portfolio', color: '#fbbf24' },
+  discovery: { label: 'Discovery & Triage', color: '#6fa8c9' },
+  'build-buy': { label: 'Build vs. Buy', color: '#a29ad4' },
+  governance: { label: 'Governance & Risk', color: '#d68a92' },
+  change: { label: 'Change & Adoption', color: '#cf8db0' },
+  roi: { label: 'ROI & Portfolio', color: '#d6ab5e' },
 };
 
 export const LESSONS: LessonDef[] = [

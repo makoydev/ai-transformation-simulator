@@ -55,7 +55,7 @@ export function TopBar() {
                 {state === 'current' && (
                   <motion.div
                     layoutId="quarter-glow"
-                    className="absolute inset-0 rounded-full bg-brand-cyan/60 blur-xs"
+                    className="absolute inset-0 rounded-full bg-brand-cyan/30 blur-xs"
                     animate={{ opacity: [0.4, 1, 0.4] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />

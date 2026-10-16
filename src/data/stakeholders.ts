@@ -25,7 +25,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Launches, demo days, anything she can mention on an earnings call.',
     hates: 'Hearing "next fiscal year".',
     weight: 1.5,
-    color: '#a78bfa',
+    color: '#a29ad4',
   },
   cfo: {
     id: 'cfo',
@@ -37,7 +37,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Measured ROI, killed zombie projects, cheap fixes that work.',
     hates: 'Pilots that never end. Consultants. Surprises on the cloud bill.',
     weight: 1.5,
-    color: '#34d399',
+    color: '#6db894',
   },
   ciso: {
     id: 'ciso',
@@ -49,7 +49,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Policies, audits, human-in-the-loop, reading the terms of service.',
     hates: 'Autonomous agents with admin rights. Shadow AI.',
     weight: 1,
-    color: '#fb7185',
+    color: '#d68a92',
   },
   coo: {
     id: 'coo',
@@ -61,7 +61,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Practical fixes, fewer steps, things that work on the warehouse floor.',
     hates: 'Buzzwords. Being told his processes are "legacy".',
     weight: 1,
-    color: '#fb923c',
+    color: '#d49763',
   },
   chro: {
     id: 'chro',
@@ -73,7 +73,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Training, transparency, champions, reskilling commitments.',
     hates: 'Leaked "headcount opportunity" slides.',
     weight: 1,
-    color: '#f472b6',
+    color: '#cf8db0',
   },
   cto: {
     id: 'cto',
@@ -85,7 +85,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Building in-house, new models, hiring engineers.',
     hates: 'Vendor lock-in. Review boards. Being told to just buy it.',
     weight: 1,
-    color: '#38bdf8',
+    color: '#6fa8c9',
   },
 };
 

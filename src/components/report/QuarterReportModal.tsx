@@ -63,7 +63,7 @@ export function QuarterReportModal() {
                 <span>Value the board credited vs. target</span>
                 <span className="font-semibold text-white">{Math.round((report.perceivedValue / report.expected) * 100)}%</span>
               </div>
-              <Meter value={Math.min(report.perceivedValue / report.expected, 1.5)} max={1.5} marker={1} color="#fbbf24" height="h-2.5" label="Value versus target" />
+              <Meter value={Math.min(report.perceivedValue / report.expected, 1.5)} max={1.5} marker={1} color="#d6ab5e" height="h-2.5" label="Value versus target" />
             </motion.div>
           )}
 

@@ -11,9 +11,9 @@ import { useGame, useGameStore } from '@/store/gameStore';
 const STATUS_STYLE: Record<sel.UseCaseStatus, { dot: string; label: string }> = {
   undiscovered: { dot: 'bg-ink-500', label: 'Unknown' },
   discovered: { dot: 'bg-ink-200', label: 'Discovered' },
-  pilot: { dot: 'bg-sky-400', label: 'Piloting' },
-  results: { dot: 'bg-amber-300', label: 'Decision needed' },
-  production: { dot: 'bg-emerald-400', label: 'Live' },
+  pilot: { dot: 'bg-[#6fa8c9]', label: 'Piloting' },
+  results: { dot: 'bg-[#d6ab5e]', label: 'Decision needed' },
+  production: { dot: 'bg-[#6db894]', label: 'Live' },
 };
 
 export function OrgMap() {

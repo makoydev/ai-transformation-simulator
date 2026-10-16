@@ -113,7 +113,7 @@ function PilotView({ game, project: p, act }: ViewProps) {
             Results in {p.quartersRemaining} quarter{p.quartersRemaining === 1 ? '' : 's'}
           </span>
         </div>
-        <Meter value={total - p.quartersRemaining} max={total} color="#38bdf8" height="h-2.5" label="Pilot progress" />
+        <Meter value={total - p.quartersRemaining} max={total} color="#6fa8c9" height="h-2.5" label="Pilot progress" />
       </div>
       <p className="text-sm text-ink-300">
         The team is building and testing against success criteria. You'll see the results, and a debrief on whether this
@@ -287,7 +287,7 @@ function ProductionView({ game, project: p, act, costLabel }: ViewProps) {
           <span>Adoption</span>
           <span className="font-semibold text-white">{Math.round(p.adoption)}%</span>
         </div>
-        <Meter value={p.adoption} color="#38bdf8" height="h-2.5" label="Adoption" />
+        <Meter value={p.adoption} color="#6fa8c9" height="h-2.5" label="Adoption" />
         <p className="mt-2 text-xs text-ink-400">
           {game.departments[uc.dept].champions ? 'AI champions are accelerating adoption here. ' : 'Tip: recruit AI champions in this department to speed adoption. '}
           {game.literacy === 0 && 'Company-wide AI literacy training also helps.'}

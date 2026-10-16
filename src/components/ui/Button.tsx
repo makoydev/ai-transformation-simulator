@@ -18,7 +18,7 @@ const VARIANTS: Record<Variant, string> = {
   secondary: 'bg-white/6 text-ink-100 border border-white/10 hover:bg-white/10 hover:border-white/20',
   ghost: 'text-ink-200 hover:bg-white/6 hover:text-white',
   danger: 'bg-rose-500/15 text-rose-200 border border-rose-400/30 hover:bg-rose-500/25',
-  success: 'bg-emerald-500/90 text-ink-950 hover:bg-emerald-400 shadow-[0_8px_30px_-8px_rgba(52,211,153,0.6)]',
+  success: 'bg-[#6db894] text-ink-950 hover:bg-[#7cc3a0] shadow-[0_6px_20px_-10px_rgba(109,184,148,0.35)]',
   warning: 'bg-amber-400/15 text-amber-100 border border-amber-300/30 hover:bg-amber-400/25',
 };
 

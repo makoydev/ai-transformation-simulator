@@ -8,10 +8,10 @@ import { MetricTile } from './MetricTile';
 
 /** Reserved status colors: always paired with a text label, never color alone. */
 export const RISK_STATUS = {
-  Low: { color: '#0ca30c', label: 'Low' },
-  Moderate: { color: '#fab219', label: 'Moderate' },
+  Low: { color: '#5fa877', label: 'Low' },
+  Moderate: { color: '#d6ab5e', label: 'Moderate' },
   High: { color: '#ec835a', label: 'High' },
-  Critical: { color: '#d03b3b', label: 'Critical' },
+  Critical: { color: '#c4625f', label: 'Critical' },
 } as const;
 
 const points = (v: number) => `${Math.round(v)}`;
@@ -48,7 +48,7 @@ export function MetricsBar() {
         formatDelta={signedMoney}
         epsilon={0.005}
         icon={Wallet}
-        accent="#34d399"
+        accent="#6db894"
         sub={m.costs > 0 ? `${fmtMoney(m.costs)}/q run costs` : 'No run costs yet'}
         tooltip="Cash available this quarter. The board allocates more each quarter, and more when trust is high. Production systems, licenses, and hires carry recurring run costs. Overspending costs trust."
       />
@@ -59,7 +59,7 @@ export function MetricsBar() {
         formatDelta={signedMoney}
         epsilon={0.005}
         icon={PiggyBank}
-        accent="#fbbf24"
+        accent="#d6ab5e"
         sub={m.expected > 0 ? `Board target ${fmtMoney(m.expected)}` : 'No target yet (honeymoon)'}
         tooltip={
           <>
@@ -77,7 +77,7 @@ export function MetricsBar() {
           value={m.expected > 0 ? Math.min(m.perceived / m.expected, 1.5) : 0}
           max={1.5}
           marker={1}
-          color="#fbbf24"
+          color="#d6ab5e"
           label="Value the board sees versus target"
         />
       </MetricTile>
@@ -88,7 +88,7 @@ export function MetricsBar() {
         formatDelta={(d) => `${fmtSigned(d, 2)}x`}
         epsilon={0.01}
         icon={TrendingUp}
-        accent="#fde047"
+        accent="#d4c36e"
         sub={`${fmtMoney(game.cumulativeValue)} value / ${fmtMoney(game.cumulativeSpend)} spent`}
         tooltip="Cumulative value delivered divided by cumulative spend. Expect a J-curve: spend comes first, value follows adoption."
       />
@@ -98,11 +98,11 @@ export function MetricsBar() {
         format={(v) => `${Math.round(v)}%`}
         formatDelta={signedPoints}
         icon={Users}
-        accent="#38bdf8"
+        accent="#6fa8c9"
         sub={`${m.live} live system${m.live === 1 ? '' : 's'}`}
         tooltip="Average share of intended users actually using your production systems. Value scales with adoption, so deployment alone is worth nothing. Training, champions, and morale speed it up."
       >
-        <Meter value={m.adoption} color="#38bdf8" label="Adoption" />
+        <Meter value={m.adoption} color="#6fa8c9" label="Adoption" />
       </MetricTile>
       <MetricTile
         label="Risk exposure"
@@ -128,11 +128,11 @@ export function MetricsBar() {
         format={points}
         formatDelta={signedPoints}
         icon={Gauge}
-        accent="#a78bfa"
+        accent="#a29ad4"
         sub={game.trust < BALANCE.warningThreshold ? 'Danger zone' : 'Fired below 15'}
         tooltip="Your job security. Reviewed every quarter: value vs. expectations, executive support, PoC purgatory, risk, and budget discipline. Drop below 15 and you're out."
       >
-        <Meter value={game.trust} color="#a78bfa" marker={BALANCE.fireThreshold} label="Board trust" />
+        <Meter value={game.trust} color="#a29ad4" marker={BALANCE.fireThreshold} label="Board trust" />
       </MetricTile>
       <MetricTile
         label="Morale"
@@ -140,12 +140,12 @@ export function MetricsBar() {
         format={points}
         formatDelta={signedPoints}
         icon={HeartPulse}
-        accent="#f472b6"
+        accent="#cf8db0"
         sub={game.morale >= 60 ? 'Curious & engaged' : game.morale >= 40 ? 'Cautious' : 'Fearful'}
         tooltip="How employees feel about AI. Fear slows adoption everywhere; transparency, training, and champions build it."
         className="col-span-2 sm:col-span-1"
       >
-        <Meter value={game.morale} color="#f472b6" label="Morale" />
+        <Meter value={game.morale} color="#cf8db0" label="Morale" />
       </MetricTile>
     </div>
   );

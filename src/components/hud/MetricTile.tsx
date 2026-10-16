@@ -72,8 +72,8 @@ export function MetricTile({
         tabIndex={0}
         className={cn(
           'glass relative w-full overflow-visible rounded-xl px-3 py-2.5 text-left transition-shadow duration-300',
-          flash === 'good' && 'shadow-[0_0_0_1px_rgba(52,211,153,0.6),0_0_24px_-4px_rgba(52,211,153,0.5)]',
-          flash === 'bad' && 'shadow-[0_0_0_1px_rgba(251,113,133,0.6),0_0_24px_-4px_rgba(251,113,133,0.5)]',
+          flash === 'good' && 'shadow-[0_0_0_1px_rgba(109,184,148,0.45),0_0_24px_-4px_rgba(109,184,148,0.25)]',
+          flash === 'bad' && 'shadow-[0_0_0_1px_rgba(214,138,146,0.45),0_0_24px_-4px_rgba(214,138,146,0.25)]',
         )}
       >
         <span className="absolute inset-x-3 top-0 h-px opacity-70" style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }} aria-hidden />

@@ -3,7 +3,7 @@ import confetti from 'canvas-confetti';
 const reducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-const BRAND = ['#8b5cf6', '#6366f1', '#22d3ee', '#fbbf24', '#34d399'];
+const BRAND = ['#8f8acb', '#7f8dc6', '#72b4bb', '#d6ab5e', '#6db894'];
 
 /** Big celebration: a system goes live in production. */
 export function celebrateDeploy(): void {

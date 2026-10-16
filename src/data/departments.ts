@@ -19,7 +19,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'VP Customer Care',
     blurb: '420 agents, 1.1M tickets a year, and a knowledge base nobody can find anything in.',
     sponsor: 'coo',
-    color: '#38bdf8',
+    color: '#6fa8c9',
   },
   finance: {
     id: 'finance',
@@ -28,7 +28,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'Group Controller',
     blurb: 'Closes the books in 14 days. Mostly in Excel. Some of it on paper.',
     sponsor: 'cfo',
-    color: '#34d399',
+    color: '#6db894',
   },
   legal: {
     id: 'legal',
@@ -37,7 +37,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'Deputy General Counsel',
     blurb: 'Eleven lawyers, 3,600 contracts a year, zero appetite for embarrassment.',
     sponsor: 'ciso',
-    color: '#a78bfa',
+    color: '#a29ad4',
   },
   hr: {
     id: 'hr',
@@ -46,7 +46,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'Head of Talent',
     blurb: '9,000 employees, 40k applicants a year, and a benefits FAQ that is 94 pages long.',
     sponsor: 'chro',
-    color: '#f472b6',
+    color: '#cf8db0',
   },
   engineering: {
     id: 'engineering',
@@ -55,7 +55,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'VP Engineering',
     blurb: '280 engineers maintaining systems older than most of the engineers.',
     sponsor: 'cto',
-    color: '#818cf8',
+    color: '#8e96d2',
   },
   sales: {
     id: 'sales',
@@ -64,7 +64,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'Chief Revenue Officer',
     blurb: '160 reps who love closing deals and hate updating the CRM.',
     sponsor: 'ceo',
-    color: '#fbbf24',
+    color: '#d6ab5e',
   },
   operations: {
     id: 'operations',
@@ -73,7 +73,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'VP Supply Chain',
     blurb: '14 warehouses, 2,300 suppliers, and a forecasting process best described as "vibes".',
     sponsor: 'coo',
-    color: '#fb923c',
+    color: '#d49763',
   },
   marketing: {
     id: 'marketing',
@@ -82,7 +82,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'Chief Marketing Officer',
     blurb: 'Wants to be "AI-first" by next week. Brand guidelines last updated in 2017.',
     sponsor: 'ceo',
-    color: '#fb7185',
+    color: '#d68a92',
   },
 };
 

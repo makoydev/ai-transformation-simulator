@@ -1,48 +1,49 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-ink-100: #e3e7f5;
-  --color-ink-200: #b9c0dc;
-  --color-ink-300: #8a94b8;
-  --color-ink-400: #5d6890;
-  --color-ink-500: #3a4468;
-  --color-ink-600: #252e4d;
-  --color-ink-700: #182039;
-  --color-ink-800: #10162c;
-  --color-ink-850: #0b1022;
-  --color-ink-900: #080c1a;
-  --color-ink-950: #05070f;
+  --color-ink-100: #d9dbe0;
+  --color-ink-200: #b9bdc6;
+  --color-ink-300: #9ca1ac;
+  --color-ink-400: #8a8f9a;
+  --color-ink-500: #5f646e;
+  --color-ink-600: #3d414a;
+  --color-ink-700: #2e3139;
+  --color-ink-800: #26292f;
+  --color-ink-850: #202228;
+  --color-ink-900: #1b1d22;
+  --color-ink-950: #141519;
 
-  --color-brand-violet: #8b5cf6;
-  --color-brand-indigo: #6366f1;
-  --color-brand-cyan: #22d3ee;
+  /* Off-white instead of pure #fff: softer on a dark surface. */
+  --color-white: #ecebe7;
 
-  --color-metric-budget: #34d399;
-  --color-metric-value: #fbbf24;
-  --color-metric-roi: #fde047;
-  --color-metric-adoption: #38bdf8;
-  --color-metric-risk: #fb7185;
-  --color-metric-trust: #a78bfa;
-  --color-metric-morale: #f472b6;
+  --color-brand-violet: #8f8acb;
+  --color-brand-indigo: #7f8dc6;
+  --color-brand-cyan: #72b4bb;
+
+  --color-metric-budget: #6db894;
+  --color-metric-value: #d6ab5e;
+  --color-metric-roi: #d4c36e;
+  --color-metric-adoption: #6fa8c9;
+  --color-metric-risk: #d68a92;
+  --color-metric-trust: #a29ad4;
+  --color-metric-morale: #cf8db0;
 
   --font-display: 'Space Grotesk', Inter, system-ui, sans-serif;
   --font-sans: Inter, system-ui, sans-serif;
 
   --shadow-glow:
-    0 0 0 1px rgba(139, 92, 246, 0.35), 0 8px 40px -8px rgba(139, 92, 246, 0.45);
-  --shadow-glow-cyan:
-    0 0 0 1px rgba(34, 211, 238, 0.35), 0 8px 40px -8px rgba(34, 211, 238, 0.45);
-  --shadow-glow-amber:
-    0 0 0 1px rgba(251, 191, 36, 0.45), 0 8px 40px -8px rgba(251, 191, 36, 0.5);
+    0 0 0 1px rgba(143, 138, 203, 0.35), 0 6px 20px -10px rgba(0, 0, 0, 0.5);
+  --shadow-glow-cyan: 0 0 0 1px rgba(114, 180, 187, 0.35);
+  --shadow-glow-amber: 0 0 0 1px rgba(214, 171, 94, 0.45);
   --shadow-card:
     0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
-    0 12px 32px -12px rgba(0, 0, 0, 0.6);
+    0 12px 32px -12px rgba(0, 0, 0, 0.45);
 
   --background-image-brand-gradient: linear-gradient(
     135deg,
-    #8b5cf6 0%,
-    #6366f1 45%,
-    #22d3ee 100%
+    #575fa0 0%,
+    #4b6795 50%,
+    #3e6d77 100%
   );
 
   --animate-shimmer: shimmer 2.5s linear infinite;
@@ -59,13 +60,13 @@
   }
   @keyframes pulse-ring {
     0% {
-      box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.55);
+      box-shadow: 0 0 0 0 rgba(214, 171, 94, 0.4);
     }
     70% {
-      box-shadow: 0 0 0 10px rgba(251, 191, 36, 0);
+      box-shadow: 0 0 0 10px rgba(214, 171, 94, 0);
     }
     100% {
-      box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
+      box-shadow: 0 0 0 0 rgba(214, 171, 94, 0);
     }
   }
   @keyframes float {
@@ -106,7 +107,8 @@
 }
 
 @utility text-gradient {
-  @apply bg-brand-gradient bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, #b3b2e0 0%, #a3bad8 50%, #9ccbcf 100%);
+  @apply bg-clip-text text-transparent;
 }
 
 @utility label-caps {
@@ -117,7 +119,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.05) 50%,
     transparent 100%
   );
   background-size: 200% 100%;
@@ -126,8 +128,8 @@
 
 @utility grid-bg {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
@@ -149,8 +151,8 @@
   body {
     @apply bg-ink-900 font-sans text-ink-100 antialiased;
     background-image:
-      radial-gradient(1200px 600px at 10% -10%, rgba(139, 92, 246, 0.12), transparent 60%),
-      radial-gradient(900px 500px at 100% 0%, rgba(34, 211, 238, 0.08), transparent 60%);
+      radial-gradient(1200px 600px at 10% -10%, rgba(143, 138, 203, 0.05), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(114, 180, 187, 0.035), transparent 60%);
     background-attachment: fixed;
   }
 
@@ -162,17 +164,17 @@
   }
 
   ::selection {
-    background: rgba(139, 92, 246, 0.45);
+    background: rgba(143, 138, 203, 0.35);
   }
 
   :focus-visible {
-    outline: 2px solid #22d3ee;
+    outline: 2px solid #72b4bb;
     outline-offset: 2px;
   }
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: #252e4d transparent;
+    scrollbar-color: #3d414a transparent;
   }
 }
 

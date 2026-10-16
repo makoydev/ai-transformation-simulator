@@ -65,7 +65,7 @@ export const ProjectCard = forwardRef<HTMLButtonElement, { project: Project }>(f
               {p.quartersRemaining} quarter{p.quartersRemaining === 1 ? '' : 's'} to results
             </span>
           </div>
-          <Meter value={totalQuarters - p.quartersRemaining} max={totalQuarters} color="#38bdf8" label="Pilot progress" />
+          <Meter value={totalQuarters - p.quartersRemaining} max={totalQuarters} color="#6fa8c9" label="Pilot progress" />
         </div>
       )}
 
@@ -94,7 +94,7 @@ export const ProjectCard = forwardRef<HTMLButtonElement, { project: Project }>(f
             <span className="text-ink-400">Value</span>
             <span className="font-semibold text-amber-200">{fmtMoney(sel.projectValue(p))}/q</span>
           </div>
-          <Meter value={p.adoption} color="#38bdf8" label="Adoption" />
+          <Meter value={p.adoption} color="#6fa8c9" label="Adoption" />
           <div className="text-[11px] text-ink-400">{Math.round(p.adoption)}% adoption</div>
         </div>
       )}

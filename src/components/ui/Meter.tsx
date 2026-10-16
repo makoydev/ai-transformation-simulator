@@ -12,7 +12,7 @@ interface Props {
   label?: string;
 }
 
-export function Meter({ value, max = 100, color = '#8b5cf6', className, marker, height = 'h-1.5', label }: Props) {
+export function Meter({ value, max = 100, color = '#8f8acb', className, marker, height = 'h-1.5', label }: Props) {
   const pct = Math.max(0, Math.min(100, (value / max) * 100));
   return (
     <div

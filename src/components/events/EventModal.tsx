@@ -13,10 +13,10 @@ import { quarterLabel } from '@/lib/format';
 import { useGameStore } from '@/store/gameStore';
 
 const CATEGORY: Record<EventCategory, { label: string; icon: LucideIcon; cls: string; glow: string }> = {
-  crisis: { label: 'Crisis', icon: Siren, cls: 'bg-rose-500/15 text-rose-200 border-rose-400/30', glow: '#fb7185' },
-  incident: { label: 'Incident', icon: AlertOctagon, cls: 'bg-red-500/20 text-red-200 border-red-400/40', glow: '#ef4444' },
-  opportunity: { label: 'Opportunity', icon: Sparkles, cls: 'bg-emerald-400/15 text-emerald-200 border-emerald-400/30', glow: '#34d399' },
-  dilemma: { label: 'Dilemma', icon: Scale, cls: 'bg-amber-300/15 text-amber-100 border-amber-300/30', glow: '#fbbf24' },
+  crisis: { label: 'Crisis', icon: Siren, cls: 'bg-rose-500/15 text-rose-200 border-rose-400/30', glow: '#d68a92' },
+  incident: { label: 'Incident', icon: AlertOctagon, cls: 'bg-red-500/20 text-red-200 border-red-400/40', glow: '#cc6b6b' },
+  opportunity: { label: 'Opportunity', icon: Sparkles, cls: 'bg-emerald-400/15 text-emerald-200 border-emerald-400/30', glow: '#6db894' },
+  dilemma: { label: 'Dilemma', icon: Scale, cls: 'bg-amber-300/15 text-amber-100 border-amber-300/30', glow: '#d6ab5e' },
 };
 
 export function EventModal() {

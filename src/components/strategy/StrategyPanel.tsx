@@ -122,7 +122,7 @@ export function StrategyPanel() {
                 index={i}
                 title={def.name}
                 icon={ShieldCheck}
-                accent="#fb7185"
+                accent="#d68a92"
                 description={def.description}
                 benefit={def.benefit}
                 tradeoff={def.tradeoff}
@@ -160,7 +160,7 @@ export function StrategyPanel() {
                 index={i + POLICY_ORDER.length}
                 title={def.name}
                 icon={INITIATIVE_ICONS[id]}
-                accent={def.group === 'change' ? '#f472b6' : def.group === 'board' ? '#a78bfa' : '#38bdf8'}
+                accent={def.group === 'change' ? '#cf8db0' : def.group === 'board' ? '#a29ad4' : '#6fa8c9'}
                 description={def.description}
                 benefit={def.benefit}
                 tradeoff={def.tradeoff}

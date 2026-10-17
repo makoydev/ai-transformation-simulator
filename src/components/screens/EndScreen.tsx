@@ -13,12 +13,12 @@ import { play } from '@/lib/sfx';
 import { useGameStore } from '@/store/gameStore';
 
 const GRADE_COLOR: Record<string, string> = {
-  S: 'from-amber-200 via-yellow-300 to-amber-500',
-  A: 'from-emerald-200 to-emerald-500',
-  B: 'from-sky-200 to-sky-500',
-  C: 'from-violet-200 to-violet-500',
-  D: 'from-orange-200 to-orange-500',
-  F: 'from-rose-200 to-rose-500',
+  S: 'from-[#f0dcae] via-[#e2bf72] to-[#c99a4a]',
+  A: 'from-[#c4e4d2] to-[#6db894]',
+  B: 'from-[#c6dcea] to-[#6fa8c9]',
+  C: 'from-[#d5d0ee] to-[#a29ad4]',
+  D: 'from-[#efd0b4] to-[#d49763]',
+  F: 'from-[#efc8cd] to-[#d68a92]',
 };
 
 export function EndScreen() {

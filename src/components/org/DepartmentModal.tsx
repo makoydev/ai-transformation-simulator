@@ -17,29 +17,17 @@ import { UseCaseCard } from './UseCaseCard';
 export function DepartmentModal() {
   const deptId = useGameStore((s) => s.deptModal);
   const openDept = useGameStore((s) => s.openDept);
-  const [triage, setTriage] = useState<UseCaseDef | null>(null);
-
-  const close = () => {
-    setTriage(null);
-    openDept(null);
-  };
 
   return (
-    <Modal open={deptId !== null} onClose={close} size="xl" label={deptId ? DEPARTMENTS[deptId].name : 'Department'}>
-      {deptId && <DepartmentBody deptId={deptId} triage={triage} setTriage={setTriage} />}
+    <Modal open={deptId !== null} onClose={() => openDept(null)} size="xl" label={deptId ? DEPARTMENTS[deptId].name : 'Department'}>
+      {/* Keyed by department so triage state resets whenever the modal closes or switches departments. */}
+      {deptId && <DepartmentBody key={deptId} deptId={deptId} />}
     </Modal>
   );
 }
 
-function DepartmentBody({
-  deptId,
-  triage,
-  setTriage,
-}: {
-  deptId: keyof typeof DEPARTMENTS;
-  triage: UseCaseDef | null;
-  setTriage: (uc: UseCaseDef | null) => void;
-}) {
+function DepartmentBody({ deptId }: { deptId: keyof typeof DEPARTMENTS }) {
+  const [triage, setTriage] = useState<UseCaseDef | null>(null);
   const game = useGameStore((s) => s.game)!;
   const perform = useGameStore((s) => s.perform);
   const def = DEPARTMENTS[deptId];

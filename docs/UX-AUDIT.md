@@ -61,7 +61,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** keep tooltips inside the screen. Anchor them to the left edge for tiles on the left and to the right edge for tiles on the right, or use a positioning helper such as Floating UI that flips and shifts.
   - **Where:** `src/components/ui/Tooltip.tsx:20`, `src/styles/index.css:147` (`#root` hides horizontal overflow)
 
-- [ ] **UX-04: Pop-up messages cover the dialog you are working in** · All screens · M
+- [x] **UX-04: Pop-up messages cover the dialog you are working in** · All screens · M
   - **What happens:** toasts sit above every dialog. Right after an audit, the "Good call" debrief toast and an executive's comment cover the use-case clues you need to read next, for up to 10 seconds. On phones, two toasts cover about 30% of the screen. After scaling a pilot, they hid the new "Live in production" card.
   - **Fix:** while a dialog is open, show the message inside it (a slim banner at the top) or hold toasts until it closes. On phones, show one compact toast at a time at the top of the screen.
   - **Where:** `src/components/feedback/Toasts.tsx:72` (z-index 58, above dialogs at 50 and 55), `src/store/gameStore.ts:170`

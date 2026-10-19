@@ -251,6 +251,18 @@ export const useGameStore = create<StoreState>()(
   ),
 );
 
+/**
+ * True while one of the game's dialogs is open. Known in the same render that opens the
+ * dialog, unlike the DOM dialog stack, which updates in an effect afterwards.
+ */
+export const selectDialogOpen = (s: StoreState): boolean =>
+  s.deptModal !== null ||
+  s.projectModal !== null ||
+  s.howTo ||
+  s.eventOutcome !== null ||
+  s.game?.phase === 'event' ||
+  s.game?.phase === 'report';
+
 /** Convenience hook for components that render only during a game. */
 export function useGame(): GameState {
   const game = useGameStore((s) => s.game);

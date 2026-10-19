@@ -4,6 +4,7 @@
  * reader access), and the page behind them stops scrolling.
  */
 const stack: HTMLElement[] = [];
+const listeners = new Set<() => void>();
 
 function sync(): void {
   const root = document.getElementById('root');
@@ -12,7 +13,18 @@ function sync(): void {
     el.inert = i < stack.length - 1;
   });
   document.body.style.overflow = stack.length > 0 ? 'hidden' : '';
+  listeners.forEach((listener) => listener());
 }
+
+/** For useSyncExternalStore: calls `listener` whenever a dialog opens or closes. */
+export function subscribeDialogs(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+export const dialogCount = (): number => stack.length;
 
 export function pushDialog(el: HTMLElement): void {
   stack.push(el);

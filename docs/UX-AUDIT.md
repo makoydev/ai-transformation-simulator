@@ -51,7 +51,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** let the chart shrink. Add `min-w-0` to the chart's `<figure>`, or `grid-cols-1` to the grid that holds the two charts. The chart first renders 600px wide, and a plain one-column grid never lets it get narrower.
   - **Where:** `src/components/screens/EndScreen.tsx:163`, `src/components/charts/LineChart.tsx:36`
 
-- [ ] **UX-02: Long button labels run off narrow screens** · Phone · S
+- [x] **UX-02: Long button labels run off narrow screens** · Phone · S
   - **What happens:** button text never wraps. On a 390px phone, the title screen's "Continue: Pemberton Logistics, Q2 · Year 1" button is 404px wide and is cut off on both sides. On the pilot results screen, "Scale to production · $500K · 1 capacity" is 21px wider than its card.
   - **Fix:** allow wrapping on small screens, or use shorter labels on phones (for example "Continue · Q2 Y1", with the company name as a second line). Check every button that combines an action, a price and a capacity.
   - **Where:** `src/components/ui/Button.tsx:43` (`whitespace-nowrap`), `src/components/screens/TitleScreen.tsx:95`, `src/components/portfolio/ProjectModal.tsx:240`

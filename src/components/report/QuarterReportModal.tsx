@@ -140,7 +140,6 @@ export function QuarterReportModal() {
             <Button
               variant="primary"
               size="lg"
-              autoFocus
               onClick={() => {
                 if (report.completedPilots.length && report.outcome === 'continue') setTab('portfolio');
                 advance();

@@ -35,7 +35,13 @@ export function EventModal() {
   const shaky = event && (event.category === 'incident' || event.category === 'crisis') && !outcome;
 
   return (
-    <Modal open={open} size="lg" label={event?.title ?? 'Event'} z={55}>
+    <Modal
+      open={open}
+      size="lg"
+      label={event?.title ?? 'Event'}
+      z={55}
+      resetKey={event ? `${event.id}:${outcome ? 'outcome' : 'question'}` : undefined}
+    >
       {event && from && (
         <motion.div
           key={event.id}
@@ -126,7 +132,7 @@ export function EventModal() {
                   <ChangeChips changes={outcome.changes} />
                 </div>
                 <div className="mt-6 flex justify-end">
-                  <Button variant="primary" onClick={closeOutcome} icon={<ArrowRight size={16} />} autoFocus>
+                  <Button variant="primary" onClick={closeOutcome} icon={<ArrowRight size={16} />}>
                     {game.phase === 'event' ? 'Next event' : 'Back to work'}
                   </Button>
                 </div>

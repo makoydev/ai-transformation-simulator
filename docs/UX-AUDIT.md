@@ -76,7 +76,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** keep Tab and Shift+Tab inside the open dialog, make the rest of the page `inert`, and return focus to the opening button on close. The native `<dialog>` element does most of this for you.
   - **Where:** `src/components/ui/Modal.tsx:27-40`
 
-- [ ] **UX-07: On phones, the board review opens scrolled to the bottom** · Phone · S
+- [x] **UX-07: On phones, the board review opens scrolled to the bottom** · Phone · S
   - **What happens:** the "Begin next quarter" button has `autoFocus`, so the dialog scrolls down to it. On a 390×757 screen the review opened 222px down, which hid the headline and the first figures. The event result screen uses the same autofocus, so a long debrief will open scrolled down too.
   - **Fix:** focus the dialog or its heading first and keep the scroll position at the top. If the button keeps autofocus, focus it with `{ preventScroll: true }`.
   - **Where:** `src/components/report/QuarterReportModal.tsx:143`, `src/components/events/EventModal.tsx:129`

@@ -14,6 +14,8 @@ interface ModalProps {
   /** Visually hidden title for screen readers when the modal has no visible heading id. */
   label: string;
   z?: number;
+  /** Change this when the dialog shows new content (e.g. the next event) to scroll back to the top. */
+  resetKey?: string;
 }
 
 const SIZES = {
@@ -52,7 +54,7 @@ function trapTab(e: KeyboardEvent, panel: HTMLElement): void {
  * it is inert, Tab stays inside it, and Escape closes only the top dialog.
  * Focus returns to where it was when the dialog closes.
  */
-export function Modal({ open, onClose, children, size = 'md', className, label, z = 50 }: ModalProps) {
+export function Modal({ open, onClose, children, size = 'md', className, label, z = 50, resetKey }: ModalProps) {
   const layerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   // Callers pass inline closures; a ref keeps the effect below from re-running on every render.
@@ -65,7 +67,6 @@ export function Modal({ open, onClose, children, size = 'md', className, label, 
     if (!open || !layer || !panel) return;
     const returnTo = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     pushDialog(layer);
-    panel.focus({ preventScroll: true });
 
     const onKey = (e: KeyboardEvent) => {
       if (!isTopDialog(layer)) return;
@@ -87,6 +88,15 @@ export function Modal({ open, onClose, children, size = 'md', className, label, 
       }
     };
   }, [open]);
+
+  // Start at the top with focus on the dialog, so its heading is the first thing seen and read.
+  // Runs after the effect above, which records where focus was before the dialog opened.
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!open || !panel) return;
+    panel.scrollTop = 0;
+    panel.focus({ preventScroll: true });
+  }, [open, resetKey]);
 
   return createPortal(
     <AnimatePresence>

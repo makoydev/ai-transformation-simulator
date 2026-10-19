@@ -3,6 +3,7 @@ import { AlertTriangle, Power, RefreshCw, Rocket, ShieldCheck, Skull, UserCheck 
 import { useEffect, useRef, useState } from 'react';
 import { DebriefCard } from '@/components/feedback/DebriefCard';
 import { Button } from '@/components/ui/Button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Meter } from '@/components/ui/Meter';
 import { Modal } from '@/components/ui/Modal';
 import { APPROACHES } from '@/data/approaches';
@@ -102,8 +103,9 @@ function ProjectDebrief({ game, project }: { game: GameState; project: Project }
 }
 
 function PilotView({ game, project: p, act }: ViewProps) {
+  const [confirmKill, setConfirmKill] = useState(false);
   const total = p.iterations > 0 ? 1 : APPROACHES[p.approach].pilotQuarters;
-  const refund = sel.pilotCost(sel.caseOf(p), p.approach) * BALANCE.killRefundFactor;
+  const refund = sel.killRefund(p);
   return (
     <>
       <div>
@@ -122,13 +124,24 @@ function PilotView({ game, project: p, act }: ViewProps) {
       <div className="flex flex-wrap gap-2 border-t border-white/6 pt-4">
         <Button
           variant="danger"
-          onClick={() => act({ type: 'kill', projectId: p.id }, true)}
+          onClick={() => setConfirmKill(true)}
           disabled={!!validateAction(game, { type: 'kill', projectId: p.id })}
           icon={<Skull size={15} />}
         >
           Kill pilot (refund {fmtMoney(refund)})
         </Button>
       </div>
+      <ConfirmDialog
+        open={confirmKill}
+        title="Kill this pilot?"
+        message={`The pilot stops now and you get ${fmtMoney(refund)} back. Trying this use case again means starting a new pilot.`}
+        confirmLabel="Kill pilot"
+        onCancel={() => setConfirmKill(false)}
+        onConfirm={() => {
+          setConfirmKill(false);
+          act({ type: 'kill', projectId: p.id }, true);
+        }}
+      />
     </>
   );
 }
@@ -140,6 +153,7 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
   const uc = sel.caseOf(p);
   const sensitive = uc.sensitivity >= 0.7 && p.approach !== 'process';
   const [hitl, setHitl] = useState(sensitive);
+  const [confirmKill, setConfirmKill] = useState(false);
   const result = p.result!;
 
   // Runs once per reveal: both timers must survive the phase change they trigger.
@@ -258,7 +272,7 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
                     Iterate (+15% odds) · {costLabel(iterateAction)}
                   </Button>
                 )}
-                <Button variant="danger" onClick={() => act(killAction, true)} icon={<Skull size={16} />}>
+                <Button variant="danger" onClick={() => setConfirmKill(true)} icon={<Skull size={16} />}>
                   Kill it
                 </Button>
               </div>
@@ -266,11 +280,23 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
           </motion.div>
         )}
       </AnimatePresence>
+      <ConfirmDialog
+        open={confirmKill}
+        title="Kill this pilot?"
+        message={`${uc.title} ends here, and nothing is refunded. Trying this use case again means starting a new pilot.`}
+        confirmLabel="Kill pilot"
+        onCancel={() => setConfirmKill(false)}
+        onConfirm={() => {
+          setConfirmKill(false);
+          act(killAction, true);
+        }}
+      />
     </>
   );
 }
 
 function ProductionView({ game, project: p, act, costLabel }: ViewProps) {
+  const [confirmRetire, setConfirmRetire] = useState(false);
   const uc = sel.caseOf(p);
   const toggle: GameAction = { type: 'toggleHitl', projectId: p.id };
   const retire: GameAction = { type: 'retire', projectId: p.id };
@@ -300,10 +326,21 @@ function ProductionView({ game, project: p, act, costLabel }: ViewProps) {
             {p.hitl ? 'Disable' : 'Enable'} human-in-the-loop · {costLabel(toggle)}
           </Button>
         )}
-        <Button variant="danger" onClick={() => act(retire, true)} icon={<Power size={15} />}>
+        <Button variant="danger" onClick={() => setConfirmRetire(true)} icon={<Power size={15} />}>
           Retire system
         </Button>
       </div>
+      <ConfirmDialog
+        open={confirmRetire}
+        title="Retire this system?"
+        message={`${uc.title} stops delivering ${fmtMoney(sel.projectValue(p))}/q, and its ${fmtMoney(sel.runCostOf(uc, p.approach))}/q run cost stops too. Bringing it back means starting a new pilot.`}
+        confirmLabel="Retire system"
+        onCancel={() => setConfirmRetire(false)}
+        onConfirm={() => {
+          setConfirmRetire(false);
+          act(retire, true);
+        }}
+      />
     </>
   );
 }

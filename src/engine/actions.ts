@@ -25,6 +25,7 @@ import {
   activeProjectFor,
   capacityLeft,
   fitOf,
+  killRefund,
   pilotCost,
   prodCost,
   round,
@@ -327,7 +328,7 @@ export function applyAction(state: GameState, a: GameAction): GameState {
         const uc = caseOf(p);
         const fit = fitOf(uc, p.approach);
         const ap = APPROACHES[p.approach];
-        if (p.stage === 'pilot') credit(d, round(pilotCost(uc, p.approach) * BALANCE.killRefundFactor, 2));
+        if (p.stage === 'pilot') credit(d, killRefund(p));
         const winner = p.result === 'success' && fit !== 'poor';
         const smart = fit === 'poor' || p.result === 'failed' || (p.result === 'mixed' && fit !== 'ideal');
         d.stats.killed += 1;

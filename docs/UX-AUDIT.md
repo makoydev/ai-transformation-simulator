@@ -66,7 +66,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** while a dialog is open, show the message inside it (a slim banner at the top) or hold toasts until it closes. On phones, show one compact toast at a time at the top of the screen.
   - **Where:** `src/components/feedback/Toasts.tsx:72` (z-index 58, above dialogs at 50 and 55), `src/store/gameStore.ts:170`
 
-- [ ] **UX-05: Destructive actions have no confirmation or undo** · All screens · M
+- [x] **UX-05: Destructive actions have no confirmation or undo** · All screens · M
   - **What happens:** one click on "Abandon & start over" deletes the saved game. "Kill it", "Kill pilot" and "Retire system" are permanent too, and on phones "Kill it" sits directly under "Scale to production".
   - **Fix:** add a confirm step for Abandon ("Abandon this game? Your save will be deleted."). For Kill and Retire, either confirm or offer "Undo" until the end of the quarter. The engine is pure, so keeping the previous state for one step is cheap.
   - **Where:** `src/components/hud/TopBar.tsx:93`, `src/components/portfolio/ProjectModal.tsx:123`, `:261`, `:303`

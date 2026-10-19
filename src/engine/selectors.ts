@@ -49,6 +49,10 @@ export function prodCost(uc: UseCaseDef, approach: ApproachId): number {
 export function runCostOf(uc: UseCaseDef, approach: ApproachId): number {
   return round(APPROACHES[approach].runCost * uc.scale, 3);
 }
+/** Budget handed back when a pilot is killed before its results arrive. */
+export function killRefund(p: Project): number {
+  return p.stage === 'pilot' ? round(pilotCost(caseOf(p), p.approach) * BALANCE.killRefundFactor, 2) : 0;
+}
 
 /** Value a project would generate per quarter at 100% adoption. */
 export function potentialValue(p: Project): number {

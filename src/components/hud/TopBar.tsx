@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { HelpCircle, LogOut, Menu, RotateCcw, Volume2, VolumeX } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { SCENARIOS } from '@/data/scenarios';
 import { cn } from '@/lib/cn';
 import { quarterLabel } from '@/lib/format';
@@ -16,6 +18,7 @@ export function TopBar() {
   const setMenu = useGameStore((s) => s.setMenu);
   const goTo = useGameStore((s) => s.goTo);
   const abandon = useGameStore((s) => s.abandonGame);
+  const [confirmAbandon, setConfirmAbandon] = useState(false);
   const sc = SCENARIOS[game.scenarioId];
 
   return (
@@ -92,16 +95,26 @@ export function TopBar() {
             </button>
             <button
               className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-rose-200 hover:bg-rose-500/15"
-              onClick={() => {
-                abandon();
-                goTo('setup');
-              }}
+              onClick={() => setConfirmAbandon(true)}
             >
               <RotateCcw size={15} /> Abandon & start over
             </button>
           </motion.div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={confirmAbandon}
+        title="Abandon this game?"
+        message={`Your saved game at ${sc.company} (${quarterLabel(game.quarter)}) will be deleted. This can't be undone.`}
+        confirmLabel="Abandon game"
+        onCancel={() => setConfirmAbandon(false)}
+        onConfirm={() => {
+          setConfirmAbandon(false);
+          abandon();
+          goTo('setup');
+        }}
+      />
     </header>
   );
 }

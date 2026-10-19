@@ -10,6 +10,7 @@ import {
   capacityLeft,
   expectedRunRate,
   fitOf,
+  killRefund,
   pilotSuccessChance,
   projectRisk,
   totalRisk,
@@ -148,15 +149,26 @@ describe('pilot lifecycle', () => {
     expect(after.projects[0].adoption).toBeGreaterThan(s.projects[0].adoption);
   });
 
-  it('killing a pilot mid-flight refunds part of its cost', () => {
+  it('killing a pilot mid-flight refunds the amount shown to the player', () => {
     let s = planningState();
     s = applyAction(s, { type: 'audit', dept: 'operations' });
     s = applyAction(s, { type: 'launchPilot', useCaseId: 'ops-demand', approach: 'finetune' });
     const before = s.budget;
+    const shown = killRefund(s.projects[0]);
+    expect(shown).toBeGreaterThan(0);
     s = applyAction(s, { type: 'kill', projectId: s.projects[0].id });
     expect(s.projects[0].stage).toBe('killed');
-    expect(s.budget).toBeGreaterThan(before);
+    expect(s.budget).toBeCloseTo(before + shown, 6);
     expect(s.stats.killedSmart).toBe(1);
+  });
+
+  it('refunds nothing once a pilot has results', () => {
+    let s = planningState();
+    s = applyAction(s, { type: 'audit', dept: 'support' });
+    s = applyAction(s, { type: 'launchPilot', useCaseId: 'support-kb-search', approach: 'buy' });
+    s = nextQuarter(s);
+    expect(s.projects[0].stage).toBe('results');
+    expect(killRefund(s.projects[0])).toBe(0);
   });
 
   it('HITL reduces project risk', () => {

@@ -35,7 +35,7 @@ export function StakeholderPanel({ className }: { className?: string }) {
             return (
               <li key={id}>
                 <Tooltip
-                  width="w-72"
+                  width={288}
                   content={
                     <>
                       <div className="font-semibold text-white">

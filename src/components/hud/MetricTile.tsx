@@ -67,7 +67,7 @@ export function MetricTile({
   }, [value, epsilon, higherIsBetter]);
 
   return (
-    <Tooltip content={tooltip} className={cn('block min-w-0', className)} width="w-72">
+    <Tooltip content={tooltip} className={cn('block min-w-0', className)} width={288}>
       <div
         tabIndex={0}
         className={cn(

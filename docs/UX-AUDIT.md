@@ -56,7 +56,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** allow wrapping on small screens, or use shorter labels on phones (for example "Continue · Q2 Y1", with the company name as a second line). Check every button that combines an action, a price and a capacity.
   - **Where:** `src/components/ui/Button.tsx:43` (`whitespace-nowrap`), `src/components/screens/TitleScreen.tsx:95`, `src/components/portfolio/ProjectModal.tsx:240`
 
-- [ ] **UX-03: Tooltips on the first and last metric tiles are cut off** · Desktop · S
+- [x] **UX-03: Tooltips on the first and last metric tiles are cut off** · Desktop · S
   - **What happens:** hovering "Budget" (far left) or "Morale" (far right) opens a 288px tooltip centred on the tile. The part past the edge of the screen is clipped, so the first or last words of each line are missing.
   - **Fix:** keep tooltips inside the screen. Anchor them to the left edge for tiles on the left and to the right edge for tiles on the right, or use a positioning helper such as Floating UI that flips and shifts.
   - **Where:** `src/components/ui/Tooltip.tsx:20`, `src/styles/index.css:147` (`#root` hides horizontal overflow)

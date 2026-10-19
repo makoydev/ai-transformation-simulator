@@ -71,7 +71,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** add a confirm step for Abandon ("Abandon this game? Your save will be deleted."). For Kill and Retire, either confirm or offer "Undo" until the end of the quarter. The engine is pure, so keeping the previous state for one step is cheap.
   - **Where:** `src/components/hud/TopBar.tsx:93`, `src/components/portfolio/ProjectModal.tsx:123`, `:261`, `:303`
 
-- [ ] **UX-06: Dialogs let keyboard focus escape, and lose it when they close** · Accessibility · M
+- [x] **UX-06: Dialogs let keyboard focus escape, and lose it when they close** · Accessibility · M
   - **What happens:** a dialog moves focus into itself when it opens but does not keep it there. On day one the tutorial closes on top of the first event, and focus does not go back into the event. Pressing Tab then moved through "How to play", "Mute sound", "Menu" and the metric tiles hidden behind the dialog. Focus never returns to the button that opened a dialog.
   - **Fix:** keep Tab and Shift+Tab inside the open dialog, make the rest of the page `inert`, and return focus to the opening button on close. The native `<dialog>` element does most of this for you.
   - **Where:** `src/components/ui/Modal.tsx:27-40`

@@ -1,7 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { cn } from '@/lib/cn';
+import { isTopDialog, pushDialog, removeDialog, topDialog } from '@/lib/dialogStack';
 
 interface ModalProps {
   open: boolean;
@@ -21,28 +23,76 @@ const SIZES = {
   xl: 'max-w-5xl',
 };
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+/** Keeps Tab and Shift+Tab cycling inside the dialog. */
+function trapTab(e: KeyboardEvent, panel: HTMLElement): void {
+  const items = [...panel.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((el) => el.getClientRects().length > 0);
+  if (items.length === 0) {
+    e.preventDefault();
+    panel.focus();
+    return;
+  }
+  const first = items[0];
+  const last = items[items.length - 1];
+  const active = document.activeElement;
+  const inside = active instanceof Node && panel.contains(active);
+  if (e.shiftKey && (!inside || active === first || active === panel)) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && (!inside || active === last)) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
+/**
+ * A dialog rendered at the end of <body>. While it is open, everything behind
+ * it is inert, Tab stays inside it, and Escape closes only the top dialog.
+ * Focus returns to where it was when the dialog closes.
+ */
 export function Modal({ open, onClose, children, size = 'md', className, label, z = 50 }: ModalProps) {
+  const layerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  // Callers pass inline closures; a ref keeps the effect below from re-running on every render.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
-    if (!open) return;
+    const layer = layerRef.current;
+    const panel = panelRef.current;
+    if (!open || !layer || !panel) return;
+    const returnTo = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    pushDialog(layer);
+    panel.focus({ preventScroll: true });
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && onClose) onClose();
+      if (!isTopDialog(layer)) return;
+      if (e.key === 'Escape' && onCloseRef.current) {
+        e.preventDefault();
+        onCloseRef.current();
+      } else if (e.key === 'Tab') {
+        trapTab(e, panel);
+      }
     };
     window.addEventListener('keydown', onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    panelRef.current?.focus();
     return () => {
       window.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prevOverflow;
+      removeDialog(layer);
+      if (returnTo?.isConnected && !returnTo.closest('[inert]')) {
+        returnTo.focus({ preventScroll: true });
+      } else {
+        topDialog()?.querySelector<HTMLElement>('[role="dialog"]')?.focus({ preventScroll: true });
+      }
     };
-  }, [open, onClose]);
+  }, [open]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
+          ref={layerRef}
           className="fixed inset-0 flex items-end justify-center p-0 sm:items-center sm:p-6"
           style={{ zIndex: z }}
           initial={{ opacity: 0 }}
@@ -83,6 +133,7 @@ export function Modal({ open, onClose, children, size = 'md', className, label, 
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

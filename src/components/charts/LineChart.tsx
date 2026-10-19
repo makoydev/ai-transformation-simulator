@@ -86,7 +86,8 @@ export function LineChart({ title, subtitle, series, xLabels, format, yMin = 0, 
   };
 
   return (
-    <figure className="glass p-4">
+    // min-w-0 lets the chart shrink inside a one-column grid; otherwise its first 600px render fixes the width.
+    <figure className="glass min-w-0 p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <figcaption className="font-display text-base font-semibold text-white">{title}</figcaption>

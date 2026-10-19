@@ -46,7 +46,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 
 ## P1: fix first
 
-- [ ] **UX-01: Scorecard charts are cut off on phones** · Phone · S
+- [x] **UX-01: Scorecard charts are cut off on phones** · Phone · S
   - **What happens:** on a 390px phone, both charts on the end screen are 634px wide, so their right side (the latest quarters, the end labels and the card border) is cut off. Desktop is fine.
   - **Fix:** let the chart shrink. Add `min-w-0` to the chart's `<figure>`, or `grid-cols-1` to the grid that holds the two charts. The chart first renders 600px wide, and a plain one-column grid never lets it get narrower.
   - **Where:** `src/components/screens/EndScreen.tsx:163`, `src/components/charts/LineChart.tsx:36`

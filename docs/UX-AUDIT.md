@@ -23,11 +23,11 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 
 ## Summary
 
-| Priority | Meaning | Items |
-|---|---|---|
-| **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 |
-| **P2** | Makes the game noticeably harder to learn or use. | 15 |
-| **P3** | Polish and nice-to-haves. | 30 |
+| Priority | Meaning | Items | Done |
+|---|---|---|---|
+| **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
+| **P2** | Makes the game noticeably harder to learn or use. | 15 | 0 |
+| **P3** | Polish and nice-to-haves. | 30 | 0 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
 

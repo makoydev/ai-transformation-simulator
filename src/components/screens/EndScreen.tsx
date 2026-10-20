@@ -197,9 +197,9 @@ function Scorecard({ game }: { game: GameState }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 + i * 0.05 }}
-                className={cn('rounded-xl border p-3', b.earned ? 'border-amber-300/40 bg-amber-300/10' : 'border-white/6 bg-white/2 opacity-50')}
+                className={cn('rounded-xl border p-3', b.earned ? 'border-amber-300/40 bg-amber-300/10' : 'border-dashed border-white/10')}
               >
-                <div className="flex items-center gap-1.5 text-sm font-semibold text-white">
+                <div className={cn('flex items-center gap-1.5 text-sm font-semibold', b.earned ? 'text-white' : 'text-ink-200')}>
                   {b.earned ? <Check size={14} className="text-amber-200" aria-hidden /> : <Lock size={13} aria-hidden />}
                   {b.name}
                 </div>

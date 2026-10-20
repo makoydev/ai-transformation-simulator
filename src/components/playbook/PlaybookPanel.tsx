@@ -78,13 +78,13 @@ export function PlaybookPanel() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: Math.min(i * 0.02, 0.4) }}
-                  className={cn('glass p-4', !has && 'opacity-50')}
+                  className={cn('glass p-4', !has && 'border-dashed border-white/10 bg-transparent shadow-none')}
                 >
                   <div className="flex items-center gap-2 text-[11px] font-semibold" style={{ color: cat.color }}>
                     {has ? <BookOpen size={13} aria-hidden /> : <Lock size={13} aria-hidden />}
                     {cat.label}
                   </div>
-                  <h3 className="mt-1.5 font-display font-semibold text-white">{has ? l.title : '???'}</h3>
+                  <h3 className={cn('mt-1.5 font-display font-semibold', has ? 'text-white' : 'text-ink-300')}>{has ? l.title : '???'}</h3>
                   {has ? (
                     <>
                       <p className="mt-1 text-sm font-medium text-ink-100">{l.principle}</p>

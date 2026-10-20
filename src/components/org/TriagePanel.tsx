@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { AlertTriangle, ArrowLeft, Check, Clock, Coins, Rocket, ShieldAlert } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { DisabledReason } from '@/components/ui/DisabledReason';
 import { APPROACHES, APPROACH_ORDER } from '@/data/approaches';
 import type { UseCaseDef } from '@/data/useCases';
 import { sel, validateAction, type ApproachId } from '@/engine';
@@ -159,9 +160,12 @@ export function TriagePanel({ useCase: uc, onBack, onLaunched }: Props) {
                 <AlertTriangle size={13} aria-hidden /> Data gap lowers success odds. Consider a data sprint first.
               </span>
             )}
-            <Button variant="primary" className="ml-auto" disabled={!!reason} onClick={launch} icon={<Rocket size={16} />}>
-              {reason ?? 'Launch pilot'}
-            </Button>
+            <div className="ml-auto flex flex-col items-end gap-1">
+              <Button variant="primary" disabled={!!reason} onClick={launch} icon={<Rocket size={16} />}>
+                Launch pilot
+              </Button>
+              <DisabledReason reasons={[reason]} />
+            </div>
           </div>
         ) : (
           <p className="text-sm text-ink-400">Select an approach to continue.</p>

@@ -96,19 +96,19 @@ export function EventModal() {
                         onClick={() => chooseEvent(choice.id)}
                         className={cn(
                           'group flex w-full items-start gap-3 rounded-2xl border p-4 text-left transition-colors',
-                          available ? 'border-white/10 bg-ink-800/80 hover:border-brand-violet/60 hover:bg-ink-700/80' : 'cursor-not-allowed border-white/5 bg-ink-900/60 opacity-50',
+                          available ? 'border-white/10 bg-ink-800/80 hover:border-brand-violet/60 hover:bg-ink-700/80' : 'cursor-not-allowed border-dashed border-white/10 bg-transparent',
                         )}
                       >
                         <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-white">
                           {String.fromCharCode(65 + i)}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block font-semibold text-white">{choice.label}</span>
-                          <span className="mt-0.5 block text-sm text-ink-300">
+                          <span className={cn('block font-semibold', available ? 'text-white' : 'text-ink-300')}>{choice.label}</span>
+                          <span className={cn('mt-0.5 block text-sm', available ? 'text-ink-300' : 'text-amber-200')}>
                             {available ? choiceDescription(choice, game) : choice.unavailableReason}
                           </span>
                         </span>
-                        {available && <ArrowRight size={18} className="mt-1 shrink-0 text-ink-500 transition group-hover:text-white" aria-hidden />}
+                        {available && <ArrowRight size={18} className="mt-1 shrink-0 text-ink-400 transition group-hover:text-white" aria-hidden />}
                       </motion.button>
                     );
                   })}

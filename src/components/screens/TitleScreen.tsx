@@ -129,7 +129,7 @@ export function TitleScreen() {
           })}
         </div>
 
-        <p className="mt-10 flex items-center gap-1.5 text-xs text-ink-500">
+        <p className="mt-10 flex items-center gap-1.5 text-xs text-ink-400">
           <Bot size={13} aria-hidden /> Every crisis comes with a debrief grounded in real-world enterprise AI cases.
         </p>
       </div>

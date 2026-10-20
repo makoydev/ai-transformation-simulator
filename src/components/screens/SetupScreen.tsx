@@ -42,7 +42,7 @@ export function SetupScreen() {
             onChange={(e) => setName(e.target.value)}
             maxLength={40}
             placeholder="e.g. Alex Rivera"
-            className="mt-2 w-full rounded-xl border border-white/10 bg-ink-800/80 px-4 py-3 text-white placeholder:text-ink-500 focus:border-brand-cyan focus:outline-hidden"
+            className="mt-2 w-full rounded-xl border border-white/10 bg-ink-800/80 px-4 py-3 text-white placeholder:text-ink-400 focus:border-brand-cyan focus:outline-hidden"
           />
         </label>
 

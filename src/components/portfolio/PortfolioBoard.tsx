@@ -59,7 +59,7 @@ export function PortfolioBoard() {
                       ))}
                     </AnimatePresence>
                     {items.length === 0 && (
-                      <div className="rounded-xl border border-dashed border-white/10 px-3 py-6 text-center text-xs text-ink-500">Empty</div>
+                      <div className="rounded-xl border border-dashed border-white/10 px-3 py-6 text-center text-xs text-ink-400">Empty</div>
                     )}
                   </div>
                 </div>

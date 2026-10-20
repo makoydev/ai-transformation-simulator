@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { AlertTriangle, ArrowRight, Hourglass } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { BALANCE, sel } from '@/engine';
 import { cn } from '@/lib/cn';
@@ -16,6 +18,21 @@ export function ActionBar() {
   const stalled = sel.stalledProjects(game);
   const awaiting = sel.projectsIn(game, 'results');
   const costs = sel.quarterlyCosts(game).total;
+  const [confirmEnd, setConfirmEnd] = useState(false);
+  const quarterOfYear = ((game.quarter - 1) % 4) + 1;
+
+  // Things the player loses by ending the quarter now. Unused capacity doesn't carry over,
+  // and an undecided pilot drops into (or stays in) PoC purgatory.
+  const newlyStalling = awaiting.length - stalled.length;
+  const warnings = [
+    left > 0 && `${left} of ${total} capacity unused. It doesn't carry over to next quarter.`,
+    newlyStalling > 0 &&
+      `${newlyStalling} pilot${newlyStalling > 1 ? 's' : ''} awaiting a decision will fall into PoC purgatory and cost board trust.`,
+    stalled.length > 0 &&
+      `${stalled.length} pilot${stalled.length > 1 ? 's are' : ' is'} still in PoC purgatory and will cost board trust again.`,
+  ].filter((w): w is string => Boolean(w));
+
+  const requestEnd = () => (warnings.length ? setConfirmEnd(true) : endQuarter());
 
   return (
     <div className="glass-strong sticky bottom-3 z-30 mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 px-3 py-2.5 sm:px-4 sm:py-3">
@@ -73,14 +90,34 @@ export function ActionBar() {
       <div className="ml-auto">
         <Button
           variant="primary"
-          onClick={endQuarter}
+          onClick={requestEnd}
           disabled={game.phase !== 'planning'}
           className={cn(left === 0 && 'animate-pulse-ring')}
           icon={<ArrowRight size={18} />}
         >
-          End Q{((game.quarter - 1) % 4) + 1}
+          End Q{quarterOfYear}
         </Button>
       </div>
+
+      <ConfirmDialog
+        open={confirmEnd}
+        tone="warning"
+        title={`End Q${quarterOfYear} now?`}
+        message={
+          <ul className="mt-1 list-disc space-y-1 pl-4">
+            {warnings.map((w) => (
+              <li key={w}>{w}</li>
+            ))}
+          </ul>
+        }
+        confirmLabel="End anyway"
+        cancelLabel="Go back"
+        onCancel={() => setConfirmEnd(false)}
+        onConfirm={() => {
+          setConfirmEnd(false);
+          endQuarter();
+        }}
+      />
     </div>
   );
 }

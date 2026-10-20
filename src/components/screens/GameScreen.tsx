@@ -20,14 +20,15 @@ import { sel } from '@/engine';
 import { cn } from '@/lib/cn';
 import { useGame, useGameStore, type Tab } from '@/store/gameStore';
 
-const TABS: { id: Tab; label: string; icon: typeof Map; mobileOnly?: boolean }[] = [
-  { id: 'org', label: 'Org Map', icon: Map },
-  { id: 'portfolio', label: 'Portfolio', icon: LayoutGrid },
-  { id: 'strategy', label: 'Strategy', icon: Briefcase },
-  { id: 'playbook', label: 'Playbook', icon: BookOpen },
-  { id: 'people', label: 'People', icon: Users, mobileOnly: true },
+const TABS: { id: Tab; label: string; short: string; icon: typeof Map; mobileOnly?: boolean }[] = [
+  { id: 'org', label: 'Org Map', short: 'Org', icon: Map },
+  { id: 'portfolio', label: 'Portfolio', short: 'Portfolio', icon: LayoutGrid },
+  { id: 'strategy', label: 'Strategy', short: 'Strategy', icon: Briefcase },
+  { id: 'playbook', label: 'Playbook', short: 'Playbook', icon: BookOpen },
+  { id: 'people', label: 'People', short: 'People', icon: Users, mobileOnly: true },
 ];
 
+/** The tab bar above the game view, from small tablets up. Phones get PhoneTabBar instead. */
 function TabBar() {
   const game = useGame();
   const tab = useGameStore((s) => s.tab);
@@ -35,7 +36,7 @@ function TabBar() {
   const awaiting = sel.projectsIn(game, 'results').length;
 
   return (
-    <div className="mb-5 flex gap-1 overflow-x-auto rounded-2xl border border-white/6 bg-ink-850/70 p-1" role="tablist" aria-label="Game views">
+    <div className="mb-5 hidden gap-1 overflow-x-auto rounded-2xl border border-white/6 bg-ink-850/70 p-1 sm:flex" role="tablist" aria-label="Game views">
       {TABS.map((t) => {
         const Icon = t.icon;
         const active = tab === t.id;
@@ -74,6 +75,58 @@ function TabBar() {
   );
 }
 
+/**
+ * Phones: all five tabs in a row at the bottom of the sticky action bar, so every view stays
+ * one tap away without scrolling back up.
+ */
+function PhoneTabBar() {
+  const game = useGame();
+  const tab = useGameStore((s) => s.tab);
+  const setTab = useGameStore((s) => s.setTab);
+  const awaiting = sel.projectsIn(game, 'results').length;
+
+  const select = (id: Tab) => {
+    setTab(id);
+    // Bring the start of the new view into sight if the page is scrolled past it.
+    const main = document.getElementById('game-main');
+    if (main && main.getBoundingClientRect().top < 0) main.scrollIntoView({ block: 'start' });
+  };
+
+  return (
+    <div className="-mx-3 -mb-2.5 mt-2.5 grid grid-cols-5 border-t border-white/6 px-1 sm:hidden" role="tablist" aria-label="Game views">
+      {TABS.map((t) => {
+        const Icon = t.icon;
+        const active = tab === t.id;
+        return (
+          <button
+            key={t.id}
+            role="tab"
+            aria-selected={active}
+            onClick={() => select(t.id)}
+            className={cn(
+              'relative my-1 flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl text-[11px] font-semibold transition-colors',
+              active ? 'text-white' : 'text-ink-300',
+            )}
+          >
+            {active && (
+              <motion.span layoutId="phone-tab-pill" className="absolute inset-0 rounded-xl bg-white/9" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />
+            )}
+            <span className="relative">
+              <Icon size={18} aria-hidden />
+              {t.id === 'portfolio' && awaiting > 0 && (
+                <span className="absolute -right-2.5 -top-1.5 min-w-4 rounded-full bg-hue-amber px-1 text-center text-[10px] leading-4 text-ink-950">
+                  {awaiting}
+                </span>
+              )}
+            </span>
+            <span className="relative">{t.short}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export function GameScreen() {
   const tab = useGameStore((s) => s.tab);
   const shake = useGameStore((s) => s.shake);
@@ -92,7 +145,7 @@ export function GameScreen() {
           <MetricsBar />
         </div>
         <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <main className="min-w-0">
+          <main id="game-main" className="min-w-0 scroll-mt-4">
             <TabBar />
             <motion.div
                 key={tab}
@@ -110,7 +163,7 @@ export function GameScreen() {
           </main>
           <StakeholderPanel className="hidden lg:block" />
         </div>
-        <ActionBar />
+        <ActionBar nav={<PhoneTabBar />} />
       </motion.div>
 
       <DepartmentModal />

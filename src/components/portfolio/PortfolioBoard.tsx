@@ -45,22 +45,25 @@ export function PortfolioBoard() {
             {COLUMNS.map((col) => {
               const items = sel.projectsIn(game, col.stage);
               const Icon = col.icon;
+              const empty = items.length === 0;
+              // Stacked on smaller screens, an empty column shrinks to its heading row.
               return (
-                <div key={col.stage} className="glass flex min-h-[220px] flex-col p-3">
-                  <div className="mb-3 flex items-center gap-2 px-1">
+                <div key={col.stage} className="glass flex flex-col p-3 lg:min-h-[220px]">
+                  <div className={cn('flex items-center gap-2 px-1', empty ? 'lg:mb-3' : 'mb-3')}>
                     <Icon size={16} style={{ color: col.accent }} aria-hidden />
                     <h3 className="font-display font-semibold text-white">{col.title}</h3>
+                    {empty && <span className="text-xs text-ink-400 lg:hidden">Empty</span>}
                     <span className="ml-auto rounded-full bg-white/6 px-2 py-0.5 text-xs font-semibold text-ink-200">{items.length}</span>
                   </div>
-                  <p className="mb-3 px-1 text-xs text-ink-400">{col.hint}</p>
+                  <p className={cn('mb-3 px-1 text-xs text-ink-400', empty && 'hidden lg:block')}>{col.hint}</p>
                   <div className="flex flex-col gap-2.5">
                     <AnimatePresence mode="popLayout">
                       {items.map((p) => (
                         <ProjectCard key={p.id} project={p} />
                       ))}
                     </AnimatePresence>
-                    {items.length === 0 && (
-                      <div className="rounded-xl border border-dashed border-white/10 px-3 py-6 text-center text-xs text-ink-400">Empty</div>
+                    {empty && (
+                      <div className="hidden rounded-xl border border-dashed border-white/10 px-3 py-6 text-center text-xs text-ink-400 lg:block">Empty</div>
                     )}
                   </div>
                 </div>

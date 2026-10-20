@@ -121,7 +121,8 @@ export function Modal({ open, onClose, children, size = 'md', className, label, 
             aria-label={label}
             tabIndex={-1}
             className={cn(
-              'glass-strong relative max-h-[92vh] w-full overflow-y-auto rounded-b-none outline-hidden sm:rounded-2xl',
+              // dvh, not vh: mobile browser toolbars can cover part of a vh-sized sheet.
+              'glass-strong relative max-h-[92dvh] w-full overflow-y-auto rounded-b-none outline-hidden sm:rounded-2xl',
               SIZES[size],
               className,
             )}
@@ -131,13 +132,16 @@ export function Modal({ open, onClose, children, size = 'md', className, label, 
             transition={{ type: 'spring', stiffness: 380, damping: 32 }}
           >
             {onClose && (
-              <button
-                onClick={onClose}
-                aria-label="Close"
-                className="absolute right-3 top-3 z-10 rounded-lg p-2 text-ink-300 transition hover:bg-white/10 hover:text-white"
-              >
-                <X size={18} />
-              </button>
+              // A zero-height sticky row keeps the close button in view while long content scrolls.
+              <div className="sticky top-0 z-20 flex h-0 justify-end">
+                <button
+                  onClick={onClose}
+                  aria-label="Close"
+                  className="mr-3 mt-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-ink-850/80 text-ink-300 backdrop-blur-sm transition hover:bg-white/10 hover:text-white"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             )}
             {children}
           </motion.div>

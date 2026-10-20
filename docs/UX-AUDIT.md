@@ -26,8 +26,8 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 | Priority | Meaning | Items | Done |
 |---|---|---|---|
 | **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
-| **P2** | Makes the game noticeably harder to learn or use. | 15 | 6 |
-| **P3** | Polish and nice-to-haves. | 30 | 0 |
+| **P2** | Makes the game noticeably harder to learn or use. | 15 | 7 |
+| **P3** | Polish and nice-to-haves. | 30 | 3 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
 
@@ -83,7 +83,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 
 ## P2: important
 
-- [ ] **UX-08: Key rules are hidden in hover-only tooltips** · Touch and screen readers · M
+- [x] **UX-08: Key rules are hidden in hover-only tooltips** · Touch and screen readers · M
   - **What happens:** what each metric means, and what each executive loves and hates, appear only on hover or focus. On touch screens they appear only as a side effect of a tap; in testing, one stayed open over the tab bar with no way to close it. Screen readers never get the text, because nothing links it to its tile (`aria-describedby`).
   - **Fix:** use tap-to-open popovers with a close button (or a small "i" button), linked with `aria-describedby`. On phones, show the executives' loves and hates as visible text in the People tab.
   - **Where:** `src/components/ui/Tooltip.tsx`, `src/components/hud/MetricTile.tsx:70`, `src/components/people/StakeholderPanel.tsx:37`
@@ -163,7 +163,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 
 ## P3: polish
 
-- [ ] **UX-23: The event card flip shows scrollbars mid-animation** · Polish · S
+- [x] **UX-23: The event card flip shows scrollbars mid-animation** · Polish · S
   - **What happens:** during the 3D flip from question to debrief, the dialog briefly shows horizontal and vertical scrollbars.
   - **Fix:** `overflow-x: hidden` (or `overflow: clip`) on the flip container.
   - **Where:** `src/components/events/EventModal.tsx:40-56`, `src/components/ui/Modal.tsx:64`
@@ -173,7 +173,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** give the slide body a fixed minimum height.
   - **Where:** `src/components/feedback/HowToPlay.tsx:119-127`
 
-- [ ] **UX-25: The top-bar menu doesn't close on an outside click or Escape** · Polish · S
+- [x] **UX-25: The top-bar menu doesn't close on an outside click or Escape** · Polish · S
   - **Fix:** close it on an outside click, on Escape and after choosing an item, and move focus into the menu when it opens.
   - **Where:** `src/components/hud/TopBar.tsx:80-103`
 
@@ -249,7 +249,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** skip the reveal and the count-ups under reduced motion, and let anyone click to skip the reveal.
   - **Where:** `src/components/portfolio/ProjectModal.tsx:145-161`, `src/components/ui/AnimatedNumber.tsx:18-25`
 
-- [ ] **UX-41: Colours are hard-coded in 29 places, and the charts use the old palette** · Visual · M
+- [x] **UX-41: Colours are hard-coded in 29 places, and the charts use the old palette** · Visual · M
   - **What happens:** components use 29 different hex values instead of the theme tokens. For example, `#6fa8c9` appears 10 times and is the same as `--color-metric-adoption`. The end-screen chart lines (`#c98500`, `#3987e5`, `#9085e9`, `#d95926`) are brighter than the softened palette from the last two commits.
   - **Fix:** move the colours into tokens in `index.css`. Pick the chart colours from the soft palette and check that each pair of lines is easy to tell apart.
   - **Where:** `src/components/screens/EndScreen.tsx:170-183`, `src/components/hud/MetricsBar.tsx:10-15`, `src/styles/index.css:3-29`

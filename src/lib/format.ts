@@ -15,6 +15,14 @@ export function fmtSigned(v: number, digits = 0): string {
   return (0).toFixed(digits);
 }
 
+/** One cost format everywhere: "$350K · 1 capacity", "$100K", "1 capacity" or "Free". */
+export function fmtCost(cost: { budget: number; capacity: number }): string {
+  const parts: string[] = [];
+  if (cost.budget > 0) parts.push(fmtMoney(cost.budget));
+  if (cost.capacity > 0) parts.push(`${cost.capacity} capacity`);
+  return parts.length ? parts.join(' · ') : 'Free';
+}
+
 export const fmtRoi = (v: number): string => `${v.toFixed(2)}x`;
 
 export const fmtPct = (v: number): string => `${Math.round(v)}%`;

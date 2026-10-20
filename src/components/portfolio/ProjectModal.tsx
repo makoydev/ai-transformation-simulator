@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { DebriefCard } from '@/components/feedback/DebriefCard';
 import { Button } from '@/components/ui/Button';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
+import { DisabledReason } from '@/components/ui/DisabledReason';
 import { Meter } from '@/components/ui/Meter';
 import { Modal } from '@/components/ui/Modal';
 import { APPROACHES } from '@/data/approaches';
@@ -11,7 +12,7 @@ import { DEPARTMENTS } from '@/data/departments';
 import { BALANCE, getActionCost, sel, validateAction, type GameAction, type GameState, type Project } from '@/engine';
 import { cn } from '@/lib/cn';
 import { RESULT_STYLE } from '@/lib/labels';
-import { fmtMoney } from '@/lib/format';
+import { fmtCost, fmtMoney } from '@/lib/format';
 import { APPROACH_ICONS } from '@/lib/icons';
 import { play } from '@/lib/sfx';
 import { useGameStore } from '@/store/gameStore';
@@ -48,13 +49,7 @@ function ProjectBody({ game, project: p }: { game: GameState; project: Project }
   const act = (action: GameAction, closeAfter = false) => {
     if (perform(action) && closeAfter) openProject(null);
   };
-  const costLabel = (action: GameAction) => {
-    const cost = getActionCost(game, action);
-    const parts = [];
-    if (cost.budget > 0) parts.push(fmtMoney(cost.budget));
-    if (cost.capacity > 0) parts.push(`${cost.capacity} capacity`);
-    return parts.join(' · ');
-  };
+  const costLabel = (action: GameAction) => fmtCost(getActionCost(game, action));
 
   return (
     <div>
@@ -255,7 +250,6 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
                     variant="success"
                     onClick={() => act(scaleAction, true)}
                     disabled={!!validateAction(game, scaleAction)}
-                    title={validateAction(game, scaleAction) ?? undefined}
                     icon={<Rocket size={16} />}
                   >
                     Scale to production · {costLabel(scaleAction)}
@@ -266,7 +260,6 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
                     variant="warning"
                     onClick={() => act(iterateAction, true)}
                     disabled={!!validateAction(game, iterateAction)}
-                    title={validateAction(game, iterateAction) ?? undefined}
                     icon={<RefreshCw size={16} />}
                   >
                     Iterate (+15% odds) · {costLabel(iterateAction)}
@@ -276,6 +269,13 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
                   Kill it
                 </Button>
               </div>
+              <DisabledReason
+                className="mt-2"
+                reasons={[
+                  result !== 'failed' ? validateAction(game, scaleAction) : null,
+                  result !== 'success' ? validateAction(game, iterateAction) : null,
+                ]}
+              />
             </div>
           </motion.div>
         )}
@@ -329,6 +329,7 @@ function ProductionView({ game, project: p, act, costLabel }: ViewProps) {
         <Button variant="danger" onClick={() => setConfirmRetire(true)} icon={<Power size={15} />}>
           Retire system
         </Button>
+        {p.approach !== 'process' && <DisabledReason className="w-full" reasons={[validateAction(game, toggle)]} />}
       </div>
       <ConfirmDialog
         open={confirmRetire}

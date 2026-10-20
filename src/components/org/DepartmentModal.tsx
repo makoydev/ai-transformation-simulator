@@ -2,13 +2,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Database, Search, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { DisabledReason } from '@/components/ui/DisabledReason';
 import { Meter } from '@/components/ui/Meter';
 import { Modal } from '@/components/ui/Modal';
 import { DEPARTMENTS } from '@/data/departments';
 import { STAKEHOLDERS } from '@/data/stakeholders';
 import { useCasesForDept, type UseCaseDef } from '@/data/useCases';
 import { BALANCE, getActionCost, validateAction, type GameAction } from '@/engine';
-import { fmtMoney } from '@/lib/format';
+import { fmtCost } from '@/lib/format';
 import { DEPT_ICONS } from '@/lib/icons';
 import { useGameStore } from '@/store/gameStore';
 import { TriagePanel } from './TriagePanel';
@@ -46,9 +47,12 @@ function DepartmentBody({ deptId }: { deptId: keyof typeof DEPARTMENTS }) {
     const cost = getActionCost(game, action);
     const reason = validateAction(game, action);
     return (
-      <Button size="sm" variant="secondary" disabled={!!reason} title={reason ?? undefined} onClick={() => perform(action)} icon={icon}>
-        {label} · {fmtMoney(cost.budget)}
-      </Button>
+      <div className="flex flex-col gap-1">
+        <Button size="sm" variant="secondary" disabled={!!reason} onClick={() => perform(action)} icon={icon}>
+          {label} · {fmtCost(cost)}
+        </Button>
+        <DisabledReason reasons={[reason]} />
+      </div>
     );
   };
 
@@ -78,7 +82,7 @@ function DepartmentBody({ deptId }: { deptId: keyof typeof DEPARTMENTS }) {
           )}
         </div>
         {dept.audited && !triage && (
-          <div className="relative mt-4 flex flex-wrap gap-2">
+          <div className="relative mt-4 flex flex-wrap items-start gap-2">
             {actionButton({ type: 'dataSprint', dept: deptId }, `Data sprint (+${BALANCE.dataSprintGain} readiness)`, <Database size={14} />)}
             {!dept.champions
               ? actionButton({ type: 'champions', dept: deptId }, 'Recruit AI champions', <Users size={14} />)
@@ -137,7 +141,7 @@ function AuditPrompt({ deptId, count }: { deptId: keyof typeof DEPARTMENTS; coun
         onClick={() => perform(action)}
         icon={<Search size={18} />}
       >
-        Audit · 1 capacity · {fmtMoney(BALANCE.auditCost)}
+        Audit · {fmtCost(getActionCost(game, action))}
       </Button>
       {reason && <p className="mt-2 text-xs text-rose-300">{reason}</p>}
     </div>

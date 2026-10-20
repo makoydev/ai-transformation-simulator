@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { Check, GraduationCap, Landmark, Megaphone, Presentation, ShieldCheck, TrendingDown, UserPlus, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { DisabledReason } from '@/components/ui/DisabledReason';
 import { INITIATIVE_ORDER, INITIATIVES, POLICIES, POLICY_ORDER } from '@/data/policies';
 import { getActionCost, pendingHires, validateAction, STAKEHOLDER_SHORT, type GameAction, type InitiativeId, type StakeholderId } from '@/engine';
 import { cn } from '@/lib/cn';
-import { fmtMoney } from '@/lib/format';
+import { fmtCost } from '@/lib/format';
 import { useGame, useGameStore } from '@/store/gameStore';
 
 const INITIATIVE_ICONS: Record<InitiativeId, LucideIcon> = {
@@ -85,13 +86,12 @@ function ActionCard({ title, icon: Icon, description, benefit, tradeoff, stakeho
       <div className="mt-3 flex flex-1 items-end justify-between gap-2">
         <StakeholderReactions deltas={stakeholders} />
         {!done && (
-          <Button size="sm" variant="secondary" disabled={!!reason} title={reason ?? undefined} onClick={() => perform(action)} className="shrink-0">
-            {reason && reason !== 'Not enough budget.' && reason !== 'No team capacity left this quarter.'
-              ? reason
-              : `${cost.budget > 0 ? fmtMoney(cost.budget) : 'Free'} · ${cost.capacity} cap`}
+          <Button size="sm" variant="secondary" disabled={!!reason} onClick={() => perform(action)} className="shrink-0">
+            {fmtCost(cost)}
           </Button>
         )}
       </div>
+      {!done && <DisabledReason className="mt-2 text-right" reasons={[reason]} />}
     </motion.div>
   );
 }

@@ -3,8 +3,9 @@ import { Lock, Sparkles, Users } from 'lucide-react';
 import { Meter } from '@/components/ui/Meter';
 import { DEPARTMENTS, DEPT_ORDER } from '@/data/departments';
 import { useCasesForDept } from '@/data/useCases';
-import { BALANCE, sel, type DeptId } from '@/engine';
+import { getActionCost, sel, type DeptId } from '@/engine';
 import { cn } from '@/lib/cn';
+import { fmtCost } from '@/lib/format';
 import { DEPT_ICONS } from '@/lib/icons';
 import { useGame, useGameStore } from '@/store/gameStore';
 
@@ -90,7 +91,7 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
           <p className="text-sm leading-relaxed text-ink-300">{def.blurb}</p>
           <div className="mt-auto flex items-center gap-2 pt-4 text-xs font-semibold text-brand-cyan">
             <Lock size={13} aria-hidden />
-            Audit to reveal {useCases.length} use cases · 1 capacity · ${Math.round(BALANCE.auditCost * 1000)}K
+            Audit to reveal {useCases.length} use cases · {fmtCost(getActionCost(game, { type: 'audit', dept: id }))}
           </div>
         </div>
       ) : (

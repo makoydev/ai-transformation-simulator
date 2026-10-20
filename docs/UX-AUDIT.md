@@ -26,8 +26,8 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 | Priority | Meaning | Items | Done |
 |---|---|---|---|
 | **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
-| **P2** | Makes the game noticeably harder to learn or use. | 15 | 7 |
-| **P3** | Polish and nice-to-haves. | 30 | 3 |
+| **P2** | Makes the game noticeably harder to learn or use. | 15 | 10 |
+| **P3** | Polish and nice-to-haves. | 30 | 7 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
 
@@ -88,17 +88,17 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** use tap-to-open popovers with a close button (or a small "i" button), linked with `aria-describedby`. On phones, show the executives' loves and hates as visible text in the People tab.
   - **Where:** `src/components/ui/Tooltip.tsx`, `src/components/hud/MetricTile.tsx:70`, `src/components/people/StakeholderPanel.tsx:37`
 
-- [ ] **UX-09: On phones, the scoreboard fills the whole first screen** · Phone · M
+- [x] **UX-09: On phones, the scoreboard fills the whole first screen** · Phone · M
   - **What happens:** the header wraps onto three rows and the seven metric tiles stack into four rows. Together they take about 570px of an 800px screen, so the game itself starts below the fold, and every tab switch means scrolling past the scoreboard again.
   - **Fix:** a compact phone scoreboard: one row with the three or four numbers that matter most (budget, trust, risk, capacity) that expands on tap. Move the help, sound and menu icons onto the title row.
   - **Where:** `src/components/hud/TopBar.tsx:22`, `src/components/hud/MetricsBar.tsx:43`
 
-- [ ] **UX-10: On phones, two of the five tabs are off-screen** · Phone · M
+- [x] **UX-10: On phones, two of the five tabs are off-screen** · Phone · M
   - **What happens:** the tab bar scrolls sideways, and "Playbook" and "People" start off-screen. On phones, People is the only place to see the executives and the inbox. The tab bar also scrolls away with the page.
   - **Fix:** a fixed bottom navigation bar on phones with all five tabs visible (icon plus short label), combined with the action bar. At minimum, make the tab bar sticky and fit all five tabs.
   - **Where:** `src/components/screens/GameScreen.tsx:38`
 
-- [ ] **UX-11: On phones, the pilot results screen is cramped and the decision is far down** · Phone · S
+- [x] **UX-11: On phones, the pilot results screen is cramped and the decision is far down** · Phone · S
   - **What happens:** the result stamp and three figure tiles share one row, so the tile labels wrap onto three or four lines and the figures barely fit. Scale, Iterate and Kill come after the full debrief, a long scroll away.
   - **Fix:** below about 640px, stack the stamp above the figures. Make "Your decision" a sticky footer, like the "Launch pilot" bar on the triage screen.
   - **Where:** `src/components/portfolio/ProjectModal.tsx:187`, `:216-268`
@@ -205,17 +205,17 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** time a few playthroughs, then show the typical length on the title and setup screens (for example "about N minutes · saves automatically").
   - **Where:** `src/components/screens/TitleScreen.tsx:83-91`
 
-- [ ] **UX-32: Long dialogs on phones lose their close button** · Phone · S
+- [x] **UX-32: Long dialogs on phones lose their close button** · Phone · S
   - **What happens:** the ✕ scrolls away with the content in long bottom sheets (department and project). The height limit uses `92vh`, which mobile browser toolbars can cover.
   - **Fix:** a sticky dialog header with the close button, and `dvh` instead of `vh`.
   - **Where:** `src/components/ui/Modal.tsx:64,73-81`
 
-- [ ] **UX-33: Empty Kanban columns take up space on phones** · Phone · S
+- [x] **UX-33: Empty Kanban columns take up space on phones** · Phone · S
   - **What happens:** each empty column is at least 220px tall and just says "Empty".
   - **Fix:** collapse empty columns to one line on small screens.
   - **Where:** `src/components/portfolio/PortfolioBoard.tsx:48`
 
-- [ ] **UX-34: The action bar gets tall on phones** · Phone · S
+- [x] **UX-34: The action bar gets tall on phones** · Phone · S
   - **What happens:** with a pilot awaiting a decision, the sticky bar wraps onto three rows (about 130px).
   - **Fix:** on phones, shorten the "awaiting decision" pill to an icon and a count.
   - **Where:** `src/components/hud/ActionBar.tsx:53-64`
@@ -240,7 +240,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** pause the timer on hover and focus, and add a "Read in Playbook" link.
   - **Where:** `src/components/feedback/Toasts.tsx:10-17`
 
-- [ ] **UX-39: Some tap targets are tiny** · Phone · S
+- [x] **UX-39: Some tap targets are tiny** · Phone · S
   - **What happens:** the toast ✕ is about 22px and the tutorial dots are 6px tall. WCAG 2.2 asks for at least 24px; 44px is comfortable on a phone.
   - **Where:** `src/components/feedback/Toasts.tsx:32`, `src/components/feedback/HowToPlay.tsx:131-136`
 

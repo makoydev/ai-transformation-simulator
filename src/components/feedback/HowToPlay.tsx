@@ -126,14 +126,24 @@ export function HowToPlay() {
           </motion.div>
         </AnimatePresence>
         <div className="mt-6 flex items-center gap-2">
-          <div className="flex gap-1.5">
+          <div className="-ml-1.5 flex">
             {SLIDES.map((_, idx) => (
+              // The button is a 32px tap target around the small visible dot.
               <button
                 key={idx}
                 onClick={() => setI(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
-                className={cn('h-1.5 rounded-full transition-all', idx === i ? 'w-6 bg-brand-cyan' : 'w-1.5 bg-white/20')}
-              />
+                aria-current={idx === i ? 'step' : undefined}
+                className="group flex h-8 min-w-6 items-center justify-center px-1.5"
+              >
+                <span
+                  className={cn(
+                    'h-1.5 rounded-full transition-all',
+                    idx === i ? 'w-6 bg-brand-cyan' : 'w-1.5 bg-white/20 group-hover:bg-white/40',
+                  )}
+                  aria-hidden
+                />
+              </button>
             ))}
           </div>
           <div className="ml-auto flex gap-2">

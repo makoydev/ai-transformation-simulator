@@ -30,13 +30,17 @@ function ToastItem({ toast, compact }: { toast: Toast; compact: boolean }) {
       exit={{ opacity: 0, scale: 0.95, ...offset }}
       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       className={cn(
-        'glass-strong pointer-events-auto relative w-full max-w-sm overflow-hidden p-3 pr-9',
+        'glass-strong pointer-events-auto relative w-full max-w-sm overflow-hidden p-3 pr-11',
         toast.kind === 'error' && 'border-rose-400/40',
       )}
       role={toast.kind === 'error' ? 'alert' : 'status'}
     >
-      <button onClick={() => dismiss(toast.id)} aria-label="Dismiss" className="absolute right-2 top-2 rounded-sm p-1 text-ink-400 hover:text-white">
-        <X size={14} />
+      <button
+        onClick={() => dismiss(toast.id)}
+        aria-label="Dismiss"
+        className="absolute right-1 top-1 flex h-9 w-9 items-center justify-center rounded-lg text-ink-400 hover:bg-white/10 hover:text-white"
+      >
+        <X size={15} />
       </button>
       {toast.kind === 'quip' && toast.stakeholder && (
         <div className="flex gap-2.5">

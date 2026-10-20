@@ -194,7 +194,7 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
         <motion.div
           initial={phase === 'stamp' ? { scale: 2.4, rotate: -18, opacity: 0 } : false}
           animate={{ scale: 1, rotate: -6, opacity: 1 }}
@@ -203,7 +203,7 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
         >
           {RESULT_STYLE[result].label}
         </motion.div>
-        <div className="grid flex-1 grid-cols-2 gap-2 sm:grid-cols-3">
+        <div className="grid w-full grid-cols-2 gap-2 sm:flex-1 sm:grid-cols-3">
           <Stat label="Projected value at full adoption" value={`${fmtMoney(projected)}/q`} />
           <Stat label="Run cost in production" value={`${fmtMoney(runCost)}/q`} />
           <Stat label="Opportunity size" value={`${fmtMoney(uc.value * BALANCE.valueScale)}/q`} sub="with the ideal approach" className="col-span-2 sm:col-span-1" />
@@ -228,10 +228,10 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
             <ProjectDebrief game={game} project={p} />
 
-            <div className="rounded-2xl border border-white/[0.07] bg-ink-800/60 p-4">
-              <div className="label-caps mb-3">Your decision</div>
-              {result !== 'failed' && p.approach !== 'process' && (
-                <label className="mb-3 flex cursor-pointer items-start gap-3 rounded-xl bg-white/4 p-3">
+            {result !== 'failed' && p.approach !== 'process' && (
+              <div>
+                <div className="label-caps mb-2">If you scale</div>
+                <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/[0.07] bg-ink-800/60 p-3">
                   <input type="checkbox" checked={hitl} onChange={(e) => setHitl(e.target.checked)} className="mt-1 h-4 w-4 accent-emerald-400" />
                   <span className="text-sm">
                     <span className="flex items-center gap-1.5 font-semibold text-white">
@@ -244,7 +244,12 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
                     </span>
                   </span>
                 </label>
-              )}
+              </div>
+            )}
+
+            {/* Sticky, like the triage screen's launch bar, so the decision never sits a long scroll below the debrief. */}
+            <div className="sticky bottom-0 -mx-5 -mb-5 border-t border-white/6 bg-ink-850/95 px-5 py-4 backdrop-blur-sm sm:-mx-6 sm:-mb-6 sm:px-6">
+              <div className="label-caps mb-2">Your decision</div>
               <div className="flex flex-wrap gap-2">
                 {result !== 'failed' && (
                   <Button

@@ -49,6 +49,8 @@ export function EventModal() {
           animate={shaky ? { x: [0, -10, 10, -7, 7, -3, 3, 0] } : undefined}
           transition={{ duration: 0.55, delay: 0.25 }}
           style={{ perspective: 1200 }}
+          // Clipped so the card's 3D flip never pokes past the dialog and flashes scrollbars.
+          className="overflow-clip"
         >
           <div className="pointer-events-none absolute inset-x-0 top-0 h-40 opacity-30 blur-3xl" style={{ background: `radial-gradient(closest-side, ${cat.glow}, transparent)` }} aria-hidden />
           <AnimatePresence mode="wait" initial={false}>

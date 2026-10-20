@@ -16,7 +16,11 @@ const MOOD_LABEL: Record<ReturnType<typeof sel.mood>, { label: string; cls: stri
   champion: { label: 'Champion', cls: 'text-emerald-300' },
 };
 
-export function StakeholderPanel({ className }: { className?: string }) {
+/**
+ * The executive team and inbox. `detailed` (the phone People tab) also shows what each
+ * executive loves and hates as plain text, since phones have no hover.
+ */
+export function StakeholderPanel({ className, detailed = false }: { className?: string; detailed?: boolean }) {
   const game = useGame();
   const recent = [...game.inbox].reverse().slice(0, 8);
 
@@ -65,6 +69,19 @@ export function StakeholderPanel({ className }: { className?: string }) {
                     </div>
                   </div>
                 </Tooltip>
+                {detailed && (
+                  <dl className="mt-1.5 space-y-0.5 pl-12 text-xs leading-relaxed text-ink-300">
+                    <div>
+                      <dt className="inline font-semibold text-emerald-200">Loves: </dt>
+                      <dd className="inline">{s.loves}</dd>
+                    </div>
+                    <div>
+                      <dt className="inline font-semibold text-rose-200">Hates: </dt>
+                      <dd className="inline">{s.hates}</dd>
+                    </div>
+                    {s.weight > 1 && <div className="text-amber-200">Extra influence with the board.</div>}
+                  </dl>
+                )}
               </li>
             );
           })}

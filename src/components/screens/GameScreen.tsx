@@ -105,7 +105,7 @@ export function GameScreen() {
                 {tab === 'portfolio' && <PortfolioBoard />}
                 {tab === 'strategy' && <StrategyPanel />}
                 {tab === 'playbook' && <PlaybookPanel />}
-                {tab === 'people' && <StakeholderPanel />}
+                {tab === 'people' && <StakeholderPanel detailed />}
             </motion.div>
           </main>
           <StakeholderPanel className="hidden lg:block" />

@@ -1,4 +1,5 @@
 import type { LessonCategory } from '@/engine/types';
+import { PALETTE } from '@/lib/palette';
 
 export interface LessonDef {
   id: string;
@@ -9,11 +10,11 @@ export interface LessonDef {
 }
 
 export const LESSON_CATEGORIES: Record<LessonCategory, { label: string; color: string }> = {
-  discovery: { label: 'Discovery & Triage', color: '#6fa8c9' },
-  'build-buy': { label: 'Build vs. Buy', color: '#a29ad4' },
-  governance: { label: 'Governance & Risk', color: '#d68a92' },
-  change: { label: 'Change & Adoption', color: '#cf8db0' },
-  roi: { label: 'ROI & Portfolio', color: '#d6ab5e' },
+  discovery: { label: 'Discovery & Triage', color: PALETTE.hue.sky },
+  'build-buy': { label: 'Build vs. Buy', color: PALETTE.hue.violet },
+  governance: { label: 'Governance & Risk', color: PALETTE.hue.rose },
+  change: { label: 'Change & Adoption', color: PALETTE.hue.pink },
+  roi: { label: 'ROI & Portfolio', color: PALETTE.hue.amber },
 };
 
 export const LESSONS: LessonDef[] = [

@@ -1,4 +1,5 @@
 import type { ApproachId } from '@/engine/types';
+import { PALETTE } from '@/lib/palette';
 
 export interface ApproachDef {
   id: ApproachId;
@@ -42,7 +43,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 0,
     dataMult: 0,
     startAdoption: 55,
-    color: '#94a3b8',
+    color: PALETTE.hue.slate,
   },
   buy: {
     id: 'buy',
@@ -61,7 +62,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 0.35,
     dataMult: 0.3,
     startAdoption: 20,
-    color: '#6db894',
+    color: PALETTE.hue.green,
   },
   rag: {
     id: 'rag',
@@ -80,7 +81,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 0.55,
     dataMult: 0.9,
     startAdoption: 25,
-    color: '#6fa8c9',
+    color: PALETTE.hue.sky,
   },
   agentic: {
     id: 'agentic',
@@ -99,7 +100,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 1,
     dataMult: 0.8,
     startAdoption: 22,
-    color: '#a29ad4',
+    color: PALETTE.hue.violet,
   },
   finetune: {
     id: 'finetune',
@@ -118,7 +119,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 0.6,
     dataMult: 1.2,
     startAdoption: 25,
-    color: '#cf8db0',
+    color: PALETTE.hue.pink,
   },
   predictive: {
     id: 'predictive',
@@ -137,7 +138,7 @@ export const APPROACHES: Record<ApproachId, ApproachDef> = {
     riskWeight: 0.45,
     dataMult: 1,
     startAdoption: 30,
-    color: '#d6ab5e',
+    color: PALETTE.hue.amber,
   },
 };
 

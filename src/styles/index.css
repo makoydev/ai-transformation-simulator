@@ -20,6 +20,19 @@
   --color-brand-indigo: #7f8dc6;
   --color-brand-cyan: #72b4bb;
 
+  /* Soft base hues. Mirrored in src/lib/palette.ts (palette.test.ts checks they match). */
+  --color-hue-sky: #6fa8c9;
+  --color-hue-green: #6db894;
+  --color-hue-amber: #d6ab5e;
+  --color-hue-yellow: #d4c36e;
+  --color-hue-violet: #a29ad4;
+  --color-hue-pink: #cf8db0;
+  --color-hue-rose: #d68a92;
+  --color-hue-red: #cc6b6b;
+  --color-hue-orange: #d49763;
+  --color-hue-indigo: #8e96d2;
+  --color-hue-slate: #94a3b8;
+
   --color-metric-budget: #6db894;
   --color-metric-value: #d6ab5e;
   --color-metric-roi: #d4c36e;
@@ -27,6 +40,21 @@
   --color-metric-risk: #d68a92;
   --color-metric-trust: #a29ad4;
   --color-metric-morale: #cf8db0;
+
+  /* Risk levels, always paired with a text label. */
+  --color-status-low: #5fa877;
+  --color-status-moderate: #d6ab5e;
+  --color-status-high: #ec835a;
+  --color-status-critical: #c4625f;
+
+  /* Chart lines, validated for colour-vision separation and contrast against the surface. */
+  --color-chart-value: #b7893b;
+  --color-chart-target: #4e94c3;
+  --color-chart-trust: #8b80ca;
+  --color-chart-morale: #c87d52;
+  --color-chart-surface: #21242b;
+  --color-chart-grid: #3b3f49;
+  --color-chart-axis: #5c616c;
 
   --font-display: 'Space Grotesk', Inter, system-ui, sans-serif;
   --font-sans: Inter, system-ui, sans-serif;

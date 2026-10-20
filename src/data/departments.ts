@@ -1,4 +1,5 @@
 import type { DeptId, StakeholderId } from '@/engine/types';
+import { PALETTE } from '@/lib/palette';
 
 export interface DepartmentDef {
   id: DeptId;
@@ -19,7 +20,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'VP Customer Care',
     blurb: '420 agents, 1.1M tickets a year, and a knowledge base nobody can find anything in.',
     sponsor: 'coo',
-    color: '#6fa8c9',
+    color: PALETTE.hue.sky,
   },
   finance: {
     id: 'finance',
@@ -28,7 +29,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'Group Controller',
     blurb: 'Closes the books in 14 days. Mostly in Excel. Some of it on paper.',
     sponsor: 'cfo',
-    color: '#6db894',
+    color: PALETTE.hue.green,
   },
   legal: {
     id: 'legal',
@@ -37,7 +38,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'Deputy General Counsel',
     blurb: 'Eleven lawyers, 3,600 contracts a year, zero appetite for embarrassment.',
     sponsor: 'ciso',
-    color: '#a29ad4',
+    color: PALETTE.hue.violet,
   },
   hr: {
     id: 'hr',
@@ -46,7 +47,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'Head of Talent',
     blurb: '9,000 employees, 40k applicants a year, and a benefits FAQ that is 94 pages long.',
     sponsor: 'chro',
-    color: '#cf8db0',
+    color: PALETTE.hue.pink,
   },
   engineering: {
     id: 'engineering',
@@ -55,7 +56,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'VP Engineering',
     blurb: '280 engineers maintaining systems older than most of the engineers.',
     sponsor: 'cto',
-    color: '#8e96d2',
+    color: PALETTE.hue.indigo,
   },
   sales: {
     id: 'sales',
@@ -64,7 +65,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'Chief Revenue Officer',
     blurb: '160 reps who love closing deals and hate updating the CRM.',
     sponsor: 'ceo',
-    color: '#d6ab5e',
+    color: PALETTE.hue.amber,
   },
   operations: {
     id: 'operations',
@@ -73,7 +74,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'VP Supply Chain',
     blurb: '14 warehouses, 2,300 suppliers, and a forecasting process best described as "vibes".',
     sponsor: 'coo',
-    color: '#d49763',
+    color: PALETTE.hue.orange,
   },
   marketing: {
     id: 'marketing',
@@ -82,7 +83,7 @@ export const DEPARTMENTS: Record<DeptId, DepartmentDef> = {
     headTitle: 'Chief Marketing Officer',
     blurb: 'Wants to be "AI-first" by next week. Brand guidelines last updated in 2017.',
     sponsor: 'ceo',
-    color: '#d68a92',
+    color: PALETTE.hue.rose,
   },
 };
 

@@ -5,11 +5,12 @@ import { sel, type Project } from '@/engine';
 import { cn } from '@/lib/cn';
 import { useGame, useGameStore } from '@/store/gameStore';
 import { ProjectCard } from './ProjectCard';
+import { PALETTE } from '@/lib/palette';
 
 const COLUMNS: { stage: Project['stage']; title: string; hint: string; icon: typeof FlaskConical; accent: string }[] = [
-  { stage: 'pilot', title: 'Piloting', hint: 'Building and testing. Results arrive when the timer runs out.', icon: FlaskConical, accent: '#6fa8c9' },
-  { stage: 'results', title: 'Decision needed', hint: 'Scale, iterate, or kill. Waiting a full quarter means PoC purgatory.', icon: Hourglass, accent: '#d6ab5e' },
-  { stage: 'production', title: 'Live in production', hint: 'Delivering value at the rate people adopt it.', icon: Radio, accent: '#6db894' },
+  { stage: 'pilot', title: 'Piloting', hint: 'Building and testing. Results arrive when the timer runs out.', icon: FlaskConical, accent: PALETTE.hue.sky },
+  { stage: 'results', title: 'Decision needed', hint: 'Scale, iterate, or kill. Waiting a full quarter means PoC purgatory.', icon: Hourglass, accent: PALETTE.hue.amber },
+  { stage: 'production', title: 'Live in production', hint: 'Delivering value at the rate people adopt it.', icon: Radio, accent: PALETTE.hue.green },
 ];
 
 export function PortfolioBoard() {

@@ -1,9 +1,10 @@
 import confetti from 'canvas-confetti';
+import { PALETTE } from '@/lib/palette';
 
 const reducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-const BRAND = ['#8f8acb', '#7f8dc6', '#72b4bb', '#d6ab5e', '#6db894'];
+const BRAND = [PALETTE.brand.violet, PALETTE.brand.indigo, PALETTE.brand.cyan, PALETTE.hue.amber, PALETTE.hue.green];
 
 /** Big celebration: a system goes live in production. */
 export function celebrateDeploy(): void {

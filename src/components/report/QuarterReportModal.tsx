@@ -8,6 +8,7 @@ import { VerdictBadge } from '@/components/ui/Verdict';
 import { cn } from '@/lib/cn';
 import { fmtMoney, fmtSigned, quarterLabel } from '@/lib/format';
 import { useGameStore } from '@/store/gameStore';
+import { PALETTE } from '@/lib/palette';
 
 const QUARTER_LABEL = { great: 'Outstanding quarter', good: 'Good quarter', mixed: 'Mixed quarter', bad: 'Tough quarter' } as const;
 
@@ -63,7 +64,7 @@ export function QuarterReportModal() {
                 <span>Value the board credited vs. target</span>
                 <span className="font-semibold text-white">{Math.round((report.perceivedValue / report.expected) * 100)}%</span>
               </div>
-              <Meter value={Math.min(report.perceivedValue / report.expected, 1.5)} max={1.5} marker={1} color="#d6ab5e" height="h-2.5" label="Value versus target" />
+              <Meter value={Math.min(report.perceivedValue / report.expected, 1.5)} max={1.5} marker={1} color={PALETTE.metric.value} height="h-2.5" label="Value versus target" />
             </motion.div>
           )}
 

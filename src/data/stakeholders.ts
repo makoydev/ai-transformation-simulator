@@ -1,4 +1,5 @@
 import type { StakeholderId } from '@/engine/types';
+import { PALETTE } from '@/lib/palette';
 
 export interface StakeholderDef {
   id: StakeholderId;
@@ -25,7 +26,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Launches, demo days, anything she can mention on an earnings call.',
     hates: 'Hearing "next fiscal year".',
     weight: 1.5,
-    color: '#a29ad4',
+    color: PALETTE.hue.violet,
   },
   cfo: {
     id: 'cfo',
@@ -37,7 +38,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Measured ROI, killed zombie projects, cheap fixes that work.',
     hates: 'Pilots that never end. Consultants. Surprises on the cloud bill.',
     weight: 1.5,
-    color: '#6db894',
+    color: PALETTE.hue.green,
   },
   ciso: {
     id: 'ciso',
@@ -49,7 +50,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Policies, audits, human-in-the-loop, reading the terms of service.',
     hates: 'Autonomous agents with admin rights. Shadow AI.',
     weight: 1,
-    color: '#d68a92',
+    color: PALETTE.hue.rose,
   },
   coo: {
     id: 'coo',
@@ -61,7 +62,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Practical fixes, fewer steps, things that work on the warehouse floor.',
     hates: 'Buzzwords. Being told his processes are "legacy".',
     weight: 1,
-    color: '#d49763',
+    color: PALETTE.hue.orange,
   },
   chro: {
     id: 'chro',
@@ -73,7 +74,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Training, transparency, champions, reskilling commitments.',
     hates: 'Leaked "headcount opportunity" slides.',
     weight: 1,
-    color: '#cf8db0',
+    color: PALETTE.hue.pink,
   },
   cto: {
     id: 'cto',
@@ -85,7 +86,7 @@ export const STAKEHOLDERS: Record<StakeholderId, StakeholderDef> = {
     loves: 'Building in-house, new models, hiring engineers.',
     hates: 'Vendor lock-in. Review boards. Being told to just buy it.',
     weight: 1,
-    color: '#6fa8c9',
+    color: PALETTE.hue.sky,
   },
 };
 

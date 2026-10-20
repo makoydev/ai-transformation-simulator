@@ -1,5 +1,6 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { cn } from '@/lib/cn';
+import { PALETTE } from '@/lib/palette';
 
 export interface Series {
   key: string;
@@ -20,7 +21,7 @@ interface Props {
   height?: number;
 }
 
-const SURFACE = '#21242b';
+const SURFACE = PALETTE.chart.surface;
 const PAD = { top: 16, right: 64, bottom: 28, left: 44 };
 
 function niceMax(v: number): number {
@@ -150,7 +151,7 @@ export function LineChart({ title, subtitle, series, xLabels, format, yMin = 0, 
           <svg width={width} height={height} role="img" aria-label={`${title}. Use the table view for exact values.`}>
             {ticks.map((t) => (
               <g key={t}>
-                <line x1={PAD.left} x2={width - PAD.right} y1={y(t)} y2={y(t)} stroke="#3b3f49" strokeWidth={1} />
+                <line x1={PAD.left} x2={width - PAD.right} y1={y(t)} y2={y(t)} stroke={PALETTE.chart.grid} strokeWidth={1} />
                 <text x={PAD.left - 8} y={y(t)} dy="0.32em" textAnchor="end" className="fill-ink-400 text-[10px] tabular-nums">
                   {format(t)}
                 </text>
@@ -162,7 +163,7 @@ export function LineChart({ title, subtitle, series, xLabels, format, yMin = 0, 
               </text>
             ))}
             {reference && reference.value <= maxY && (
-              <line x1={PAD.left} x2={width - PAD.right} y1={y(reference.value)} y2={y(reference.value)} stroke="#5c616c" strokeWidth={1} />
+              <line x1={PAD.left} x2={width - PAD.right} y1={y(reference.value)} y2={y(reference.value)} stroke={PALETTE.chart.axis} strokeWidth={1} />
             )}
             {series.map((s) => (
               <path
@@ -175,7 +176,7 @@ export function LineChart({ title, subtitle, series, xLabels, format, yMin = 0, 
                 strokeLinecap="round"
               />
             ))}
-            {hover !== null && <line x1={x(hover)} x2={x(hover)} y1={PAD.top} y2={height - PAD.bottom} stroke="#5c616c" strokeWidth={1} />}
+            {hover !== null && <line x1={x(hover)} x2={x(hover)} y1={PAD.top} y2={height - PAD.bottom} stroke={PALETTE.chart.axis} strokeWidth={1} />}
             {series.map((s) => {
               const i = hover ?? s.values.length - 1;
               const v = s.values[i];

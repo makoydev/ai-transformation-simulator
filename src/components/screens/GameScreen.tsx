@@ -61,7 +61,7 @@ function TabBar() {
               <span
                 className={cn(
                   'relative rounded-full px-1.5 text-[11px]',
-                  t.id === 'portfolio' ? 'bg-[#d6ab5e] text-ink-950' : 'bg-white/10 text-ink-200',
+                  t.id === 'portfolio' ? 'bg-hue-amber text-ink-950' : 'bg-white/10 text-ink-200',
                 )}
               >
                 {badge}

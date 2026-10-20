@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/cn';
+import { PALETTE } from '@/lib/palette';
 
 interface Props {
   value: number;
@@ -12,7 +13,7 @@ interface Props {
   label?: string;
 }
 
-export function Meter({ value, max = 100, color = '#8f8acb', className, marker, height = 'h-1.5', label }: Props) {
+export function Meter({ value, max = 100, color = PALETTE.brand.violet, className, marker, height = 'h-1.5', label }: Props) {
   const pct = Math.max(0, Math.min(100, (value / max) * 100));
   return (
     <div

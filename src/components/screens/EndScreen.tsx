@@ -11,14 +11,16 @@ import { cn } from '@/lib/cn';
 import { fmtMoney, fmtRoi } from '@/lib/format';
 import { play } from '@/lib/sfx';
 import { useGameStore } from '@/store/gameStore';
+import { PALETTE } from '@/lib/palette';
 
+// Each grade's letter is a gradient from a light tint of its hue to the hue itself.
 const GRADE_COLOR: Record<string, string> = {
-  S: 'from-[#f0dcae] via-[#e2bf72] to-[#c99a4a]',
-  A: 'from-[#c4e4d2] to-[#6db894]',
-  B: 'from-[#c6dcea] to-[#6fa8c9]',
-  C: 'from-[#d5d0ee] to-[#a29ad4]',
-  D: 'from-[#efd0b4] to-[#d49763]',
-  F: 'from-[#efc8cd] to-[#d68a92]',
+  S: 'from-[color-mix(in_oklab,var(--color-hue-amber),white_55%)] via-[color-mix(in_oklab,var(--color-hue-amber),white_20%)] to-[color-mix(in_oklab,var(--color-hue-amber),black_8%)]',
+  A: 'from-[color-mix(in_oklab,var(--color-hue-green),white_50%)] to-hue-green',
+  B: 'from-[color-mix(in_oklab,var(--color-hue-sky),white_50%)] to-hue-sky',
+  C: 'from-[color-mix(in_oklab,var(--color-hue-violet),white_50%)] to-hue-violet',
+  D: 'from-[color-mix(in_oklab,var(--color-hue-orange),white_50%)] to-hue-orange',
+  F: 'from-[color-mix(in_oklab,var(--color-hue-rose),white_50%)] to-hue-rose',
 };
 
 export function EndScreen() {
@@ -167,8 +169,8 @@ function Scorecard({ game }: { game: GameState }) {
               xLabels={xLabels}
               format={(v) => fmtMoney(v)}
               series={[
-                { key: 'value', label: 'Value delivered', color: '#c98500', values: game.history.map((h) => h.runRate) },
-                { key: 'target', label: 'Board target', color: '#3987e5', values: game.history.map((h) => h.expected) },
+                { key: 'value', label: 'Value delivered', color: PALETTE.chart.value, values: game.history.map((h) => h.runRate) },
+                { key: 'target', label: 'Board target', color: PALETTE.chart.target, values: game.history.map((h) => h.expected) },
               ]}
             />
             <LineChart
@@ -179,8 +181,8 @@ function Scorecard({ game }: { game: GameState }) {
               yMax={100}
               reference={{ value: 15, label: 'Fired below 15' }}
               series={[
-                { key: 'trust', label: 'Board trust', color: '#9085e9', values: game.history.map((h) => h.trust) },
-                { key: 'morale', label: 'Morale', color: '#d95926', values: game.history.map((h) => h.morale) },
+                { key: 'trust', label: 'Board trust', color: PALETTE.chart.trust, values: game.history.map((h) => h.trust) },
+                { key: 'morale', label: 'Morale', color: PALETTE.chart.morale, values: game.history.map((h) => h.morale) },
               ]}
             />
           </div>

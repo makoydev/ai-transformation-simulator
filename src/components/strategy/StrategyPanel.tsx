@@ -7,6 +7,7 @@ import { getActionCost, pendingHires, validateAction, STAKEHOLDER_SHORT, type Ga
 import { cn } from '@/lib/cn';
 import { fmtCost } from '@/lib/format';
 import { useGame, useGameStore } from '@/store/gameStore';
+import { PALETTE } from '@/lib/palette';
 
 const INITIATIVE_ICONS: Record<InitiativeId, LucideIcon> = {
   literacy: GraduationCap,
@@ -122,7 +123,7 @@ export function StrategyPanel() {
                 index={i}
                 title={def.name}
                 icon={ShieldCheck}
-                accent="#d68a92"
+                accent={PALETTE.hue.rose}
                 description={def.description}
                 benefit={def.benefit}
                 tradeoff={def.tradeoff}
@@ -160,7 +161,7 @@ export function StrategyPanel() {
                 index={i + POLICY_ORDER.length}
                 title={def.name}
                 icon={INITIATIVE_ICONS[id]}
-                accent={def.group === 'change' ? '#cf8db0' : def.group === 'board' ? '#a29ad4' : '#6fa8c9'}
+                accent={def.group === 'change' ? PALETTE.hue.pink : def.group === 'board' ? PALETTE.hue.violet : PALETTE.hue.sky}
                 description={def.description}
                 benefit={def.benefit}
                 tradeoff={def.tradeoff}

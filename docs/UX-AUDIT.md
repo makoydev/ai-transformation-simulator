@@ -26,7 +26,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 | Priority | Meaning | Items | Done |
 |---|---|---|---|
 | **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
-| **P2** | Makes the game noticeably harder to learn or use. | 15 | 0 |
+| **P2** | Makes the game noticeably harder to learn or use. | 15 | 6 |
 | **P3** | Polish and nice-to-haves. | 30 | 0 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
@@ -103,7 +103,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** below about 640px, stack the stamp above the figures. Make "Your decision" a sticky footer, like the "Launch pilot" bar on the triage screen.
   - **Where:** `src/components/portfolio/ProjectModal.tsx:187`, `:216-268`
 
-- [ ] **UX-12: Ending a quarter never warns you** · All screens · S
+- [x] **UX-12: Ending a quarter never warns you** · All screens · S
   - **What happens:** I ended Q1 with 1 of 3 capacity unused and got no prompt; the unused capacity is simply lost. Pilots still waiting for a decision drop into PoC purgatory, also without a prompt.
   - **Fix:** if capacity is left or a pilot is undecided, show a short confirmation that lists them ("1 capacity unused · 1 pilot will enter PoC purgatory") with "End anyway" and "Go back".
   - **Where:** `src/components/hud/ActionBar.tsx:74`, `src/store/gameStore.ts:174`
@@ -113,7 +113,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** show the tutorial before the event, not over it, and cut it down to the core loop. Teach the rest in context: a guided first quarter that points at Capacity, the Org Map and "End quarter" when each becomes relevant.
   - **Where:** `src/store/gameStore.ts:135`, `src/components/screens/GameScreen.tsx:116-120`, `src/components/feedback/HowToPlay.tsx`
 
-- [ ] **UX-14: The company recommended for learning isn't the default** · Onboarding · S
+- [x] **UX-14: The company recommended for learning isn't the default** · Onboarding · S
   - **What happens:** the setup screen preselects Pemberton Logistics (Standard). The card that says "A good place to learn the fundamentals" is Lumen Home & Living (Relaxed).
   - **Fix:** preselect Lumen for a first game (for example, when no game has been finished yet) and tag it "Recommended for your first game".
   - **Where:** `src/components/screens/SetupScreen.tsx:21`
@@ -123,12 +123,12 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** show a one-line "Best for" on every card. Consider a compact comparison table (cost, time, risk, data fit) as a second view, especially on phones.
   - **Where:** `src/components/org/TriagePanel.tsx:127`
 
-- [ ] **UX-16: Some actions hide that they use capacity** · Core loop · S
+- [x] **UX-16: Some actions hide that they use capacity** · Core loop · S
   - **What happens:** "Data sprint" and "Recruit AI champions" each use 1 capacity, but their buttons show only the price ("Data sprint (+22 readiness) · $350K"). The Audit and Launch buttons show both.
   - **Fix:** use one cost format everywhere: "$350K · 1 capacity". A small shared cost-label helper keeps it consistent.
   - **Where:** `src/components/org/DepartmentModal.tsx:45-53`, `src/engine/actions.ts:83-86`
 
-- [ ] **UX-17: Disabled buttons don't say why** · Feedback · S
+- [x] **UX-17: Disabled buttons don't say why** · Feedback · S
   - **What happens:** Data sprint, Champions, Scale and Iterate put the reason (for example "No team capacity left this quarter.") only in a `title` tooltip, which touch and keyboard users never see. Strategy cards that can't be afforded still show their price instead of the reason. Audit and Launch get it right: they show the reason as text.
   - **Fix:** show the reason as small text under, or instead of, every disabled button.
   - **Where:** `src/components/org/DepartmentModal.tsx:49`, `src/components/portfolio/ProjectModal.tsx:243-255`, `src/components/strategy/StrategyPanel.tsx:88-92`
@@ -143,7 +143,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** add a history entry when a dialog opens or the screen changes, and handle `popstate` to close the dialog or go back one screen.
   - **Where:** `src/App.tsx`, `src/store/gameStore.ts` (`goTo`, `openDept`, `openProject`)
 
-- [ ] **UX-20: Some text fails contrast checks** · Accessibility · S
+- [x] **UX-20: Some text fails contrast checks** · Accessibility · S
   - **What happens:** WCAG AA needs a contrast ratio of at least 4.5:1 for normal text.
     - Text in `ink-500` is 2.6 to 2.8:1: the title screen footnote, the name placeholder, and the "Empty" column labels.
     - Locked badges and locked Playbook cards are faded to 50% opacity, so the text that explains how to earn them drops to 2.2 to 2.5:1.
@@ -156,7 +156,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** make 12px the smallest size, and 14px for anything players must read to make a decision. The small all-caps labels can stay because larger text always sits next to them.
   - **Where:** for example `src/components/hud/MetricTile.tsx:80,87`, `src/components/people/StakeholderPanel.tsx:63,101`, `src/components/screens/EndScreen.tsx:133,154,206`
 
-- [ ] **UX-22: Shared links have no preview image** · Sharing · S
+- [x] **UX-22: Shared links have no preview image** · Sharing · S
   - **What happens:** the page has `og:title` and `og:description` but no `og:image`, `og:url` or `twitter:card`. A link posted on LinkedIn, Slack or WhatsApp shows no picture.
   - **Fix:** add a 1200×630 preview image (the dashboard screenshot in `docs/screenshots/` is a good start) and the missing tags, using absolute URLs.
   - **Where:** `index.html:13-18`

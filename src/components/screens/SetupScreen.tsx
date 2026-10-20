@@ -18,7 +18,9 @@ const DIFFICULTY_STYLE = {
 export function SetupScreen() {
   const newGame = useGameStore((s) => s.newGame);
   const goTo = useGameStore((s) => s.goTo);
-  const [scenario, setScenario] = useState<ScenarioId>('pemberton');
+  // New players start on the company built for learning; returning players on the standard one.
+  const firstGame = useGameStore((s) => s.finishedGames === 0 && s.game?.phase !== 'ended');
+  const [scenario, setScenario] = useState<ScenarioId>(() => (firstGame ? 'lumen' : 'pemberton'));
   const [name, setName] = useState('');
 
   return (
@@ -68,7 +70,14 @@ export function SetupScreen() {
                     <Check size={14} className="text-ink-950" />
                   </motion.span>
                 )}
-                <span className={cn('self-start rounded-full px-2.5 py-0.5 text-xs font-bold', DIFFICULTY_STYLE[sc.difficulty])}>{sc.difficulty}</span>
+                <div className="flex flex-wrap items-center gap-2 pr-8">
+                  <span className={cn('rounded-full px-2.5 py-0.5 text-xs font-bold', DIFFICULTY_STYLE[sc.difficulty])}>{sc.difficulty}</span>
+                  {firstGame && id === 'lumen' && (
+                    <span className="rounded-full border border-emerald-400/30 px-2.5 py-0.5 text-xs font-semibold text-emerald-200">
+                      Recommended for your first game
+                    </span>
+                  )}
+                </div>
                 <Building2 size={22} className="mt-4 text-ink-300" aria-hidden />
                 <h2 className="mt-2 font-display text-xl font-bold text-white">{sc.company}</h2>
                 <div className="text-xs text-ink-400">{sc.industry}</div>

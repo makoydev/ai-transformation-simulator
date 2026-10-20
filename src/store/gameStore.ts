@@ -56,6 +56,8 @@ interface StoreState {
   projectModal: string | null;
   howTo: boolean;
   seenHowTo: boolean;
+  /** Games played to the end (finished or fired). Zero means the player is new. */
+  finishedGames: number;
   muted: boolean;
   toasts: Toast[];
   eventOutcome: EventOutcome | null;
@@ -111,6 +113,7 @@ export const useGameStore = create<StoreState>()(
       projectModal: null,
       howTo: false,
       seenHowTo: false,
+      finishedGames: 0,
       muted: false,
       toasts: [],
       eventOutcome: null,
@@ -190,7 +193,7 @@ export const useGameStore = create<StoreState>()(
         const next = beginNextQuarter(game);
         if (next.phase === 'ended') {
           play(next.outcome === 'fired' ? 'fail' : 'success');
-          set({ game: next, screen: 'end', toasts: [] });
+          set((st) => ({ game: next, screen: 'end', toasts: [], finishedGames: st.finishedGames + 1 }));
           return;
         }
         play('whoosh');
@@ -241,10 +244,16 @@ export const useGameStore = create<StoreState>()(
       name: 'ai-transformation-simulator',
       version: SAVE_VERSION,
       storage: createJSONStorage(() => localStorage),
-      partialize: (st) => ({ game: st.game, seenHowTo: st.seenHowTo, muted: st.muted, revealed: st.revealed }),
+      partialize: (st) => ({
+        game: st.game,
+        seenHowTo: st.seenHowTo,
+        finishedGames: st.finishedGames,
+        muted: st.muted,
+        revealed: st.revealed,
+      }),
       migrate: (persisted, version) => {
         // Saves from an incompatible engine version are discarded rather than crashing the game.
-        if (version !== SAVE_VERSION) return { game: null, seenHowTo: false, muted: false, revealed: [] };
+        if (version !== SAVE_VERSION) return { game: null, seenHowTo: false, finishedGames: 0, muted: false, revealed: [] };
         return persisted as Partial<StoreState>;
       },
     },

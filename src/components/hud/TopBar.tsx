@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { HelpCircle, LogOut, Menu, RotateCcw, Volume2, VolumeX } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { SCENARIOS } from '@/data/scenarios';
@@ -20,6 +20,47 @@ export function TopBar() {
   const abandon = useGameStore((s) => s.abandonGame);
   const [confirmAbandon, setConfirmAbandon] = useState(false);
   const sc = SCENARIOS[game.scenarioId];
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // An open menu takes focus, and closes on Escape, an outside click or tapping away.
+  useEffect(() => {
+    if (!menuOpen) return;
+    menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]')?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setMenu(false);
+      menuButtonRef.current?.focus();
+    };
+    const onPointerDown = (e: PointerEvent) => {
+      const t = e.target as Node;
+      if (!menuRef.current?.contains(t) && !menuButtonRef.current?.contains(t)) setMenu(false);
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [menuOpen, setMenu]);
+
+  // Arrow keys, Home and End move between menu items; Tab leaves and closes the menu.
+  const onMenuKeyDown = (e: React.KeyboardEvent) => {
+    const items = [...(menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? [])];
+    const i = items.indexOf(document.activeElement as HTMLElement);
+    const next =
+      e.key === 'ArrowDown' ? (i + 1) % items.length
+      : e.key === 'ArrowUp' ? (i - 1 + items.length) % items.length
+      : e.key === 'Home' ? 0
+      : e.key === 'End' ? items.length - 1
+      : null;
+    if (next !== null) {
+      e.preventDefault();
+      items[next]?.focus();
+    } else if (e.key === 'Tab') {
+      setMenu(false);
+    }
+  };
 
   return (
     <header className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -80,22 +121,44 @@ export function TopBar() {
           aria-label={muted ? 'Unmute sound' : 'Mute sound'}
           icon={muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
         />
-        <Button variant="ghost" size="sm" onClick={() => setMenu(!menuOpen)} aria-label="Menu" aria-expanded={menuOpen} icon={<Menu size={16} />} />
+        <Button
+          ref={menuButtonRef}
+          variant="ghost"
+          size="sm"
+          onClick={() => setMenu(!menuOpen)}
+          aria-label="Menu"
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
+          aria-controls="game-menu"
+          icon={<Menu size={16} />}
+        />
         {menuOpen && (
           <motion.div
+            ref={menuRef}
+            id="game-menu"
+            role="menu"
+            aria-label="Game menu"
+            onKeyDown={onMenuKeyDown}
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             className="glass-strong absolute right-0 top-10 z-40 w-56 p-1.5"
           >
             <button
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-ink-100 hover:bg-white/10"
+              role="menuitem"
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-ink-100 hover:bg-white/10 focus-visible:bg-white/10"
               onClick={() => goTo('title')}
             >
               <LogOut size={15} /> Save & exit to title
             </button>
             <button
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-rose-200 hover:bg-rose-500/15"
-              onClick={() => setConfirmAbandon(true)}
+              role="menuitem"
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-rose-200 hover:bg-rose-500/15 focus-visible:bg-rose-500/15"
+              onClick={() => {
+                // Close the menu and refocus its button first, so the confirm dialog returns focus there.
+                setMenu(false);
+                menuButtonRef.current?.focus();
+                setConfirmAbandon(true);
+              }}
             >
               <RotateCcw size={15} /> Abandon & start over
             </button>

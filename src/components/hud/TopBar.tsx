@@ -64,7 +64,8 @@ export function TopBar() {
 
   return (
     <header className="flex flex-wrap items-center gap-x-4 gap-y-2">
-      <div className="flex min-w-0 items-center gap-3">
+      {/* flex-1 on phones keeps the help, sound and menu buttons on the title row. */}
+      <div className="flex min-w-0 flex-1 items-center gap-3 sm:flex-none">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-gradient shadow-glow">
           <BrandIcon size={22} className="text-white" aria-hidden />
         </div>

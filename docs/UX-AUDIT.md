@@ -26,8 +26,8 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 | Priority | Meaning | Items | Done |
 |---|---|---|---|
 | **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
-| **P2** | Makes the game noticeably harder to learn or use. | 15 | 10 |
-| **P3** | Polish and nice-to-haves. | 30 | 7 |
+| **P2** | Makes the game noticeably harder to learn or use. | 15 | 13 |
+| **P3** | Polish and nice-to-haves. | 30 | 9 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
 
@@ -108,7 +108,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** if capacity is left or a pilot is undecided, show a short confirmation that lists them ("1 capacity unused · 1 pilot will enter PoC purgatory") with "End anyway" and "Go back".
   - **Where:** `src/components/hud/ActionBar.tsx:74`, `src/store/gameStore.ts:174`
 
-- [ ] **UX-13: Day one stacks the tutorial on top of the first event** · Onboarding · L
+- [x] **UX-13: Day one stacks the tutorial on top of the first event** · Onboarding · L
   - **What happens:** a new game shows the quarter title card, then a five-slide text tutorial opened on top of the first event (two dialogs stacked), then the event. All of this happens before the player has seen the dashboard the tutorial describes.
   - **Fix:** show the tutorial before the event, not over it, and cut it down to the core loop. Teach the rest in context: a guided first quarter that points at Capacity, the Org Map and "End quarter" when each becomes relevant.
   - **Where:** `src/store/gameStore.ts:135`, `src/components/screens/GameScreen.tsx:116-120`, `src/components/feedback/HowToPlay.tsx`
@@ -118,7 +118,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** preselect Lumen for a first game (for example, when no game has been finished yet) and tag it "Recommended for your first game".
   - **Where:** `src/components/screens/SetupScreen.tsx:21`
 
-- [ ] **UX-15: Approaches are hard to compare during triage** · Core loop · M
+- [x] **UX-15: Approaches are hard to compare during triage** · Core loop · M
   - **What happens:** "Best for" and "Watch out" appear only on the selected card, and that card grows and pushes the next row down. To compare all six approaches you have to click each one in turn. On phones the six cards form one long column.
   - **Fix:** show a one-line "Best for" on every card. Consider a compact comparison table (cost, time, risk, data fit) as a second view, especially on phones.
   - **Where:** `src/components/org/TriagePanel.tsx:127`
@@ -133,7 +133,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** show the reason as small text under, or instead of, every disabled button.
   - **Where:** `src/components/org/DepartmentModal.tsx:49`, `src/components/portfolio/ProjectModal.tsx:243-255`, `src/components/strategy/StrategyPanel.tsx:88-92`
 
-- [ ] **UX-18: The "fired" scorecard doesn't explain what went wrong** · Learning · M
+- [x] **UX-18: The "fired" scorecard doesn't explain what went wrong** · Learning · M
   - **What happens:** the fired screen promises "Here is what happened, and what to do differently" but gives no reason. The trust factors behind each board review (value below target, PoC purgatory, risk and so on) are kept only for the latest quarter.
   - **Fix:** store each quarter's trust factors in `history`, then add a "Why the board lost confidence" card with the two or three biggest losses and one concrete tip for each. This changes the save format (see UX-26).
   - **Where:** `src/components/screens/EndScreen.tsx:61-65`, `src/engine/types.ts:96`, `src/engine/turn.ts:243`
@@ -192,12 +192,12 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** make them at least as prominent on the triage screen.
   - **Where:** `src/components/org/TriagePanel.tsx:50-56`
 
-- [ ] **UX-29: The early Playbook is a wall of "???"** · Learning · M
+- [x] **UX-29: The early Playbook is a wall of "???"** · Learning · M
   - **What happens:** early in a game the Playbook shows 35 identical locked cards that all say "Make decisions in this area to unlock this principle."
   - **Fix:** show unlocked principles first and summarise locked ones by category ("5 more in Build vs. Buy"), or give each locked card a hint about how to unlock it.
   - **Where:** `src/components/playbook/PlaybookPanel.tsx:71-98`
 
-- [ ] **UX-30: The board review doesn't suggest a next step** · Learning · M
+- [x] **UX-30: The board review doesn't suggest a next step** · Learning · M
   - **Fix:** add one or two suggestions based on the biggest trust factors, for example "Value is 0% of target: get a pilot into production."
   - **Where:** `src/components/report/QuarterReportModal.tsx`
 

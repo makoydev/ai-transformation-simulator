@@ -10,6 +10,15 @@ import { useGame } from '@/store/gameStore';
 
 type Filter = LessonCategory | 'all';
 
+/** Where each category's principles come from, shown on its "still locked" card. */
+const UNLOCK_HINT: Record<LessonCategory, string> = {
+  discovery: 'Earned by auditing departments and matching each problem to the right approach.',
+  'build-buy': 'Earned by choosing to build, buy or fine-tune in triage, and by vendor events.',
+  governance: 'Earned by adopting policies and by how you handle incidents and crises.',
+  change: 'Earned through training, town halls and other change initiatives, and workforce events.',
+  roi: 'Earned by scaling and killing pilots, measuring value and facing the board.',
+};
+
 export function PlaybookPanel() {
   const game = useGame();
   const [filter, setFilter] = useState<Filter>('all');
@@ -17,6 +26,11 @@ export function PlaybookPanel() {
   const [openDebrief, setOpenDebrief] = useState<string | null>(null);
   const lessons = LESSONS.filter((l) => filter === 'all' || l.category === filter);
   const unlocked = game.lessons.length;
+  const earned = lessons.filter((l) => game.lessons.includes(l.id));
+  // Locked principles are summarised per category instead of shown as identical "???" cards.
+  const locked = (Object.keys(LESSON_CATEGORIES) as LessonCategory[])
+    .map((c) => ({ category: c, count: lessons.filter((l) => l.category === c && !game.lessons.includes(l.id)).length }))
+    .filter((g) => g.count > 0);
 
   return (
     <section aria-labelledby="playbook-title">
@@ -68,9 +82,13 @@ export function PlaybookPanel() {
               ))}
             </div>
           </div>
+          {earned.length === 0 && (
+            <p className="mb-3 text-sm text-ink-300">
+              No principles yet{filter === 'all' ? '' : ' in this area'}. Each debrief you get unlocks one.
+            </p>
+          )}
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {lessons.map((l, i) => {
-              const has = game.lessons.includes(l.id);
+            {earned.map((l, i) => {
               const cat = LESSON_CATEGORIES[l.category];
               return (
                 <motion.article
@@ -78,22 +96,31 @@ export function PlaybookPanel() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: Math.min(i * 0.02, 0.4) }}
-                  className={cn('glass p-4', !has && 'border-dashed border-white/10 bg-transparent shadow-none')}
+                  className="glass p-4"
                 >
                   <div className="flex items-center gap-2 text-[11px] font-semibold" style={{ color: cat.color }}>
-                    {has ? <BookOpen size={13} aria-hidden /> : <Lock size={13} aria-hidden />}
+                    <BookOpen size={13} aria-hidden />
                     {cat.label}
                   </div>
-                  <h3 className={cn('mt-1.5 font-display font-semibold', has ? 'text-white' : 'text-ink-300')}>{has ? l.title : '???'}</h3>
-                  {has ? (
-                    <>
-                      <p className="mt-1 text-sm font-medium text-ink-100">{l.principle}</p>
-                      <p className="mt-1.5 text-xs leading-relaxed text-ink-300">{l.detail}</p>
-                    </>
-                  ) : (
-                    <p className="mt-1 text-xs text-ink-400">Make decisions in this area to unlock this principle.</p>
-                  )}
+                  <h3 className="mt-1.5 font-display font-semibold text-white">{l.title}</h3>
+                  <p className="mt-1 text-sm font-medium text-ink-100">{l.principle}</p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-ink-300">{l.detail}</p>
                 </motion.article>
+              );
+            })}
+            {locked.map(({ category, count }) => {
+              const cat = LESSON_CATEGORIES[category];
+              return (
+                <article key={category} className="rounded-2xl border border-dashed border-white/10 p-4">
+                  <div className="flex items-center gap-2 text-[11px] font-semibold" style={{ color: cat.color }}>
+                    <Lock size={13} aria-hidden />
+                    {cat.label}
+                  </div>
+                  <h3 className="mt-1.5 font-display font-semibold text-ink-200">
+                    {count} {earned.some((l) => l.category === category) ? 'more ' : ''}to discover
+                  </h3>
+                  <p className="mt-1 text-xs text-ink-300">{UNLOCK_HINT[category]}</p>
+                </article>
               );
             })}
           </div>

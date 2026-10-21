@@ -42,7 +42,7 @@ export function ActionBar({ nav }: { nav?: React.ReactNode }) {
           side="top"
           content="Team capacity: how many initiatives your team can drive this quarter. Most actions cost 1. Hire engineering squads to grow it."
         >
-          <div tabIndex={0} className="flex items-center gap-2">
+          <div tabIndex={0} data-coach-target="capacity" className="flex items-center gap-2 rounded-lg">
             <span className="label-caps">Capacity</span>
             <div className="flex gap-1" aria-label={`${left} of ${total} capacity left`}>
               {Array.from({ length: total }, (_, i) => (
@@ -95,7 +95,7 @@ export function ActionBar({ nav }: { nav?: React.ReactNode }) {
           )}
         </div>
 
-        <div className="ml-auto">
+        <div className="ml-auto rounded-xl" data-coach-target="end">
           <Button
             variant="primary"
             onClick={requestEnd}

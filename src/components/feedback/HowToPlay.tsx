@@ -100,12 +100,20 @@ const SLIDES: Slide[] = [
   },
 ];
 
+/**
+ * A first game shows only the core loop (the first three slides); governance and the Playbook
+ * are taught in context. "How to play" from the menu shows every slide.
+ */
+const INTRO_SLIDES = 3;
+
 export function HowToPlay() {
   const open = useGameStore((s) => s.howTo);
   const setHowTo = useGameStore((s) => s.setHowTo);
   const transition = useGameStore((s) => s.transition);
+  const seenHowTo = useGameStore((s) => s.seenHowTo);
+  const slides = seenHowTo ? SLIDES : SLIDES.slice(0, INTRO_SLIDES);
   const [i, setI] = useState(0);
-  const slide = SLIDES[i];
+  const slide = slides[Math.min(i, slides.length - 1)];
   const Icon = slide.icon;
   const close = () => {
     setHowTo(false);
@@ -115,7 +123,7 @@ export function HowToPlay() {
   return (
     <Modal open={open && !transition} onClose={close} size="md" label="How to play" z={60}>
       <div className="p-6 sm:p-8">
-        <div className="label-caps">How to play · {i + 1}/{SLIDES.length}</div>
+        <div className="label-caps">How to play · {i + 1}/{slides.length}</div>
         <AnimatePresence mode="wait">
           <motion.div key={i} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.2 }}>
             <div className="mt-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient shadow-glow">
@@ -127,7 +135,7 @@ export function HowToPlay() {
         </AnimatePresence>
         <div className="mt-6 flex items-center gap-2">
           <div className="-ml-1.5 flex">
-            {SLIDES.map((_, idx) => (
+            {slides.map((_, idx) => (
               // The button is a 32px tap target around the small visible dot.
               <button
                 key={idx}
@@ -152,7 +160,7 @@ export function HowToPlay() {
                 Back
               </Button>
             )}
-            {i < SLIDES.length - 1 ? (
+            {i < slides.length - 1 ? (
               <Button variant="primary" onClick={() => setI(i + 1)} icon={<ArrowRight size={16} />}>
                 Next
               </Button>

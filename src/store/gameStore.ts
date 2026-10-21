@@ -58,6 +58,8 @@ interface StoreState {
   seenHowTo: boolean;
   /** Games played to the end (finished or fired). Zero means the player is new. */
   finishedGames: number;
+  /** The player hid the first-quarter tips. */
+  coachOff: boolean;
   muted: boolean;
   toasts: Toast[];
   eventOutcome: EventOutcome | null;
@@ -79,6 +81,7 @@ interface StoreState {
   openProject: (projectId: string | null) => void;
   setHowTo: (open: boolean) => void;
   setMenu: (open: boolean) => void;
+  hideCoach: () => void;
   toggleMute: () => void;
   dismissToast: (id: number) => void;
   markRevealed: (projectId: string) => void;
@@ -114,6 +117,7 @@ export const useGameStore = create<StoreState>()(
       howTo: false,
       seenHowTo: false,
       finishedGames: 0,
+      coachOff: false,
       muted: false,
       toasts: [],
       eventOutcome: null,
@@ -232,6 +236,7 @@ export const useGameStore = create<StoreState>()(
       openProject: (projectId) => set({ projectModal: projectId }),
       setHowTo: (open) => set(open ? { howTo: true } : { howTo: false, seenHowTo: true }),
       setMenu: (open) => set({ menuOpen: open }),
+      hideCoach: () => set({ coachOff: true }),
       toggleMute: () => set((st) => ({ muted: !st.muted })),
       dismissToast: (id) => set((st) => ({ toasts: st.toasts.filter((t) => t.id !== id) })),
       markRevealed: (projectId) =>
@@ -248,12 +253,13 @@ export const useGameStore = create<StoreState>()(
         game: st.game,
         seenHowTo: st.seenHowTo,
         finishedGames: st.finishedGames,
+        coachOff: st.coachOff,
         muted: st.muted,
         revealed: st.revealed,
       }),
       migrate: (persisted, version) => {
         // Saves from an incompatible engine version are discarded rather than crashing the game.
-        if (version !== SAVE_VERSION) return { game: null, seenHowTo: false, finishedGames: 0, muted: false, revealed: [] };
+        if (version !== SAVE_VERSION) return { game: null, seenHowTo: false, finishedGames: 0, coachOff: false, muted: false, revealed: [] };
         return persisted as Partial<StoreState>;
       },
     },

@@ -2,6 +2,7 @@ import { motion, useAnimationControls } from 'framer-motion';
 import { BookOpen, Briefcase, LayoutGrid, Map, Users } from 'lucide-react';
 import { useEffect } from 'react';
 import { EventModal } from '@/components/events/EventModal';
+import { Coach } from '@/components/feedback/Coach';
 import { HowToPlay } from '@/components/feedback/HowToPlay';
 import { Toasts } from '@/components/feedback/Toasts';
 import { ActionBar } from '@/components/hud/ActionBar';
@@ -146,6 +147,7 @@ export function GameScreen() {
         </div>
         <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
           <main id="game-main" className="min-w-0 scroll-mt-4">
+            <Coach />
             <TabBar />
             <motion.div
                 key={tab}

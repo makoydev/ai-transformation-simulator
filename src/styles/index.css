@@ -206,6 +206,14 @@
   }
 }
 
+/* First-quarter coach (Coach.tsx): rings the part of the screen the current tip talks about. */
+:root[data-coach='capacity'] [data-coach-target='capacity'],
+:root[data-coach='end'] [data-coach-target='end'] {
+  @apply animate-pulse-ring;
+  outline: 2px solid var(--color-brand-cyan);
+  outline-offset: 4px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

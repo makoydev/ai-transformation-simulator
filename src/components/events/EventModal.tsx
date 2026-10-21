@@ -24,12 +24,14 @@ export function EventModal() {
   const game = useGameStore((s) => s.game);
   const outcome = useGameStore((s) => s.eventOutcome);
   const transition = useGameStore((s) => s.transition);
+  const howTo = useGameStore((s) => s.howTo);
   const chooseEvent = useGameStore((s) => s.chooseEvent);
   const closeOutcome = useGameStore((s) => s.closeEventOutcome);
 
   if (!game) return null;
   const event = outcome ? EVENT_MAP[outcome.eventId] : game.phase === 'event' ? currentEvent(game) : null;
-  const open = !!event && !transition;
+  // Waits for the tutorial on day one instead of opening underneath it.
+  const open = !!event && !transition && !howTo;
   const cat = event ? CATEGORY[event.category] : CATEGORY.dilemma;
   const CatIcon = cat.icon;
   const from = event ? STAKEHOLDERS[event.from] : null;

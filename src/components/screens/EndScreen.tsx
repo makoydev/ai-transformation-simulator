@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion';
-import { Award, Check, Copy, Home, Lock, RotateCcw, Sparkles, Target } from 'lucide-react';
+import { Award, Check, Copy, Home, Lightbulb, Lock, RotateCcw, Sparkles, Target, TrendingDown } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { LineChart } from '@/components/charts/LineChart';
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import { Button } from '@/components/ui/Button';
 import { LESSON_CATEGORIES, LESSON_MAP, LESSONS } from '@/data/lessons';
 import { SCENARIOS } from '@/data/scenarios';
-import { computeBadges, computeFinalScore, determineArchetype, sel, shareText, type GameState } from '@/engine';
+import { computeBadges, computeFinalScore, determineArchetype, sel, shareText, trustLosses, type GameState } from '@/engine';
 import { cn } from '@/lib/cn';
-import { fmtMoney, fmtRoi } from '@/lib/format';
+import { fmtMoney, fmtRoi, fmtSigned } from '@/lib/format';
 import { play } from '@/lib/sfx';
 import { useGameStore } from '@/store/gameStore';
 import { PALETTE } from '@/lib/palette';
@@ -37,6 +37,7 @@ function Scorecard({ game }: { game: GameState }) {
   const badges = useMemo(() => computeBadges(game), [game]);
   const sc = SCENARIOS[game.scenarioId];
   const fired = game.outcome === 'fired';
+  const losses = useMemo(() => (fired ? trustLosses(game) : []), [game, fired]);
   const xLabels = game.history.map((h) => `Q${h.quarter}`);
 
   const copy = async () => {
@@ -110,6 +111,35 @@ function Scorecard({ game }: { game: GameState }) {
             </div>
           </motion.div>
         </div>
+
+        {losses.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            aria-labelledby="why-fired"
+            className="glass mt-4 border-rose-400/25 p-5"
+          >
+            <h3 id="why-fired" className="flex items-center gap-2 font-display text-base font-semibold text-white">
+              <TrendingDown size={17} className="text-rose-300" aria-hidden /> Why the board lost confidence
+            </h3>
+            <p className="mt-1 text-sm text-ink-300">The biggest trust losses across your {game.history.length} board reviews, and what to try next time.</p>
+            <ol className="mt-4 grid gap-3 md:grid-cols-3">
+              {losses.map((l) => (
+                <li key={l.kind} className="rounded-xl bg-white/4 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="font-semibold text-white">{l.title}</span>
+                    <span className="shrink-0 font-bold text-rose-300">{fmtSigned(l.delta)} trust</span>
+                  </div>
+                  <p className="mt-2 flex gap-2 text-sm text-ink-200">
+                    <Lightbulb size={15} className="mt-0.5 shrink-0 text-amber-200" aria-hidden />
+                    {l.tip}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </motion.section>
+        )}
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           <div className="glass p-5">

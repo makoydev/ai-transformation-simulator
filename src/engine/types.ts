@@ -104,9 +104,26 @@ export interface QuarterSnapshot {
   morale: number;
   cumulativeValue: number;
   cumulativeSpend: number;
+  /** Trust just before the board review, after the quarter's events and decisions. Missing in older saves. */
+  trustBefore?: number;
+  /** The board review's trust factors. Missing in older saves. */
+  factors?: TrustFactor[];
 }
 
+export type TrustFactorKind =
+  | 'honeymoon'
+  | 'value'
+  | 'missStreak'
+  | 'support'
+  | 'purgatory'
+  | 'risk'
+  | 'governance'
+  | 'overspend'
+  | 'morale';
+
 export interface TrustFactor {
+  /** Missing in saves from before factors had kinds. */
+  kind?: TrustFactorKind;
   label: string;
   delta: number;
 }

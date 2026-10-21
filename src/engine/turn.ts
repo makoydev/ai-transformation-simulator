@@ -165,7 +165,7 @@ export function endQuarter(state: GameState): GameState {
     const factors: TrustFactor[] = [];
 
     if (expected < 0.05) {
-      factors.push({ label: 'Honeymoon period', delta: T.honeymoon });
+      factors.push({ kind: 'honeymoon', label: 'Honeymoon period', delta: T.honeymoon });
     } else {
       const weight = Math.min(1, 0.4 + q * 0.15);
       const ratio = perceived / expected;
@@ -174,25 +174,26 @@ export function endQuarter(state: GameState): GameState {
         ratio >= 1
           ? `Value beat expectations (${Math.round(ratio * 100)}% of target)`
           : `Value below expectations (${Math.round(ratio * 100)}% of target)`;
-      factors.push({ label, delta });
+      factors.push({ kind: 'value', label, delta });
 
       // Boards forgive one bad quarter, not a pattern.
       const streak = ratio < T.missRatio ? Number(d.flags.missStreak ?? 0) + 1 : 0;
       d.flags.missStreak = streak;
       if (streak >= 2) {
-        factors.push({ label: `Board patience wearing thin (${streak} quarters off target)`, delta: -(streak - 1) * T.missStreakPenalty });
+        factors.push({ kind: 'missStreak', label: `Board patience wearing thin (${streak} quarters off target)`, delta: -(streak - 1) * T.missStreakPenalty });
       }
     }
 
     const support = Math.round((stakeholderAverage(d) - 50) / T.supportDivisor);
     if (support !== 0) {
-      factors.push({ label: support > 0 ? 'Executive team backs you' : 'Executive team is skeptical', delta: support });
+      factors.push({ kind: 'support', label: support > 0 ? 'Executive team backs you' : 'Executive team is skeptical', delta: support });
     }
 
     const stalled = d.projects.filter((p) => p.stage === 'results' && p.stalledQuarters >= 1);
     d.stats.maxPurgatory = Math.max(d.stats.maxPurgatory, stalled.length);
     if (stalled.length) {
       factors.push({
+        kind: 'purgatory',
         label: `PoC purgatory (${stalled.length} undecided pilot${stalled.length > 1 ? 's' : ''})`,
         delta: -Math.min(T.purgatoryCap, stalled.length * T.purgatoryPenalty),
       });
@@ -212,16 +213,16 @@ export function endQuarter(state: GameState): GameState {
     }
 
     if (risk > T.riskThreshold) {
-      factors.push({ label: 'Board alarmed by AI risk exposure', delta: -Math.round((risk - T.riskThreshold) / 5) });
+      factors.push({ kind: 'risk', label: 'Board alarmed by AI risk exposure', delta: -Math.round((risk - T.riskThreshold) / 5) });
     } else if (risk < 25 && productionProjects(d).length >= 2) {
-      factors.push({ label: 'Confidence in AI governance', delta: 1 });
+      factors.push({ kind: 'governance', label: 'Confidence in AI governance', delta: 1 });
     }
 
     if (d.budget < 0) {
-      factors.push({ label: 'Budget overrun', delta: -T.overspendPenalty });
+      factors.push({ kind: 'overspend', label: 'Budget overrun', delta: -T.overspendPenalty });
       say(d, 'low_budget');
     }
-    if (d.morale < T.lowMoraleThreshold) factors.push({ label: 'Workforce unrest', delta: -3 });
+    if (d.morale < T.lowMoraleThreshold) factors.push({ kind: 'morale', label: 'Workforce unrest', delta: -3 });
 
     const trustDelta = factors.reduce((sum, f) => sum + f.delta, 0);
     d.trust = clamp(Math.round(d.trust + trustDelta));
@@ -251,6 +252,8 @@ export function endQuarter(state: GameState): GameState {
       morale: d.morale,
       cumulativeValue: d.cumulativeValue,
       cumulativeSpend: d.cumulativeSpend,
+      trustBefore,
+      factors,
     });
 
     d.lastReport = {

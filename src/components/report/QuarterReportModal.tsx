@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Flag, Gavel, PartyPopper } from 'lucide-react';
+import { ArrowRight, Flag, Gavel, Lightbulb, PartyPopper } from 'lucide-react';
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import { Button } from '@/components/ui/Button';
 import { Meter } from '@/components/ui/Meter';
 import { Modal } from '@/components/ui/Modal';
 import { VerdictBadge } from '@/components/ui/Verdict';
+import { reviewTips, type BoardTip } from '@/engine';
 import { cn } from '@/lib/cn';
 import { fmtMoney, fmtSigned, quarterLabel } from '@/lib/format';
 import { useGameStore } from '@/store/gameStore';
@@ -18,6 +19,28 @@ function Figure({ label, value, sub, delay }: { label: string; value: React.Reac
       <div className="text-[11px] text-ink-400">{label}</div>
       <div className="mt-0.5 text-xl font-semibold text-white">{value}</div>
       {sub && <div className="text-[11px] text-ink-400">{sub}</div>}
+    </motion.div>
+  );
+}
+
+/** One or two concrete suggestions drawn from the review's biggest trust losses. */
+function NextSteps({ tips, delay }: { tips: BoardTip[]; delay: number }) {
+  if (tips.length === 0) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay }}
+      className="mt-4 rounded-xl border border-amber-300/25 bg-amber-300/8 p-4"
+    >
+      <div className="label-caps mb-2 flex items-center gap-1.5 text-amber-100">
+        <Lightbulb size={12} aria-hidden /> What to do next
+      </div>
+      <ul className="space-y-1.5 text-sm text-ink-100">
+        {tips.map((t) => (
+          <li key={t.kind}>{t.tip}</li>
+        ))}
+      </ul>
     </motion.div>
   );
 }
@@ -105,6 +128,8 @@ export function QuarterReportModal() {
               <div className="text-xs text-ink-400">fired below 15</div>
             </motion.div>
           </div>
+
+          {report.outcome === 'continue' && <NextSteps tips={reviewTips(report, game)} delay={0.8 + report.factors.length * 0.12} />}
 
           <motion.blockquote
             initial={{ opacity: 0 }}

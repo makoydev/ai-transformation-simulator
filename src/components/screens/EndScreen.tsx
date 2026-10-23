@@ -162,7 +162,7 @@ function Scorecard({ game }: { game: GameState }) {
                       transition={{ delay: 0.5 + i * 0.1, duration: 0.8, ease: 'easeOut' }}
                     />
                   </div>
-                  <div className="mt-0.5 text-[11px] text-ink-400">{l.detail}</div>
+                  <div className="mt-0.5 text-xs text-ink-400">{l.detail}</div>
                 </li>
               ))}
             </ul>
@@ -183,7 +183,7 @@ function Scorecard({ game }: { game: GameState }) {
                 ['Peak risk', `${game.stats.peakRisk}`],
               ].map(([k, v]) => (
                 <div key={k} className="rounded-xl bg-white/4 p-3">
-                  <dt className="text-[11px] text-ink-400">{k}</dt>
+                  <dt className="text-xs text-ink-400">{k}</dt>
                   <dd className="mt-0.5 text-lg font-semibold text-white">{v}</dd>
                 </div>
               ))}
@@ -235,7 +235,7 @@ function Scorecard({ game }: { game: GameState }) {
                   {b.earned ? <Check size={14} className="text-amber-200" aria-hidden /> : <Lock size={13} aria-hidden />}
                   {b.name}
                 </div>
-                <div className="mt-0.5 text-[11px] text-ink-300">{b.description}</div>
+                <div className="mt-0.5 text-xs text-ink-300">{b.description}</div>
               </motion.div>
             ))}
           </div>
@@ -254,7 +254,7 @@ function Scorecard({ game }: { game: GameState }) {
                 if (!l) return null;
                 return (
                   <li key={id} className="rounded-xl bg-white/3 p-3">
-                    <div className="text-[11px] font-semibold" style={{ color: LESSON_CATEGORIES[l.category].color }}>
+                    <div className="text-xs font-semibold" style={{ color: LESSON_CATEGORIES[l.category].color }}>
                       {LESSON_CATEGORIES[l.category].label}
                     </div>
                     <div className="text-sm font-semibold text-white">{l.title}</div>

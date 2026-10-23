@@ -46,7 +46,7 @@ function ToastItem({ toast, compact }: { toast: Toast; compact: boolean }) {
         <div className="flex gap-2.5">
           <Avatar id={toast.stakeholder} size="sm" />
           <div className="min-w-0">
-            <div className="text-[11px] font-semibold text-ink-300">{STAKEHOLDERS[toast.stakeholder].name}</div>
+            <div className="text-xs font-semibold text-ink-300">{STAKEHOLDERS[toast.stakeholder].name}</div>
             <p className={cn('text-sm leading-snug text-ink-100', compact && 'line-clamp-2')}>{toast.text}</p>
           </div>
         </div>

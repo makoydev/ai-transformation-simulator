@@ -97,7 +97,7 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
       ) : (
         <div className="mt-3 flex flex-1 flex-col gap-3">
           <div>
-            <div className="mb-1 flex items-center justify-between text-[11px] text-ink-300">
+            <div className="mb-1 flex items-center justify-between text-xs text-ink-300">
               <span>Data readiness</span>
               <span className="font-semibold text-white">{dept.dataReadiness}/100</span>
             </div>
@@ -118,12 +118,12 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
           </ul>
           <div className="mt-auto flex flex-wrap gap-1.5">
             {dept.champions && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-pink-400/15 px-2 py-0.5 text-[11px] font-semibold text-pink-200">
+              <span className="inline-flex items-center gap-1 rounded-full bg-pink-400/15 px-2 py-0.5 text-xs font-semibold text-pink-200">
                 <Users size={11} aria-hidden /> Champions
               </span>
             )}
             {needsDecision && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-amber-300/15 px-2 py-0.5 text-[11px] font-semibold text-amber-100">
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-300/15 px-2 py-0.5 text-xs font-semibold text-amber-100">
                 <Sparkles size={11} aria-hidden /> Results in
               </span>
             )}

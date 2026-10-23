@@ -46,7 +46,7 @@ export const ProjectCard = forwardRef<HTMLButtonElement, { project: Project }>(f
         <DeptIcon size={14} className="mt-0.5 shrink-0" style={{ color: DEPARTMENTS[uc.dept].color }} aria-hidden />
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-semibold text-white">{uc.title}</div>
-          <div className="mt-0.5 inline-flex items-center gap-1 text-[11px] font-medium" style={{ color: ap.color }}>
+          <div className="mt-0.5 inline-flex items-center gap-1 text-xs font-medium" style={{ color: ap.color }}>
             <ApIcon size={11} aria-hidden /> {ap.short}
             {p.iterations > 0 && <span className="text-ink-400"> · iteration {p.iterations + 1}</span>}
           </div>
@@ -60,7 +60,7 @@ export const ProjectCard = forwardRef<HTMLButtonElement, { project: Project }>(f
 
       {p.stage === 'pilot' && (
         <div className="mt-2.5">
-          <div className="mb-1 flex justify-between text-[11px] text-ink-400">
+          <div className="mb-1 flex justify-between text-xs text-ink-400">
             <span>Pilot progress</span>
             <span>
               {p.quartersRemaining} quarter{p.quartersRemaining === 1 ? '' : 's'} to results
@@ -73,16 +73,16 @@ export const ProjectCard = forwardRef<HTMLButtonElement, { project: Project }>(f
       {p.stage === 'results' && p.result && (
         <div className="mt-2.5 flex items-center gap-2">
           {revealed ? (
-            <span className={cn('rounded-md border px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider', RESULT_STYLE[p.result].cls)}>
+            <span className={cn('rounded-md border px-2 py-0.5 text-xs font-bold uppercase tracking-wider', RESULT_STYLE[p.result].cls)}>
               {RESULT_STYLE[p.result].label}
             </span>
           ) : (
-            <span className="shimmer rounded-md border border-amber-300/40 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-amber-100">
+            <span className="shimmer rounded-md border border-amber-300/40 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-amber-100">
               Results ready: open
             </span>
           )}
           {stalled && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-rose-300">
+            <span className="inline-flex items-center gap-1 text-xs font-semibold text-rose-300">
               <AlertTriangle size={12} aria-hidden /> PoC purgatory
             </span>
           )}
@@ -91,17 +91,17 @@ export const ProjectCard = forwardRef<HTMLButtonElement, { project: Project }>(f
 
       {p.stage === 'production' && (
         <div className="mt-2.5 space-y-1.5">
-          <div className="flex justify-between text-[11px]">
+          <div className="flex justify-between text-xs">
             <span className="text-ink-400">Value</span>
             <span className="font-semibold text-amber-200">{fmtMoney(sel.projectValue(p))}/q</span>
           </div>
           <Meter value={p.adoption} color={PALETTE.metric.adoption} label="Adoption" />
-          <div className="text-[11px] text-ink-400">{Math.round(p.adoption)}% adoption</div>
+          <div className="text-xs text-ink-400">{Math.round(p.adoption)}% adoption</div>
         </div>
       )}
 
       {archived && (
-        <div className="mt-2 inline-flex items-center gap-1 text-[11px] text-ink-400">
+        <div className="mt-2 inline-flex items-center gap-1 text-xs text-ink-400">
           <Skull size={12} aria-hidden /> {p.stage === 'killed' ? 'Killed' : 'Retired'} in Q{p.endedQuarter} ·{' '}
           {fmtMoney(p.valueRealized)} delivered
         </div>

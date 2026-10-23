@@ -33,9 +33,9 @@ export function ProjectModal() {
 function Stat({ label, value, sub, className }: { label: string; value: React.ReactNode; sub?: string; className?: string }) {
   return (
     <div className={cn('rounded-xl bg-white/4 p-3', className)}>
-      <div className="text-[11px] text-ink-400">{label}</div>
+      <div className="text-xs text-ink-400">{label}</div>
       <div className="mt-0.5 text-lg font-semibold text-white">{value}</div>
-      {sub && <div className="text-[11px] text-ink-400">{sub}</div>}
+      {sub && <div className="text-xs text-ink-400">{sub}</div>}
     </div>
   );
 }

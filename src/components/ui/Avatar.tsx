@@ -8,7 +8,7 @@ interface Props {
   className?: string;
 }
 
-const SIZES = { sm: 'h-8 w-8 text-[11px]', md: 'h-10 w-10 text-xs', lg: 'h-14 w-14 text-base' };
+const SIZES = { sm: 'h-8 w-8 text-xs', md: 'h-10 w-10 text-xs', lg: 'h-14 w-14 text-base' };
 
 export function Avatar({ id, size = 'md', className }: Props) {
   const s = STAKEHOLDERS[id];

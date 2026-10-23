@@ -16,9 +16,9 @@ const QUARTER_LABEL = { great: 'Outstanding quarter', good: 'Good quarter', mixe
 function Figure({ label, value, sub, delay }: { label: string; value: React.ReactNode; sub?: string; delay: number }) {
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} className="rounded-xl bg-white/4 p-3">
-      <div className="text-[11px] text-ink-400">{label}</div>
+      <div className="text-xs text-ink-400">{label}</div>
       <div className="mt-0.5 text-xl font-semibold text-white">{value}</div>
-      {sub && <div className="text-[11px] text-ink-400">{sub}</div>}
+      {sub && <div className="text-xs text-ink-400">{sub}</div>}
     </motion.div>
   );
 }

@@ -29,7 +29,7 @@ export function StakeholderPanel({ className, detailed = false }: { className?: 
       <div className="glass p-4">
         <div className="mb-3 flex items-baseline justify-between">
           <h2 className="font-display text-base font-semibold text-white">Executive team</h2>
-          <span className="text-[11px] text-ink-400">Support avg {Math.round(sel.stakeholderAverage(game))}</span>
+          <span className="text-xs text-ink-400">Support avg {Math.round(sel.stakeholderAverage(game))}</span>
         </div>
         <ul className="space-y-3">
           {STAKEHOLDER_ORDER.map((id) => {
@@ -62,9 +62,9 @@ export function StakeholderPanel({ className, detailed = false }: { className?: 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-baseline justify-between gap-2">
                         <span className="truncate text-sm font-semibold text-white">{s.name}</span>
-                        <span className={cn('shrink-0 text-[11px] font-semibold', mood.cls)}>{mood.label}</span>
+                        <span className={cn('shrink-0 text-xs font-semibold', mood.cls)}>{mood.label}</span>
                       </div>
-                      <div className="mb-1 truncate text-[11px] text-ink-400">{s.title}</div>
+                      <div className="mb-1 truncate text-xs text-ink-400">{s.title}</div>
                       <Meter value={value} color={s.color} label={`${s.name} support`} />
                     </div>
                   </div>
@@ -115,7 +115,7 @@ export function StakeholderPanel({ className, detailed = false }: { className?: 
                       m.tone === 'neutral' && 'border-white/6 bg-white/3 text-ink-200',
                     )}
                   >
-                    <div className="mb-0.5 text-[10px] font-semibold text-ink-400">
+                    <div className="mb-0.5 text-xs font-semibold text-ink-400">
                       {STAKEHOLDERS[m.stakeholder].name} · Q{m.quarter}
                     </div>
                     {m.text}

@@ -62,7 +62,7 @@ function TabBar() {
             {badge !== null && (
               <span
                 className={cn(
-                  'relative rounded-full px-1.5 text-[11px]',
+                  'relative rounded-full px-1.5 text-xs',
                   t.id === 'portfolio' ? 'bg-hue-amber text-ink-950' : 'bg-white/10 text-ink-200',
                 )}
               >
@@ -105,7 +105,7 @@ function PhoneTabBar() {
             aria-selected={active}
             onClick={() => select(t.id)}
             className={cn(
-              'relative my-1 flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl text-[11px] font-semibold transition-colors',
+              'relative my-1 flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl text-xs font-semibold transition-colors',
               active ? 'text-white' : 'text-ink-300',
             )}
           >
@@ -115,7 +115,7 @@ function PhoneTabBar() {
             <span className="relative">
               <Icon size={18} aria-hidden />
               {t.id === 'portfolio' && awaiting > 0 && (
-                <span className="absolute -right-2.5 -top-1.5 min-w-4 rounded-full bg-hue-amber px-1 text-center text-[10px] leading-4 text-ink-950">
+                <span className="absolute -right-2.5 -top-1.5 min-w-4 rounded-full bg-hue-amber px-1 text-center text-xs leading-4 text-ink-950">
                   {awaiting}
                 </span>
               )}

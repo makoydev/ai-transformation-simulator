@@ -43,7 +43,7 @@ function CompactMetric({ label, value, format, formatDelta, icon: Icon, accent, 
   const { floats, flash } = useDeltaFloats(value, epsilon, higherIsBetter);
   return (
     <span className={cn('relative min-w-0 rounded-lg px-1.5 py-0.5 transition-shadow duration-300', flash && FLASH_RING[flash], className)}>
-      <span className="flex items-center gap-1 text-[10px] font-medium text-ink-300">
+      <span className="flex items-center gap-1 text-xs font-medium text-ink-300">
         <Icon size={11} style={{ color: accent }} className="shrink-0" aria-hidden />
         <span className="truncate">{label}</span>
       </span>

@@ -22,7 +22,8 @@ interface Props {
 }
 
 const SURFACE = PALETTE.chart.surface;
-const PAD = { top: 16, right: 64, bottom: 28, left: 44 };
+// left fits a 12px "$10.0M" tick label; right fits the end-of-line value labels.
+const PAD = { top: 16, right: 64, bottom: 28, left: 56 };
 
 function niceMax(v: number): number {
   if (v <= 0) return 1;
@@ -96,7 +97,7 @@ export function LineChart({ title, subtitle, series, xLabels, format, yMin = 0, 
         </div>
         <button
           onClick={() => setShowTable((v) => !v)}
-          className="rounded-lg border border-white/10 px-2 py-1 text-[11px] font-semibold text-ink-300 hover:text-white"
+          className="rounded-lg border border-white/10 px-2 py-1 text-xs font-semibold text-ink-300 hover:text-white"
           aria-pressed={showTable}
         >
           {showTable ? 'Chart view' : 'Table view'}
@@ -152,13 +153,13 @@ export function LineChart({ title, subtitle, series, xLabels, format, yMin = 0, 
             {ticks.map((t) => (
               <g key={t}>
                 <line x1={PAD.left} x2={width - PAD.right} y1={y(t)} y2={y(t)} stroke={PALETTE.chart.grid} strokeWidth={1} />
-                <text x={PAD.left - 8} y={y(t)} dy="0.32em" textAnchor="end" className="fill-ink-400 text-[10px] tabular-nums">
+                <text x={PAD.left - 8} y={y(t)} dy="0.32em" textAnchor="end" className="fill-ink-400 text-xs tabular-nums">
                   {format(t)}
                 </text>
               </g>
             ))}
             {xLabels.map((label, i) => (
-              <text key={label} x={x(i)} y={height - 8} textAnchor="middle" className="fill-ink-400 text-[10px]">
+              <text key={label} x={x(i)} y={height - 8} textAnchor="middle" className="fill-ink-400 text-xs">
                 {label}
               </text>
             ))}
@@ -189,7 +190,7 @@ export function LineChart({ title, subtitle, series, xLabels, format, yMin = 0, 
                 const last = s.values.length - 1;
                 if (last < 0) return null;
                 return (
-                  <text key={s.key} x={x(last) + 10} y={y(s.values[last])} dy="0.32em" className="fill-ink-100 text-[11px] font-semibold">
+                  <text key={s.key} x={x(last) + 10} y={y(s.values[last])} dy="0.32em" className="fill-ink-100 text-xs font-semibold">
                     {format(s.values[last])}
                   </text>
                 );

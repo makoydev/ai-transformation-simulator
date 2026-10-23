@@ -26,7 +26,7 @@ function StakeholderReactions({ deltas }: { deltas: Partial<Record<StakeholderId
       {entries.map(([id, d]) => (
         <span
           key={id}
-          className={cn('rounded-md px-1.5 py-0.5 text-[10px] font-bold', d > 0 ? 'bg-emerald-400/10 text-emerald-200' : 'bg-rose-400/10 text-rose-200')}
+          className={cn('rounded-md px-1.5 py-0.5 text-xs font-bold', d > 0 ? 'bg-emerald-400/10 text-emerald-200' : 'bg-rose-400/10 text-rose-200')}
         >
           {STAKEHOLDER_SHORT[id]} {d > 0 ? '▲' : '▼'}
         </span>
@@ -69,19 +69,19 @@ function ActionCard({ title, icon: Icon, description, benefit, tradeoff, stakeho
         </span>
         <div className="min-w-0 flex-1">
           <h4 className="font-display font-semibold text-white">{title}</h4>
-          {level && <div className="text-[11px] font-semibold text-ink-300">{level}</div>}
+          {level && <div className="text-xs font-semibold text-ink-300">{level}</div>}
         </div>
         {done && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-400/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-200">
+          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-400/15 px-2 py-0.5 text-xs font-semibold text-emerald-200">
             <Check size={12} aria-hidden /> {doneLabel ?? 'Active'}
           </span>
         )}
       </div>
       <p className="mt-2 text-sm text-ink-200">{description}</p>
-      <p className="mt-2 text-xs text-emerald-200/90">
+      <p className="mt-2 text-sm text-emerald-200/90">
         <span className="font-semibold">Effect:</span> {benefit}
       </p>
-      <p className="mt-1 text-xs text-amber-200/80">
+      <p className="mt-1 text-sm text-amber-200/80">
         <span className="font-semibold">Trade-off:</span> {tradeoff}
       </p>
       <div className="mt-3 flex flex-1 items-end justify-between gap-2">

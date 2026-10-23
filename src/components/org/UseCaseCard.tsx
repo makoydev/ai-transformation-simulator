@@ -54,7 +54,7 @@ export function UseCaseCard({ useCase: uc, index, onTriage }: { useCase: UseCase
         </ul>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-1.5 text-[11px] font-semibold">
+      <div className="mt-3 flex flex-wrap gap-1.5 text-xs font-semibold">
         <span className={cn('rounded-full px-2 py-0.5', sens.cls)}>{sens.label}</span>
         <span className="rounded-full bg-white/6 px-2 py-0.5 text-ink-200">{dataNeedLabel(uc.dataRequirement)}</span>
         {uc.customerFacing && (

@@ -89,14 +89,15 @@ export function MetricTile({
         )}
       >
         <span className="absolute inset-x-3 top-0 h-px opacity-70" style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }} aria-hidden />
-        <div className="flex items-center gap-1.5 text-[11px] font-medium text-ink-300">
+        <div className="flex items-center gap-1.5 text-xs font-medium text-ink-300">
           <Icon size={13} style={{ color: accent }} aria-hidden />
           <span className="truncate">{label}</span>
         </div>
         <div className="mt-0.5 font-sans text-lg font-semibold text-white sm:text-xl">
           <AnimatedNumber value={value} format={format} />
         </div>
-        {sub && <div className="truncate text-[11px] text-ink-400">{sub}</div>}
+        {/* Wraps rather than truncates: at 12px some captions are wider than a phone tile. */}
+        {sub && <div className="text-xs leading-snug text-ink-400">{sub}</div>}
         {children && <div className="mt-1.5">{children}</div>}
 
         <DeltaFloats floats={floats} formatDelta={formatDelta} higherIsBetter={higherIsBetter} className="right-2 top-1" />

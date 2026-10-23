@@ -98,7 +98,7 @@ export function PlaybookPanel() {
                   transition={{ delay: Math.min(i * 0.02, 0.4) }}
                   className="glass p-4"
                 >
-                  <div className="flex items-center gap-2 text-[11px] font-semibold" style={{ color: cat.color }}>
+                  <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: cat.color }}>
                     <BookOpen size={13} aria-hidden />
                     {cat.label}
                   </div>
@@ -112,7 +112,7 @@ export function PlaybookPanel() {
               const cat = LESSON_CATEGORIES[category];
               return (
                 <article key={category} className="rounded-2xl border border-dashed border-white/10 p-4">
-                  <div className="flex items-center gap-2 text-[11px] font-semibold" style={{ color: cat.color }}>
+                  <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: cat.color }}>
                     <Lock size={13} aria-hidden />
                     {cat.label}
                   </div>
@@ -144,7 +144,7 @@ export function PlaybookPanel() {
                   <span className="text-xs font-semibold text-ink-400">Q{d.quarter}</span>
                   <VerdictBadge verdict={d.verdict} />
                   <span className="min-w-0 flex-1 truncate text-sm font-medium text-white">{d.title}</span>
-                  <span className="text-[11px] capitalize text-ink-400">{d.kind}</span>
+                  <span className="text-xs capitalize text-ink-400">{d.kind}</span>
                 </button>
               )}
             </li>

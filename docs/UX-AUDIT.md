@@ -26,7 +26,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 | Priority | Meaning | Items | Done |
 |---|---|---|---|
 | **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
-| **P2** | Makes the game noticeably harder to learn or use. | 15 | 13 |
+| **P2** | Makes the game noticeably harder to learn or use. | 15 | 15 |
 | **P3** | Polish and nice-to-haves. | 30 | 9 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
@@ -138,7 +138,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** store each quarter's trust factors in `history`, then add a "Why the board lost confidence" card with the two or three biggest losses and one concrete tip for each. This changes the save format (see UX-26).
   - **Where:** `src/components/screens/EndScreen.tsx:61-65`, `src/engine/types.ts:96`, `src/engine/turn.ts:243`
 
-- [ ] **UX-19: The browser Back button exits the game** · Navigation · M
+- [x] **UX-19: The browser Back button exits the game** · Navigation · M
   - **What happens:** screens and dialogs don't add browser history entries, so Back (or the Android back gesture) leaves the site instead of closing the dialog or returning to the title screen. Auto-save means nothing is lost, but it is jarring, especially on phones.
   - **Fix:** add a history entry when a dialog opens or the screen changes, and handle `popstate` to close the dialog or go back one screen.
   - **Where:** `src/App.tsx`, `src/store/gameStore.ts` (`goTo`, `openDept`, `openProject`)
@@ -151,7 +151,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** use `ink-400` or lighter for all text. Show "locked" with an icon and a muted border instead of fading the text.
   - **Where:** `src/components/screens/TitleScreen.tsx:132`, `src/components/screens/SetupScreen.tsx:43`, `src/components/screens/EndScreen.tsx:200`, `src/components/playbook/PlaybookPanel.tsx:81`, `src/components/org/TriagePanel.tsx:162`
 
-- [ ] **UX-21: A lot of text is 10 to 11px** · Accessibility and phones · M
+- [x] **UX-21: A lot of text is 10 to 11px** · Accessibility and phones · M
   - **What happens:** 38 places use 10 to 11px text for real information: metric subtitles, stat labels, executive titles, inbox senders, badge descriptions.
   - **Fix:** make 12px the smallest size, and 14px for anything players must read to make a decision. The small all-caps labels can stay because larger text always sits next to them.
   - **Where:** for example `src/components/hud/MetricTile.tsx:80,87`, `src/components/people/StakeholderPanel.tsx:63,101`, `src/components/screens/EndScreen.tsx:133,154,206`

@@ -266,6 +266,9 @@ export const useGameStore = create<StoreState>()(
   ),
 );
 
+/** The screen to show. The game and end screens need a game, so without one the title screen shows. */
+export const selectScreen = (s: StoreState): Screen => ((s.screen === 'game' || s.screen === 'end') && !s.game ? 'title' : s.screen);
+
 /**
  * True while one of the game's dialogs is open. Known in the same render that opens the
  * dialog, unlike the DOM dialog stack, which updates in an effect afterwards.

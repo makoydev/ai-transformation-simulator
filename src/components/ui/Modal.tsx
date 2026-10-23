@@ -66,7 +66,8 @@ export function Modal({ open, onClose, children, size = 'md', className, label, 
     const panel = panelRef.current;
     if (!open || !layer || !panel) return;
     const returnTo = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    pushDialog(layer);
+    // A dialog without onClose needs an answer, so the browser Back button can't close it.
+    pushDialog(layer, onCloseRef.current ? () => onCloseRef.current?.() : undefined);
 
     const onKey = (e: KeyboardEvent) => {
       if (!isTopDialog(layer)) return;

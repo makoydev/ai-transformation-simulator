@@ -1,6 +1,6 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, animate, motion, useMotionValue } from 'framer-motion';
 import { AlertCircle, X } from 'lucide-react';
-import { useEffect, useSyncExternalStore } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { Avatar } from '@/components/ui/Avatar';
 import { VerdictBadge } from '@/components/ui/Verdict';
@@ -14,10 +14,23 @@ const DURATION: Record<Toast['kind'], number> = { quip: 5500, debrief: 10000, er
 
 function ToastItem({ toast, compact }: { toast: Toast; compact: boolean }) {
   const dismiss = useGameStore((s) => s.dismissToast);
+  const readDebrief = useGameStore((s) => s.readDebrief);
+
+  // The time left, from 1 to 0: it drives the bar along the bottom, and the toast closes when it runs out.
+  // Hovering, tapping or focusing the toast pauses it, so a toast stays while it is being read (WCAG 2.2.1).
+  const left = useMotionValue(1);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const paused = hovered || focused;
   useEffect(() => {
-    const t = setTimeout(() => dismiss(toast.id), DURATION[toast.kind]);
-    return () => clearTimeout(t);
-  }, [toast.id, toast.kind, dismiss]);
+    if (paused) return;
+    const controls = animate(left, 0, {
+      duration: (left.get() * DURATION[toast.kind]) / 1000,
+      ease: 'linear',
+      onComplete: () => dismiss(toast.id),
+    });
+    return () => controls.stop();
+  }, [paused, left, toast.id, toast.kind, dismiss]);
 
   // Phones slide toasts down from the top edge; larger screens slide them in from the left.
   const offset = compact ? { y: -24 } : { x: -40 };
@@ -34,6 +47,11 @@ function ToastItem({ toast, compact }: { toast: Toast; compact: boolean }) {
         toast.kind === 'error' && 'border-rose-400/40',
       )}
       role={toast.kind === 'error' ? 'alert' : 'status'}
+      // Taps count too: phones send mouseenter on a tap and mouseleave on the next tap elsewhere.
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setFocused(true)}
+      onBlur={(e) => setFocused(e.currentTarget.contains(e.relatedTarget))}
     >
       <button
         onClick={() => dismiss(toast.id)}
@@ -59,6 +77,17 @@ function ToastItem({ toast, compact }: { toast: Toast; compact: boolean }) {
           </div>
           <div className="mt-1.5 text-sm font-semibold text-white">{toast.title}</div>
           <p className={cn('mt-0.5 text-xs leading-relaxed text-ink-200', compact ? 'line-clamp-2' : 'line-clamp-4')}>{toast.text}</p>
+          {toast.debriefId && (
+            <button
+              onClick={() => {
+                readDebrief(toast.debriefId!);
+                dismiss(toast.id);
+              }}
+              className="mt-0.5 py-1 text-sm font-semibold text-brand-cyan hover:underline"
+            >
+              Read in Playbook
+            </button>
+          )}
         </div>
       )}
       {toast.kind === 'error' && (
@@ -66,12 +95,7 @@ function ToastItem({ toast, compact }: { toast: Toast; compact: boolean }) {
           <AlertCircle size={16} aria-hidden /> {toast.text}
         </div>
       )}
-      <motion.div
-        className="absolute bottom-0 left-0 h-0.5 bg-white/30"
-        initial={{ width: '100%' }}
-        animate={{ width: '0%' }}
-        transition={{ duration: DURATION[toast.kind] / 1000, ease: 'linear' }}
-      />
+      <motion.div className="absolute bottom-0 left-0 h-0.5 w-full origin-left bg-white/30" style={{ scaleX: left }} />
     </motion.div>
   );
 }

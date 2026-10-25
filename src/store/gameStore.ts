@@ -39,6 +39,8 @@ export interface Toast {
   stakeholder?: StakeholderId;
   tone?: Tone;
   verdict?: Verdict;
+  /** A debrief toast's debrief, for its "Read in Playbook" link. */
+  debriefId?: string;
 }
 
 export interface EventOutcome {
@@ -67,6 +69,8 @@ interface StoreState {
   shake: number;
   revealed: string[];
   menuOpen: boolean;
+  /** A debrief the Playbook should open in its decision log, set by a toast's "Read in Playbook" link. */
+  playbookDebrief: string | null;
 
   newGame: (scenarioId: ScenarioId, playerName: string) => void;
   continueGame: () => void;
@@ -79,6 +83,7 @@ interface StoreState {
   setTab: (tab: Tab) => void;
   openDept: (dept: DeptId | null) => void;
   openProject: (projectId: string | null) => void;
+  readDebrief: (debriefId: string | null) => void;
   setHowTo: (open: boolean) => void;
   setMenu: (open: boolean) => void;
   hideCoach: () => void;
@@ -100,7 +105,7 @@ function toastsFor(before: GameState, after: GameState): Toast[] {
   const debriefs: Toast[] = after.debriefs
     .slice(before.debriefs.length)
     .filter((d) => d.kind === 'decision')
-    .map((d) => ({ id: ++toastSeq, kind: 'debrief', title: d.title, text: d.insight, verdict: d.verdict }));
+    .map((d) => ({ id: ++toastSeq, kind: 'debrief', title: d.title, text: d.insight, verdict: d.verdict, debriefId: d.id }));
   return [...debriefs, ...quips];
 }
 
@@ -125,6 +130,7 @@ export const useGameStore = create<StoreState>()(
       shake: 0,
       revealed: [],
       menuOpen: false,
+      playbookDebrief: null,
 
       newGame: (scenarioId, playerName) => {
         play('whoosh');
@@ -234,6 +240,10 @@ export const useGameStore = create<StoreState>()(
       },
       openDept: (dept) => set({ deptModal: dept }),
       openProject: (projectId) => set({ projectModal: projectId }),
+      readDebrief: (debriefId) => {
+        if (debriefId) play('click');
+        set(debriefId ? { tab: 'playbook', playbookDebrief: debriefId } : { playbookDebrief: null });
+      },
       setHowTo: (open) => set(open ? { howTo: true } : { howTo: false, seenHowTo: true }),
       setMenu: (open) => set({ menuOpen: open }),
       hideCoach: () => set({ coachOff: true }),

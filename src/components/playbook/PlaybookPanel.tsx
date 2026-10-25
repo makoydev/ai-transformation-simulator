@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import { BookOpen, Lock } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DebriefCard } from '@/components/feedback/DebriefCard';
 import { VerdictBadge } from '@/components/ui/Verdict';
 import { LESSON_CATEGORIES, LESSONS } from '@/data/lessons';
 import type { LessonCategory } from '@/engine';
 import { cn } from '@/lib/cn';
-import { useGame } from '@/store/gameStore';
+import { useGame, useGameStore } from '@/store/gameStore';
 
 type Filter = LessonCategory | 'all';
 
@@ -24,6 +24,18 @@ export function PlaybookPanel() {
   const [filter, setFilter] = useState<Filter>('all');
   const [view, setView] = useState<'lessons' | 'log'>('lessons');
   const [openDebrief, setOpenDebrief] = useState<string | null>(null);
+
+  // "Read in Playbook" on a debrief toast opens that debrief in the decision log.
+  const requested = useGameStore((s) => s.playbookDebrief);
+  const readDebrief = useGameStore((s) => s.readDebrief);
+  useEffect(() => {
+    if (!requested) return;
+    setView('log');
+    setOpenDebrief(requested);
+    readDebrief(null);
+    // Once the log has rendered, move focus to the debrief, which also scrolls it into view.
+    setTimeout(() => document.getElementById(`debrief-${requested}`)?.focus());
+  }, [requested, readDebrief]);
   const lessons = LESSONS.filter((l) => filter === 'all' || l.category === filter);
   const unlocked = game.lessons.length;
   const earned = lessons.filter((l) => game.lessons.includes(l.id));
@@ -132,7 +144,7 @@ export function PlaybookPanel() {
           {[...game.debriefs].reverse().map((d) => (
             <li key={d.id}>
               {openDebrief === d.id ? (
-                <button className="w-full text-left" onClick={() => setOpenDebrief(null)} aria-expanded>
+                <button id={`debrief-${d.id}`} className="w-full text-left" onClick={() => setOpenDebrief(null)} aria-expanded>
                   <DebriefCard debrief={d} />
                 </button>
               ) : (

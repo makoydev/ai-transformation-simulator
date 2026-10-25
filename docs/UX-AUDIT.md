@@ -27,7 +27,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 |---|---|---|---|
 | **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
 | **P2** | Makes the game noticeably harder to learn or use. | 15 | 15 |
-| **P3** | Polish and nice-to-haves. | 30 | 9 |
+| **P3** | Polish and nice-to-haves. | 30 | 11 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
 
@@ -235,7 +235,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** arrow-key navigation with a roving `tabindex`, following the standard ARIA patterns for radio groups and tabs.
   - **Where:** `src/components/screens/SetupScreen.tsx:47`, `src/components/org/TriagePanel.tsx:58`, `src/components/screens/GameScreen.tsx:38`, `src/components/playbook/PlaybookPanel.tsx:30`
 
-- [ ] **UX-38: Pop-ups disappear before you finish reading** · Accessibility · S
+- [x] **UX-38: Pop-ups disappear before you finish reading** · Accessibility · S
   - **What happens:** debrief toasts close after 10 seconds even while you are reading them. WCAG 2.2.1 asks for a way to pause.
   - **Fix:** pause the timer on hover and focus, and add a "Read in Playbook" link.
   - **Where:** `src/components/feedback/Toasts.tsx:10-17`
@@ -244,7 +244,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **What happens:** the toast ✕ is about 22px and the tutorial dots are 6px tall. WCAG 2.2 asks for at least 24px; 44px is comfortable on a phone.
   - **Where:** `src/components/feedback/Toasts.tsx:32`, `src/components/feedback/HowToPlay.tsx:131-136`
 
-- [ ] **UX-40: Reduced-motion players still wait for reveals and count-ups** · Accessibility · S
+- [x] **UX-40: Reduced-motion players still wait for reveals and count-ups** · Accessibility · S
   - **What happens:** animations follow the reduced-motion setting, but the two-second "Analyzing pilot results" reveal and the counting numbers still run, and nobody can skip the reveal.
   - **Fix:** skip the reveal and the count-ups under reduced motion, and let anyone click to skip the reveal.
   - **Where:** `src/components/portfolio/ProjectModal.tsx:145-161`, `src/components/ui/AnimatedNumber.tsx:18-25`

@@ -42,7 +42,7 @@ interface CompactProps {
 function CompactMetric({ label, value, format, formatDelta, icon: Icon, accent, higherIsBetter = true, epsilon = 0.5, display, valueClassName, className }: CompactProps) {
   const { floats, flash } = useDeltaFloats(value, epsilon, higherIsBetter);
   return (
-    <span className={cn('relative min-w-0 rounded-lg px-1.5 py-0.5 transition-shadow duration-300', flash && FLASH_RING[flash], className)}>
+    <span className={cn('relative min-w-0 rounded-lg px-1 py-0.5 transition-shadow duration-300', flash && FLASH_RING[flash], className)}>
       <span className="flex items-center gap-1 text-xs font-medium text-ink-300">
         <Icon size={11} style={{ color: accent }} className="shrink-0" aria-hidden />
         <span className="truncate">{label}</span>
@@ -78,13 +78,14 @@ export function MetricsBar() {
 
   return (
     <div>
-      {/* Phones: one row with the numbers that matter most (value/quarter only from 360px). Tapping it shows all seven tiles. */}
+      {/* Phones: one row with the numbers that matter most (value/quarter only from 360px). Tapping it shows all seven tiles.
+          Trust and risk are short, so they take the width they need ("Moderate" never truncates) and the money columns share the rest. */}
       <button
         type="button"
         onClick={() => setExpanded((e) => !e)}
         aria-expanded={expanded}
         aria-controls="metric-tiles"
-        className="glass grid w-full grid-cols-[repeat(3,minmax(0,1fr))_auto] items-center gap-1 rounded-xl px-1.5 py-2 text-left min-[360px]:grid-cols-[repeat(4,minmax(0,1fr))_auto] sm:hidden"
+        className="glass grid w-full grid-cols-[minmax(0,1fr)_auto_auto_auto] items-center gap-0.5 rounded-xl px-1.5 py-2 text-left min-[360px]:grid-cols-[repeat(2,minmax(0,1fr))_auto_auto_auto] sm:hidden"
       >
         <CompactMetric label="Budget" value={game.budget} format={money} formatDelta={signedMoney} epsilon={0.005} icon={Wallet} accent={PALETTE.metric.budget} />
         <CompactMetric

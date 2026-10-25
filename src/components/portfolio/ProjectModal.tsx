@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { AlertTriangle, Power, RefreshCw, Rocket, ShieldCheck, Skull, UserCheck } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { DebriefCard } from '@/components/feedback/DebriefCard';
@@ -145,30 +145,49 @@ function PilotView({ game, project: p, act }: ViewProps) {
 function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
   const revealed = useGameStore((s) => s.revealed.includes(p.id));
   const markRevealed = useGameStore((s) => s.markRevealed);
-  const [phase, setPhase] = useState<'analyzing' | 'stamp' | 'done'>(revealed ? 'done' : 'analyzing');
+  // With reduced motion the results show at once, without the "Analyzing" wait.
+  const reduceMotion = useReducedMotion();
+  const [phase, setPhase] = useState<'analyzing' | 'stamp' | 'done'>(revealed || reduceMotion ? 'done' : 'analyzing');
   const uc = sel.caseOf(p);
   const sensitive = uc.sensitivity >= 0.7 && p.approach !== 'process';
   const [hitl, setHitl] = useState(sensitive);
   const [confirmKill, setConfirmKill] = useState(false);
   const result = p.result!;
+  const sound = result === 'failed' ? 'fail' : 'stamp';
 
-  // Runs once per reveal: both timers must survive the phase change they trigger.
+  // Runs once per reveal: the timers must survive the phase change they trigger.
   const startedRevealed = useRef(revealed);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   useEffect(() => {
     if (startedRevealed.current) return;
-    const t1 = setTimeout(() => {
-      setPhase('stamp');
-      play(result === 'failed' ? 'fail' : 'stamp');
-    }, 1300);
-    const t2 = setTimeout(() => {
-      setPhase('done');
-      markRevealed(p.id);
-    }, 2100);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, [result, markRevealed, p.id]);
+    const ts = reduceMotion
+      ? [
+          setTimeout(() => {
+            play(sound);
+            markRevealed(p.id);
+          }),
+        ]
+      : [
+          setTimeout(() => {
+            setPhase('stamp');
+            play(sound);
+          }, 1300),
+          setTimeout(() => {
+            setPhase('done');
+            markRevealed(p.id);
+          }, 2100),
+        ];
+    timers.current = ts;
+    return () => ts.forEach(clearTimeout);
+  }, [sound, reduceMotion, markRevealed, p.id]);
+
+  // Anyone can skip the wait: the stamp lands and the decision shows at once.
+  const skipReveal = () => {
+    timers.current.forEach(clearTimeout);
+    play(sound);
+    setPhase('done');
+    markRevealed(p.id);
+  };
 
   const scaleAction: GameAction = { type: 'scale', projectId: p.id, hitl };
   const iterateAction: GameAction = { type: 'iterate', projectId: p.id };
@@ -180,15 +199,20 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
 
   if (phase === 'analyzing') {
     return (
-      <div className="flex flex-col items-center py-10 text-center">
-        <div className="label-caps">Analyzing pilot results</div>
-        <div className="mt-4 h-2 w-64 overflow-hidden rounded-full bg-white/10">
-          <motion.div className="h-full bg-brand-gradient" initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 1.25, ease: 'easeInOut' }} />
-        </div>
-        <motion.p className="mt-4 text-sm text-ink-300" animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 1.2, repeat: Infinity }}>
+      <button
+        type="button"
+        onClick={skipReveal}
+        className="flex w-full flex-col items-center rounded-xl py-10 text-center transition-colors hover:bg-white/4"
+      >
+        <span className="label-caps">Analyzing pilot results</span>
+        <span className="mt-4 block h-2 w-64 max-w-full overflow-hidden rounded-full bg-white/10">
+          <motion.span className="block h-full bg-brand-gradient" initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 1.25, ease: 'easeInOut' }} />
+        </span>
+        <motion.span className="mt-4 text-sm text-ink-300" animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 1.2, repeat: Infinity }}>
           Comparing against baseline KPIs…
-        </motion.p>
-      </div>
+        </motion.span>
+        <span className="mt-3 text-xs text-ink-400">Skip</span>
+      </button>
     );
   }
 
@@ -196,7 +220,7 @@ function ResultsView({ game, project: p, act, costLabel }: ViewProps) {
     <>
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
         <motion.div
-          initial={phase === 'stamp' ? { scale: 2.4, rotate: -18, opacity: 0 } : false}
+          initial={startedRevealed.current ? false : { scale: 2.4, rotate: -18, opacity: 0 }}
           animate={{ scale: 1, rotate: -6, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 500, damping: 18 }}
           className={cn('rounded-xl border-2 px-4 py-2 font-display text-2xl font-black uppercase tracking-widest', RESULT_STYLE[result].cls)}

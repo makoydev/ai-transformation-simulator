@@ -19,6 +19,7 @@ import { StrategyPanel } from '@/components/strategy/StrategyPanel';
 import { LESSONS } from '@/data/lessons';
 import { sel } from '@/engine';
 import { cn } from '@/lib/cn';
+import { rovingKeyDown } from '@/lib/roving';
 import { useGame, useGameStore, type Tab } from '@/store/gameStore';
 
 const TABS: { id: Tab; label: string; short: string; icon: typeof Map; mobileOnly?: boolean }[] = [
@@ -37,7 +38,7 @@ function TabBar() {
   const awaiting = sel.projectsIn(game, 'results').length;
 
   return (
-    <div className="mb-5 hidden gap-1 overflow-x-auto rounded-2xl border border-white/6 bg-ink-850/70 p-1 sm:flex" role="tablist" aria-label="Game views">
+    <div className="mb-5 hidden gap-1 overflow-x-auto rounded-2xl border border-white/6 bg-ink-850/70 p-1 sm:flex" role="tablist" aria-label="Game views" onKeyDown={rovingKeyDown}>
       {TABS.map((t) => {
         const Icon = t.icon;
         const active = tab === t.id;
@@ -45,8 +46,11 @@ function TabBar() {
         return (
           <button
             key={t.id}
+            id={`tab-${t.id}`}
             role="tab"
             aria-selected={active}
+            aria-controls="game-view"
+            tabIndex={active ? 0 : -1}
             onClick={() => setTab(t.id)}
             className={cn(
               'relative flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors sm:px-4',
@@ -94,15 +98,18 @@ function PhoneTabBar() {
   };
 
   return (
-    <div className="-mx-3 -mb-2.5 mt-2.5 grid grid-cols-5 border-t border-white/6 px-1 sm:hidden" role="tablist" aria-label="Game views">
+    <div className="-mx-3 -mb-2.5 mt-2.5 grid grid-cols-5 border-t border-white/6 px-1 sm:hidden" role="tablist" aria-label="Game views" onKeyDown={rovingKeyDown}>
       {TABS.map((t) => {
         const Icon = t.icon;
         const active = tab === t.id;
         return (
           <button
             key={t.id}
+            id={`phone-tab-${t.id}`}
             role="tab"
             aria-selected={active}
+            aria-controls="game-view"
+            tabIndex={active ? 0 : -1}
             onClick={() => select(t.id)}
             className={cn(
               'relative my-1 flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl text-xs font-semibold transition-colors',
@@ -154,7 +161,9 @@ export function GameScreen() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25 }}
+                id="game-view"
                 role="tabpanel"
+                aria-labelledby={`tab-${tab}`}
               >
                 {tab === 'org' && <OrgMap />}
                 {tab === 'portfolio' && <PortfolioBoard />}

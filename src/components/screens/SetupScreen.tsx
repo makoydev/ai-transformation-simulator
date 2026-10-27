@@ -6,6 +6,7 @@ import { SCENARIO_ORDER, SCENARIOS } from '@/data/scenarios';
 import type { ScenarioId } from '@/engine';
 import { cn } from '@/lib/cn';
 import { fmtMoney } from '@/lib/format';
+import { rovingKeyDown } from '@/lib/roving';
 import { play } from '@/lib/sfx';
 import { useGameStore } from '@/store/gameStore';
 
@@ -46,7 +47,7 @@ export function SetupScreen() {
           />
         </label>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-3" role="radiogroup" aria-label="Company">
+        <div className="mt-8 grid gap-4 md:grid-cols-3" role="radiogroup" aria-label="Company" onKeyDown={rovingKeyDown}>
           {SCENARIO_ORDER.map((id, i) => {
             const sc = SCENARIOS[id];
             const selected = scenario === id;
@@ -55,6 +56,7 @@ export function SetupScreen() {
                 key={id}
                 role="radio"
                 aria-checked={selected}
+                tabIndex={selected ? 0 : -1}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0, scale: selected ? 1.02 : 1 }}
                 transition={{ delay: i * 0.08, type: 'spring', stiffness: 300, damping: 25 }}

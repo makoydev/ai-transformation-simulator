@@ -9,6 +9,7 @@ import { sel, validateAction, type ApproachId } from '@/engine';
 import { cn } from '@/lib/cn';
 import { fmtMoney } from '@/lib/format';
 import { APPROACH_ICONS } from '@/lib/icons';
+import { rovingKeyDown, rovingTabIndex } from '@/lib/roving';
 import { useGameStore } from '@/store/gameStore';
 
 function riskTier(weight: number): { label: string; cls: string } {
@@ -97,7 +98,7 @@ export function TriagePanel({ useCase: uc, onBack, onLaunched }: Props) {
       </div>
 
       {view === 'cards' ? (
-        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="radiogroup" aria-label="Approach">
+        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="radiogroup" aria-label="Approach" onKeyDown={rovingKeyDown}>
           {facts.map((f, i) => {
             const { id, ap } = f;
             const Icon = APPROACH_ICONS[id];
@@ -107,6 +108,7 @@ export function TriagePanel({ useCase: uc, onBack, onLaunched }: Props) {
                 key={id}
                 role="radio"
                 aria-checked={isSel}
+                tabIndex={rovingTabIndex(isSel, i, selected !== null)}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0, scale: isSel ? 1.02 : 1 }}
                 transition={{ delay: i * 0.04, type: 'spring', stiffness: 400, damping: 28 }}
@@ -161,7 +163,7 @@ export function TriagePanel({ useCase: uc, onBack, onLaunched }: Props) {
         </div>
       ) : (
         // A compact table for comparing all six at once. It scrolls sideways inside itself on narrow screens.
-        <div className="mt-3 overflow-x-auto rounded-2xl border border-white/[0.07]" role="radiogroup" aria-label="Approach">
+        <div className="mt-3 overflow-x-auto rounded-2xl border border-white/[0.07]" role="radiogroup" aria-label="Approach" onKeyDown={rovingKeyDown}>
           <table className="w-full min-w-[560px] text-left text-xs">
             <thead className="bg-white/4 text-ink-300">
               <tr>
@@ -175,7 +177,7 @@ export function TriagePanel({ useCase: uc, onBack, onLaunched }: Props) {
               </tr>
             </thead>
             <tbody>
-              {facts.map((f) => {
+              {facts.map((f, i) => {
                 const { id, ap } = f;
                 const Icon = APPROACH_ICONS[id];
                 const isSel = selected === id;
@@ -187,7 +189,12 @@ export function TriagePanel({ useCase: uc, onBack, onLaunched }: Props) {
                     style={isSel ? { boxShadow: `inset 3px 0 0 ${ap.color}` } : undefined}
                   >
                     <th scope="row" className="px-3 py-2.5 font-normal">
-                      <button role="radio" aria-checked={isSel} onClick={() => setSelected(id)} className="flex items-center gap-2 text-left">
+                      <button
+                        role="radio"
+                        aria-checked={isSel}
+                        tabIndex={rovingTabIndex(isSel, i, selected !== null)}
+                        onClick={() => setSelected(id)}
+                        className="flex items-center gap-2 text-left">
                         <Icon size={15} style={{ color: ap.color }} className="shrink-0" aria-hidden />
                         <span className="font-semibold text-white">{ap.name}</span>
                         {isSel && <Check size={13} className="shrink-0 text-white" aria-hidden />}

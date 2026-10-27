@@ -25,6 +25,8 @@ import {
   type Tone,
   type Verdict,
 } from '@/engine';
+import { actionAnnouncement } from '@/lib/actionAnnouncement';
+import { announce } from '@/lib/announce';
 import { celebrateDeploy, celebrateSmall } from '@/lib/fx';
 import { play } from '@/lib/sfx';
 
@@ -181,6 +183,7 @@ export const useGameStore = create<StoreState>()(
           play('select');
         }
         set((st) => ({ game: next, toasts: [...st.toasts, ...toastsFor(game, next)].slice(-MAX_TOASTS) }));
+        announce(actionAnnouncement(game, next, action));
         return true;
       },
 

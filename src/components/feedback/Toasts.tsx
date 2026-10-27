@@ -5,12 +5,17 @@ import { createPortal } from 'react-dom';
 import { Avatar } from '@/components/ui/Avatar';
 import { VerdictBadge } from '@/components/ui/Verdict';
 import { STAKEHOLDERS } from '@/data/stakeholders';
+import { announce } from '@/lib/announce';
 import { cn } from '@/lib/cn';
+import { VERDICT_META } from '@/lib/labels';
 import { dialogCount, subscribeDialogs } from '@/lib/dialogStack';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import { selectDialogOpen, useGameStore, type Toast } from '@/store/gameStore';
 
 const DURATION: Record<Toast['kind'], number> = { quip: 5500, debrief: 10000, error: 3000 };
+
+// Toasts already read out, so a remount (or React's dev double effects) doesn't repeat them.
+const announced = new Set<number>();
 
 function ToastItem({ toast, compact }: { toast: Toast; compact: boolean }) {
   const dismiss = useGameStore((s) => s.dismissToast);
@@ -32,6 +37,15 @@ function ToastItem({ toast, compact }: { toast: Toast; compact: boolean }) {
     return () => controls.stop();
   }, [paused, left, toast.id, toast.kind, dismiss]);
 
+  // Read out once, when the toast first appears (it may have waited for a dialog to close).
+  useEffect(() => {
+    if (announced.has(toast.id)) return;
+    announced.add(toast.id);
+    if (toast.kind === 'quip' && toast.stakeholder) announce(`${STAKEHOLDERS[toast.stakeholder].name}: ${toast.text}`);
+    else if (toast.kind === 'debrief' && toast.verdict) announce(`Debrief, ${VERDICT_META[toast.verdict].label}: ${toast.title}. ${toast.text}`);
+    else if (toast.kind === 'error') announce(toast.text, true);
+  }, [toast]);
+
   // Phones slide toasts down from the top edge; larger screens slide them in from the left.
   const offset = compact ? { y: -24 } : { x: -40 };
 
@@ -46,7 +60,6 @@ function ToastItem({ toast, compact }: { toast: Toast; compact: boolean }) {
         'glass-strong pointer-events-auto relative w-full max-w-sm overflow-hidden p-3 pr-11',
         toast.kind === 'error' && 'border-rose-400/40',
       )}
-      role={toast.kind === 'error' ? 'alert' : 'status'}
       // Taps count too: phones send mouseenter on a tap and mouseleave on the next tap elsewhere.
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

@@ -1,6 +1,7 @@
 import { MotionConfig, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { HowToPlay } from '@/components/feedback/HowToPlay';
+import { LiveRegion } from '@/components/feedback/LiveRegion';
 import { QuarterTransition } from '@/components/feedback/QuarterTransition';
 import { EndScreen } from '@/components/screens/EndScreen';
 import { GameScreen } from '@/components/screens/GameScreen';
@@ -67,6 +68,7 @@ export default function App() {
       </motion.div>
       {current !== 'game' && <HowToPlay />}
       <QuarterTransition />
+      <LiveRegion />
     </MotionConfig>
   );
 }

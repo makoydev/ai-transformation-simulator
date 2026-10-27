@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
+import { announce } from '@/lib/announce';
 import { quarterLabel } from '@/lib/format';
 import { useGameStore } from '@/store/gameStore';
 
@@ -14,6 +15,9 @@ const TAGLINES = [
   'The final quarter. Make it count.',
 ];
 
+// The card last read out, so React's dev double effects don't repeat it.
+let lastAnnounced = 0;
+
 /** Full-screen title card between quarters. */
 export function QuarterTransition() {
   const transition = useGameStore((s) => s.transition);
@@ -21,6 +25,10 @@ export function QuarterTransition() {
 
   useEffect(() => {
     if (!transition) return;
+    if (transition.key !== lastAnnounced) {
+      lastAnnounced = transition.key;
+      announce(`Quarter ${transition.quarter} of 8, year ${Math.ceil(transition.quarter / 4)}. ${TAGLINES[transition.quarter - 1] ?? ''}`);
+    }
     const t = setTimeout(clear, 1700);
     return () => clearTimeout(t);
   }, [transition, clear]);
@@ -36,7 +44,6 @@ export function QuarterTransition() {
           exit={{ clipPath: 'inset(0 0 0 100%)' }}
           transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
           onClick={clear}
-          aria-live="polite"
         >
           <div className="grid-bg absolute inset-0 opacity-60" aria-hidden />
           <div className="relative text-center">

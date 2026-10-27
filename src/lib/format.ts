@@ -1,3 +1,5 @@
+import type { Change } from '@/engine';
+
 const MINUS = '−';
 
 /** $1.25M / $450K, with optional explicit sign. Values are in $M. */
@@ -29,4 +31,18 @@ export const fmtPct = (v: number): string => `${Math.round(v)}%`;
 
 export function quarterLabel(q: number): string {
   return `Q${((q - 1) % 4) + 1} · Year ${Math.ceil(q / 4)}`;
+}
+
+/** One change from a decision: "Budget −$720K", "Board trust +2", "+ Acceptable Use Policy". */
+export function fmtChange(c: Change): string {
+  switch (c.format) {
+    case 'money':
+      return `${c.label} ${fmtMoney(c.delta, { sign: true })}`;
+    case 'percent':
+      return `${c.label} ${fmtSigned(c.delta)}%`;
+    case 'flag':
+      return `+ ${c.label}`;
+    default:
+      return `${c.label} ${fmtSigned(c.delta)}`;
+  }
 }

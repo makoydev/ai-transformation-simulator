@@ -1,20 +1,7 @@
 import { motion } from 'framer-motion';
 import type { Change } from '@/engine';
 import { cn } from '@/lib/cn';
-import { fmtMoney, fmtSigned } from '@/lib/format';
-
-function formatChange(c: Change): string {
-  switch (c.format) {
-    case 'money':
-      return `${c.label} ${fmtMoney(c.delta, { sign: true })}`;
-    case 'percent':
-      return `${c.label} ${fmtSigned(c.delta)}%`;
-    case 'flag':
-      return `+ ${c.label}`;
-    default:
-      return `${c.label} ${fmtSigned(c.delta)}`;
-  }
-}
+import { fmtChange } from '@/lib/format';
 
 /** Animated chips summarizing the effects of a decision. */
 export function ChangeChips({ changes, className }: { changes: Change[]; className?: string }) {
@@ -33,7 +20,7 @@ export function ChangeChips({ changes, className }: { changes: Change[]; classNa
           )}
         >
           <span aria-hidden>{c.positive ? '▲' : '▼'}</span>
-          {formatChange(c)}
+          {fmtChange(c)}
         </motion.span>
       ))}
     </div>

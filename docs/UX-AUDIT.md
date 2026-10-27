@@ -27,7 +27,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 |---|---|---|---|
 | **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
 | **P2** | Makes the game noticeably harder to learn or use. | 15 | 15 |
-| **P3** | Polish and nice-to-haves. | 30 | 11 |
+| **P3** | Polish and nice-to-haves. | 30 | 14 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
 
@@ -220,17 +220,17 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** on phones, shorten the "awaiting decision" pill to an icon and a count.
   - **Where:** `src/components/hud/ActionBar.tsx:53-64`
 
-- [ ] **UX-35: Screen readers aren't told what changed** · Accessibility · M
+- [x] **UX-35: Screen readers aren't told what changed** · Accessibility · M
   - **What happens:** metric changes are never announced (the floating +/− numbers are hidden from screen readers). Toasts and the quarter title card create their live region at the same moment as their text, which screen readers often miss.
   - **Fix:** one permanent `aria-live="polite"` region that reads a short summary after each action ("Pilot launched. Budget 3.4 million, 1 capacity left.").
   - **Where:** `src/components/hud/MetricTile.tsx:104`, `src/components/feedback/Toasts.tsx:30,72`, `src/components/feedback/QuarterTransition.tsx:39`
 
-- [ ] **UX-36: Whole cards are buttons** · Accessibility · M
+- [x] **UX-36: Whole cards are buttons** · Accessibility · M
   - **What happens:** department cards and decision log entries are `<button>` elements that contain headings and lists. Screen readers read the whole card as one long button name, and the HTML is invalid.
   - **Fix:** make the card a plain container with one clearly labelled button or link.
   - **Where:** `src/components/org/OrgMap.tsx:56`, `src/components/playbook/PlaybookPanel.tsx:108`
 
-- [ ] **UX-37: Arrow keys don't work in pickers and tabs** · Accessibility · M
+- [x] **UX-37: Arrow keys don't work in pickers and tabs** · Accessibility · M
   - **What happens:** the company picker, the approach picker and both tab bars use radio and tab roles but respond only to Tab. The tabs have no `aria-controls`.
   - **Fix:** arrow-key navigation with a roving `tabindex`, following the standard ARIA patterns for radio groups and tabs.
   - **Where:** `src/components/screens/SetupScreen.tsx:47`, `src/components/org/TriagePanel.tsx:58`, `src/components/screens/GameScreen.tsx:38`, `src/components/playbook/PlaybookPanel.tsx:30`

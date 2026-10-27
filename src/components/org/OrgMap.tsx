@@ -54,15 +54,17 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
   const needsDecision = useCases.some((uc) => sel.useCaseStatus(game, uc) === 'results');
 
   return (
-    <motion.button
+    // A plain card with one button, the department name. The button's ::after covers the whole
+    // card, so a click anywhere opens it, and the focus ring is drawn around the card.
+    <motion.article
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.04, type: 'spring', stiffness: 260, damping: 24 }}
       whileHover={{ y: -4 }}
       whileTap={{ scale: 0.98 }}
-      onClick={() => openDept(id)}
       className={cn(
-        'glass group relative flex min-h-[200px] flex-col overflow-hidden p-4 text-left transition-colors hover:border-white/20',
+        'glass group relative flex min-h-[200px] cursor-pointer flex-col overflow-hidden p-4 text-left transition-colors hover:border-white/20',
+        'has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-[#72b4bb]',
         needsDecision && 'border-amber-300/40',
       )}
     >
@@ -79,7 +81,15 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
           <Icon size={20} aria-hidden />
         </div>
         <div className="min-w-0">
-          <h3 className="truncate font-display text-base font-semibold text-white">{def.name}</h3>
+          <h3 className="font-display text-base font-semibold text-white">
+            <button
+              onClick={() => openDept(id)}
+              aria-describedby={`dept-${id}-status`}
+              className="block max-w-full truncate text-left after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
+            >
+              {def.name}
+            </button>
+          </h3>
           <p className="truncate text-xs text-ink-300">
             {def.head}, {def.headTitle}
           </p>
@@ -89,7 +99,7 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
       {!dept.audited ? (
         <div className="mt-3 flex flex-1 flex-col">
           <p className="text-sm leading-relaxed text-ink-300">{def.blurb}</p>
-          <div className="mt-auto flex items-center gap-2 pt-4 text-xs font-semibold text-brand-cyan">
+          <div id={`dept-${id}-status`} className="mt-auto flex items-center gap-2 pt-4 text-xs font-semibold text-brand-cyan">
             <Lock size={13} aria-hidden />
             Audit to reveal {useCases.length} use cases · {fmtCost(getActionCost(game, { type: 'audit', dept: id }))}
           </div>
@@ -116,7 +126,7 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
               );
             })}
           </ul>
-          <div className="mt-auto flex flex-wrap gap-1.5">
+          <div id={`dept-${id}-status`} className="mt-auto flex flex-wrap gap-1.5">
             {dept.champions && (
               <span className="inline-flex items-center gap-1 rounded-full bg-pink-400/15 px-2 py-0.5 text-xs font-semibold text-pink-200">
                 <Users size={11} aria-hidden /> Champions
@@ -130,6 +140,6 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
           </div>
         </div>
       )}
-    </motion.button>
+    </motion.article>
   );
 }

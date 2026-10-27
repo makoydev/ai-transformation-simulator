@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Lock } from 'lucide-react';
+import { BookOpen, ChevronDown, Lock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { DebriefCard } from '@/components/feedback/DebriefCard';
 import { VerdictBadge } from '@/components/ui/Verdict';
@@ -146,26 +146,31 @@ export function PlaybookPanel() {
           <p className="text-sm text-ink-400">No decisions yet.</p>
         ) : (
           <ol className="space-y-2">
-            {[...game.debriefs].reverse().map((d) => (
-              <li key={d.id}>
-                {openDebrief === d.id ? (
-                  <button id={`debrief-${d.id}`} className="w-full text-left" onClick={() => setOpenDebrief(null)} aria-expanded>
-                    <DebriefCard debrief={d} />
-                  </button>
-                ) : (
+            {[...game.debriefs].reverse().map((d) => {
+              const open = openDebrief === d.id;
+              return (
+                <li key={d.id}>
                   <button
-                    onClick={() => setOpenDebrief(d.id)}
+                    id={`debrief-${d.id}`}
+                    onClick={() => setOpenDebrief(open ? null : d.id)}
+                    aria-expanded={open}
+                    aria-controls={open ? `debrief-${d.id}-body` : undefined}
                     className="glass flex w-full flex-wrap items-center gap-3 px-4 py-3 text-left hover:border-white/20"
-                    aria-expanded={false}
                   >
                     <span className="text-xs font-semibold text-ink-400">Q{d.quarter}</span>
                     <VerdictBadge verdict={d.verdict} />
                     <span className="min-w-0 flex-1 truncate text-sm font-medium text-white">{d.title}</span>
                     <span className="text-xs capitalize text-ink-400">{d.kind}</span>
+                    <ChevronDown size={16} className={cn('shrink-0 text-ink-400 transition-transform', open && 'rotate-180')} aria-hidden />
                   </button>
-                )}
-              </li>
-            ))}
+                  {open && (
+                    <div id={`debrief-${d.id}-body`} className="mt-2">
+                      <DebriefCard debrief={d} />
+                    </div>
+                  )}
+                </li>
+              );
+            })}
           </ol>
         )}
       </div>

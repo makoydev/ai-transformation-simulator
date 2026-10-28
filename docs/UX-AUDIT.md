@@ -27,7 +27,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 |---|---|---|---|
 | **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
 | **P2** | Makes the game noticeably harder to learn or use. | 15 | 15 |
-| **P3** | Polish and nice-to-haves. | 30 | 20 |
+| **P3** | Polish and nice-to-haves. | 30 | 25 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
 
@@ -265,17 +265,17 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** allow two lines, or shorten the text in the data.
   - **Where:** `src/components/org/OrgMap.tsx:81-84`
 
-- [ ] **UX-44: Look-alike icons, and hover effects that do nothing** · Visual · S
+- [x] **UX-44: Look-alike icons, and hover effects that do nothing** · Visual · S
   - All three companies use the same building icon, and all six policies use the same shield. Distinct icons would make them easier to scan.
   - The six feature cards on the title screen lift on hover but can't be clicked.
   - **Where:** `src/components/screens/SetupScreen.tsx:72`, `src/components/strategy/StrategyPanel.tsx:124`, `src/components/screens/TitleScreen.tsx:121`
 
-- [ ] **UX-45: Chart details** · Visual · S
+- [x] **UX-45: Chart details** · Visual · S
   - The value chart's axis goes up to $5.00M for data that peaks around $2.7M (its rounding jumps from 3 to 5), so almost half the chart is empty.
   - The "Table view" button sits in a different place on each chart, because it wraps under the longer subtitle.
   - **Where:** `src/components/charts/LineChart.tsx:26-32,90-101`
 
-- [ ] **UX-46: "Copy results" could share better** · Sharing · S
+- [x] **UX-46: "Copy results" could share better** · Sharing · S
   - On phones, open the system share sheet (`navigator.share`). If copying fails, say so; at the moment it fails silently.
   - **Where:** `src/components/screens/EndScreen.tsx:40-49`
 
@@ -298,10 +298,10 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - Many people will try the game at work. Consider starting muted (or asking once), and add a volume setting.
   - **Where:** `src/store/gameStore.ts:113`
 
-- [ ] **UX-51: Page basics** · Polish · S
+- [x] **UX-51: Page basics** · Polish · S
   - The browser tab title never changes ("Q3 · Year 1 · AI Transformation Simulator" would help). There's no `<noscript>` message, and no home-screen icon (`apple-touch-icon` and a web manifest) for players who save the game to their phone.
   - **Where:** `index.html`, `src/App.tsx`
 
-- [ ] **UX-52: Nothing links to the source code or the person who made it** · Sharing · S
+- [x] **UX-52: Nothing links to the source code or the person who made it** · Sharing · S
   - A player who enjoys the game can't find the code or the person behind it. Add a small footer on the title and end screens, for example "Source on GitHub · made by …".
   - **Where:** `src/components/screens/TitleScreen.tsx:132`, `src/components/screens/EndScreen.tsx:237`

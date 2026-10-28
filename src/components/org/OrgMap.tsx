@@ -85,12 +85,13 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
             <button
               onClick={() => openDept(id)}
               aria-describedby={`dept-${id}-status`}
-              className="block max-w-full truncate text-left after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
+              className="block text-left leading-snug after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
             >
               {def.name}
             </button>
           </h3>
-          <p className="truncate text-xs text-ink-300">
+          {/* Names and titles wrap rather than truncate: at four columns some are wider than the card. */}
+          <p className="mt-0.5 text-xs leading-snug text-ink-300">
             {def.head}, {def.headTitle}
           </p>
         </div>
@@ -118,9 +119,9 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
               const status = sel.useCaseStatus(game, uc);
               const st = STATUS_STYLE[status];
               return (
-                <li key={uc.id} className="flex items-center gap-2 text-xs">
-                  <span className={cn('h-2 w-2 shrink-0 rounded-full', st.dot)} aria-hidden />
-                  <span className="truncate text-ink-100">{uc.title}</span>
+                <li key={uc.id} className="flex items-start gap-2 text-xs">
+                  <span className={cn('mt-1 h-2 w-2 shrink-0 rounded-full', st.dot)} aria-hidden />
+                  <span className="min-w-0 text-ink-100">{uc.title}</span>
                   <span className="ml-auto shrink-0 text-ink-400">{st.label}</span>
                 </li>
               );

@@ -20,7 +20,7 @@ function tipFor(s: GameState): Tip {
   if (!Object.values(s.departments).some((d) => d.audited)) {
     return {
       step: 'audit',
-      text: 'Start on the Org Map. Open a department and audit it to reveal its use cases. An audit costs 1 capacity.',
+      text: 'Start on the Org Map: press Audit on a department to reveal its use cases. An audit costs 1 capacity.',
     };
   }
   if (s.projects.length === 0) {

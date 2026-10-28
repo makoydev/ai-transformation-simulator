@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
-import { Lock, Sparkles, Users } from 'lucide-react';
+import { Lock, Search, Sparkles, Users } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 import { Meter } from '@/components/ui/Meter';
 import { DEPARTMENTS, DEPT_ORDER } from '@/data/departments';
 import { useCasesForDept } from '@/data/useCases';
-import { getActionCost, sel, type DeptId } from '@/engine';
+import { getActionCost, sel, validateAction, type DeptId } from '@/engine';
 import { cn } from '@/lib/cn';
 import { fmtCost } from '@/lib/format';
 import { DEPT_ICONS } from '@/lib/icons';
@@ -52,6 +53,9 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
   const Icon = DEPT_ICONS[id];
   const useCases = useCasesForDept(id);
   const needsDecision = useCases.some((uc) => sel.useCaseStatus(game, uc) === 'results');
+  const perform = useGameStore((s) => s.perform);
+  const audit = { type: 'audit', dept: id } as const;
+  const auditBlocked = dept.audited ? null : validateAction(game, audit);
 
   return (
     // A plain card with one button, the department name. The button's ::after covers the whole
@@ -100,9 +104,26 @@ function DepartmentCard({ id, index }: { id: DeptId; index: number }) {
       {!dept.audited ? (
         <div className="mt-3 flex flex-1 flex-col">
           <p className="text-sm leading-relaxed text-ink-300">{def.blurb}</p>
-          <div id={`dept-${id}-status`} className="mt-auto flex items-center gap-2 pt-4 text-xs font-semibold text-brand-cyan">
-            <Lock size={13} aria-hidden />
-            Audit to reveal {useCases.length} use cases · {fmtCost(getActionCost(game, { type: 'audit', dept: id }))}
+          <div className="mt-auto pt-4">
+            <p id={`dept-${id}-status`} className="flex items-start gap-1.5 text-xs text-ink-300">
+              <Lock size={12} className="mt-0.5 shrink-0" aria-hidden />
+              Reveals {useCases.length} use cases · {fmtCost(getActionCost(game, audit))}
+            </p>
+            {/* Audits straight from the card. It sits above the card's stretched button, so it doesn't open the
+                dialog. When it's blocked the capacity bar already says why; the tooltip and the dialog repeat it. */}
+            <Button
+              size="sm"
+              variant="secondary"
+              className="relative z-10 mt-2 w-full"
+              disabled={!!auditBlocked}
+              title={auditBlocked ?? undefined}
+              onClick={() => perform(audit)}
+              icon={<Search size={14} />}
+            >
+              <span>
+                Audit<span className="sr-only"> {def.name}</span>
+              </span>
+            </Button>
           </div>
         </div>
       ) : (

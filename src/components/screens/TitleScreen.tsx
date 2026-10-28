@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Bot, FileSearch, Gauge, Info, Play, ShieldCheck, TrendingUp, Users, Workflow, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Credits } from '@/components/ui/Credits';
-import { SCENARIOS } from '@/data/scenarios';
+import { GAME_LENGTH, SCENARIOS } from '@/data/scenarios';
 import { quarterLabel } from '@/lib/format';
 import { BrandIcon } from '@/lib/icons';
 import { useGameStore } from '@/store/gameStore';
@@ -125,6 +125,9 @@ export function TitleScreen() {
             How to play
           </Button>
         </motion.div>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-4 text-sm text-ink-400">
+          {GAME_LENGTH}
+        </motion.p>
 
         <div className="mt-14 grid w-full gap-3 text-left sm:grid-cols-2 lg:grid-cols-3">
           {PILLARS.map((p, i) => {

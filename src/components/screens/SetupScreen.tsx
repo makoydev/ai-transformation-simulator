@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Check, Rocket } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
-import { SCENARIO_ORDER, SCENARIOS } from '@/data/scenarios';
+import { GAME_LENGTH, SCENARIO_ORDER, SCENARIOS } from '@/data/scenarios';
 import { BALANCE, type ScenarioId } from '@/engine';
 import { cn } from '@/lib/cn';
 import { fmtMoney } from '@/lib/format';
@@ -114,7 +114,8 @@ export function SetupScreen() {
           })}
         </div>
 
-        <div className="mt-8 flex justify-end">
+        <div className="mt-8 flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
+          <p className="text-sm text-ink-400">{GAME_LENGTH}</p>
           <Button variant="primary" size="lg" onClick={() => newGame(scenario, name)} icon={<Rocket size={18} />}>
             Start day one at {SCENARIOS[scenario].company}
           </Button>

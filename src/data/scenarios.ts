@@ -110,3 +110,6 @@ export const SCENARIOS: Record<ScenarioId, ScenarioDef> = {
 };
 
 export const SCENARIO_ORDER: ScenarioId[] = ['lumen', 'pemberton', 'crestline'];
+
+/** How long a game is, for the title and setup screens. */
+export const GAME_LENGTH = '8 quarters · saves after every move, so you can stop and come back anytime';

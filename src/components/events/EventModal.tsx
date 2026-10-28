@@ -7,9 +7,9 @@ import { ChangeChips } from '@/components/ui/ChangeChips';
 import { Modal } from '@/components/ui/Modal';
 import { choiceDescription, EVENT_MAP, type EventCategory } from '@/data/events';
 import { STAKEHOLDERS } from '@/data/stakeholders';
-import { currentEvent, isChoiceAvailable } from '@/engine';
+import { BALANCE, currentEvent, isChoiceAvailable, sel, type GameState } from '@/engine';
 import { cn } from '@/lib/cn';
-import { quarterLabel } from '@/lib/format';
+import { fmtMoney, quarterLabel } from '@/lib/format';
 import { useGameStore } from '@/store/gameStore';
 import { PALETTE } from '@/lib/palette';
 
@@ -72,6 +72,7 @@ export function EventModal() {
                   </span>
                   <span className="text-xs text-ink-400">{quarterLabel(game.quarter)}</span>
                 </div>
+                <YourNumbers game={game} />
                 <h2 className="mt-3 text-2xl font-bold text-white sm:text-3xl">{event.title}</h2>
                 <div className="mt-4 flex gap-3">
                   <Avatar id={event.from} size="lg" />
@@ -147,5 +148,30 @@ export function EventModal() {
         </motion.div>
       )}
     </Modal>
+  );
+}
+
+/**
+ * The numbers a choice can cost, shown while the player decides, since the dialog covers the
+ * scoreboard and can't be closed. Values in warning territory are highlighted.
+ */
+function YourNumbers({ game }: { game: GameState }) {
+  const risk = Math.round(sel.totalRisk(game));
+  const items = [
+    // Budget is flagged when it can't cover the run costs due at quarter end; morale when staff are fearful.
+    { label: 'Budget', value: fmtMoney(game.budget), warn: game.budget < sel.quarterlyCosts(game).total },
+    { label: 'Trust', value: String(Math.round(game.trust)), warn: game.trust < BALANCE.warningThreshold },
+    { label: 'Risk', value: String(risk), warn: risk >= BALANCE.trust.riskThreshold },
+    { label: 'Morale', value: String(Math.round(game.morale)), warn: game.morale < 40 },
+  ];
+  return (
+    <dl aria-label="Your numbers" className="mt-3 flex flex-wrap gap-x-4 gap-y-1 rounded-xl bg-white/4 px-3 py-2 text-xs">
+      {items.map((it) => (
+        <div key={it.label} className="flex gap-1.5">
+          <dt className="text-ink-400">{it.label}</dt>
+          <dd className={cn('font-semibold', it.warn ? 'text-rose-300' : 'text-white')}>{it.value}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }

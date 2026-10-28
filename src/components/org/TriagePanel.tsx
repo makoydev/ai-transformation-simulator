@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { AlertTriangle, ArrowLeft, Check, Clock, Coins, Rocket, ShieldAlert } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, Check, Clock, Coins, Eye, Lightbulb, Rocket, ShieldAlert } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { DisabledReason } from '@/components/ui/DisabledReason';
@@ -73,13 +73,20 @@ export function TriagePanel({ useCase: uc, onBack, onLaunched }: Props) {
         where the knowledge lives; and whether the real issue is the process itself. You'll learn how good your call was
         when the pilot reports back.
       </p>
-      <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-300">
-        {uc.clues.map((c) => (
-          <li key={c} className="before:mr-1.5 before:text-brand-cyan before:content-['•']">
-            {c}
-          </li>
-        ))}
-      </ul>
+      {/* The clues are what the choice rests on, so they are at least as prominent here as on the use-case card. */}
+      <div className="mt-3 rounded-xl border border-brand-cyan/20 bg-brand-cyan/5 p-3">
+        <div className="label-caps mb-1.5 flex items-center gap-1.5">
+          <Eye size={12} aria-hidden /> What your audit found
+        </div>
+        <ul className="space-y-1.5">
+          {uc.clues.map((c) => (
+            <li key={c} className="flex gap-2 text-sm text-ink-100">
+              <Lightbulb size={14} className="mt-0.5 shrink-0 text-brand-cyan" aria-hidden />
+              <span>{c}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className="mt-5 flex items-center justify-between gap-3">
         <div className="label-caps">Choose an approach</div>

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { DisabledReason } from '@/components/ui/DisabledReason';
 import { APPROACHES, APPROACH_ORDER } from '@/data/approaches';
 import type { UseCaseDef } from '@/data/useCases';
-import { sel, validateAction, type ApproachId } from '@/engine';
+import { getActionCost, sel, validateAction, type ApproachId } from '@/engine';
 import { cn } from '@/lib/cn';
 import { fmtMoney } from '@/lib/format';
 import { APPROACH_ICONS } from '@/lib/icons';
@@ -24,7 +24,8 @@ const quarters = (n: number) => `${n} quarter${n > 1 ? 's' : ''}`;
 interface Props {
   useCase: UseCaseDef;
   onBack: () => void;
-  onLaunched: () => void;
+  /** Called after a launch with a one-line confirmation to show where the player acted. */
+  onLaunched: (summary: string) => void;
 }
 
 export function TriagePanel({ useCase: uc, onBack, onLaunched }: Props) {
@@ -36,7 +37,13 @@ export function TriagePanel({ useCase: uc, onBack, onLaunched }: Props) {
 
   const launch = () => {
     if (!selected) return;
-    if (perform({ type: 'launchPilot', useCaseId: uc.id, approach: selected })) onLaunched();
+    const action = { type: 'launchPilot', useCaseId: uc.id, approach: selected } as const;
+    const cost = getActionCost(game, action);
+    if (perform(action)) {
+      onLaunched(
+        `${APPROACHES[selected].name} pilot launched for ${uc.title} · results in ${quarters(APPROACHES[selected].pilotQuarters)} · ${fmtMoney(-cost.budget)} · −${cost.capacity} capacity`,
+      );
+    }
   };
 
   const reason = selected ? validateAction(game, { type: 'launchPilot', useCaseId: uc.id, approach: selected }) : null;

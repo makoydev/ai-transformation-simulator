@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Database, Search, Users } from 'lucide-react';
+import { CheckCircle2, Database, Search, Users, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { DisabledReason } from '@/components/ui/DisabledReason';
@@ -29,6 +29,10 @@ export function DepartmentModal() {
 
 function DepartmentBody({ deptId }: { deptId: keyof typeof DEPARTMENTS }) {
   const [triage, setTriage] = useState<UseCaseDef | null>(null);
+  // The confirmation after a launch, shown above the use-case list until the next triage.
+  const [launched, setLaunched] = useState<string | null>(null);
+  const openDept = useGameStore((s) => s.openDept);
+  const setTab = useGameStore((s) => s.setTab);
   const game = useGameStore((s) => s.game)!;
   const perform = useGameStore((s) => s.perform);
   const def = DEPARTMENTS[deptId];
@@ -102,13 +106,54 @@ function DepartmentBody({ deptId }: { deptId: keyof typeof DEPARTMENTS }) {
           <AnimatePresence mode="wait">
             {triage ? (
               <motion.div key="triage" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
-                <TriagePanel useCase={triage} onBack={() => setTriage(null)} onLaunched={() => setTriage(null)} />
+                <TriagePanel
+                  useCase={triage}
+                  onBack={() => setTriage(null)}
+                  onLaunched={(summary) => {
+                    setTriage(null);
+                    setLaunched(summary);
+                  }}
+                />
               </motion.div>
             ) : (
-              <motion.div key="list" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 30 }} className="grid gap-4 lg:grid-cols-2">
-                {useCases.map((uc, i) => (
-                  <UseCaseCard key={uc.id} useCase={uc} index={i} onTriage={() => setTriage(uc)} />
-                ))}
+              <motion.div key="list" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 30 }}>
+                {launched && (
+                  <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-emerald-400/30 bg-emerald-400/10 py-2 pl-3 pr-1 text-sm text-emerald-100">
+                    <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-emerald-300" aria-hidden />
+                    <div className="min-w-0 flex-1">
+                      {launched}.{' '}
+                      <button
+                        onClick={() => {
+                          openDept(null);
+                          setTab('portfolio');
+                        }}
+                        className="font-semibold text-emerald-200 underline-offset-2 hover:underline"
+                      >
+                        Track it in the Portfolio
+                      </button>
+                    </div>
+                    <button
+                      onClick={() => setLaunched(null)}
+                      aria-label="Dismiss"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-emerald-200 hover:bg-white/10"
+                    >
+                      <X size={14} aria-hidden />
+                    </button>
+                  </div>
+                )}
+                <div className="grid gap-4 lg:grid-cols-2">
+                  {useCases.map((uc, i) => (
+                    <UseCaseCard
+                      key={uc.id}
+                      useCase={uc}
+                      index={i}
+                      onTriage={() => {
+                        setLaunched(null);
+                        setTriage(uc);
+                      }}
+                    />
+                  ))}
+                </div>
               </motion.div>
             )}
           </AnimatePresence>

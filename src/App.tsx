@@ -9,8 +9,9 @@ import { SetupScreen } from '@/components/screens/SetupScreen';
 import { TitleScreen } from '@/components/screens/TitleScreen';
 import { createBackHistory } from '@/lib/backHistory';
 import { closableDialogCount, closeTopDialog, subscribeDialogs } from '@/lib/dialogStack';
+import { quarterLabel } from '@/lib/format';
 import { setMuted } from '@/lib/sfx';
-import { selectScreen, useGameStore } from '@/store/gameStore';
+import { selectScreen, useGameStore, type Screen } from '@/store/gameStore';
 
 /**
  * The browser Back button (and the Android back gesture) closes the top dialog, or goes back to
@@ -47,6 +48,17 @@ function useBackButton(): void {
   }, []);
 }
 
+const APP_TITLE = 'AI Transformation Simulator';
+
+/** The browser tab says where the player is, e.g. "Q3 · Year 1 · AI Transformation Simulator". */
+function useDocumentTitle(screen: Screen) {
+  const quarter = useGameStore((s) => s.game?.quarter);
+  useEffect(() => {
+    const where = screen === 'game' && quarter ? quarterLabel(quarter) : screen === 'end' ? 'Scorecard' : screen === 'setup' ? 'New game' : null;
+    document.title = where ? `${where} · ${APP_TITLE}` : APP_TITLE;
+  }, [screen, quarter]);
+}
+
 export default function App() {
   const current = useGameStore(selectScreen);
   const muted = useGameStore((s) => s.muted);
@@ -56,6 +68,7 @@ export default function App() {
     window.scrollTo({ top: 0 });
   }, [current]);
   useBackButton();
+  useDocumentTitle(current);
 
   return (
     <MotionConfig reducedMotion="user">

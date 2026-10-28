@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#1b1d22" />
     <meta
@@ -30,6 +32,12 @@
     <title>AI Transformation Simulator</title>
   </head>
   <body>
+    <noscript>
+      <p style="max-width: 32rem; margin: 4rem auto; padding: 1rem; border-radius: 12px; background: #1b1d22; color: #e6e7ea; font-family: system-ui, sans-serif">
+        AI Transformation Simulator is a game that runs in your browser, so it needs JavaScript. Please turn JavaScript on and
+        reload the page.
+      </p>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

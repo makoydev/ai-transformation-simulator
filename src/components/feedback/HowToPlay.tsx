@@ -100,6 +100,20 @@ const SLIDES: Slide[] = [
   },
 ];
 
+/** One slide's content. A `sizer` copy is invisible and only takes up space. */
+function SlideBody({ slide, sizer = false }: { slide: Slide; sizer?: boolean }) {
+  const Icon = slide.icon;
+  return (
+    <div className={cn(sizer && 'invisible [grid-area:1/1]')} aria-hidden={sizer || undefined}>
+      <div className="mt-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient shadow-glow">
+        <Icon size={24} className="text-white" aria-hidden />
+      </div>
+      <h2 className="mt-4 text-2xl font-bold text-white">{slide.title}</h2>
+      <div className="mt-3 text-sm leading-relaxed text-ink-200 [&_b]:text-white">{slide.body}</div>
+    </div>
+  );
+}
+
 /**
  * A first game shows only the core loop (the first three slides); governance and the Playbook
  * are taught in context. "How to play" from the menu shows every slide.
@@ -114,7 +128,6 @@ export function HowToPlay() {
   const slides = seenHowTo ? SLIDES : SLIDES.slice(0, INTRO_SLIDES);
   const [i, setI] = useState(0);
   const slide = slides[Math.min(i, slides.length - 1)];
-  const Icon = slide.icon;
   const close = () => {
     setHowTo(false);
     setI(0);
@@ -124,15 +137,25 @@ export function HowToPlay() {
     <Modal open={open && !transition} onClose={close} size="md" label="How to play" z={60}>
       <div className="p-6 sm:p-8">
         <div className="label-caps">How to play · {i + 1}/{slides.length}</div>
-        <AnimatePresence mode="wait">
-          <motion.div key={i} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.2 }}>
-            <div className="mt-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient shadow-glow">
-              <Icon size={24} className="text-white" aria-hidden />
-            </div>
-            <h2 className="mt-4 text-2xl font-bold text-white">{slide.title}</h2>
-            <div className="mt-3 text-sm leading-relaxed text-ink-200 [&_b]:text-white">{slide.body}</div>
-          </motion.div>
-        </AnimatePresence>
+        {/* Every slide is laid out invisibly in the same grid cell, so the area is as tall as the
+            tallest slide and the buttons below stay put from slide to slide. */}
+        <div className="grid">
+          {slides.map((sl) => (
+            <SlideBody key={sl.title} slide={sl} sizer />
+          ))}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={i}
+              className="[grid-area:1/1]"
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.2 }}
+            >
+              <SlideBody slide={slide} />
+            </motion.div>
+          </AnimatePresence>
+        </div>
         <div className="mt-6 flex items-center gap-2">
           <div className="-ml-1.5 flex">
             {slides.map((_, idx) => (

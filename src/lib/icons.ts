@@ -2,6 +2,7 @@ import {
   Bot,
   BrainCircuit,
   Code2,
+  Container,
   FileSearch,
   Handshake,
   Headset,
@@ -10,13 +11,15 @@ import {
   Megaphone,
   Scale,
   ShoppingCart,
+  Store,
   SlidersHorizontal,
   Truck,
+  Umbrella,
   Users,
   Workflow,
   type LucideIcon,
 } from 'lucide-react';
-import type { ApproachId, DeptId } from '@/engine/types';
+import type { ApproachId, DeptId, ScenarioId } from '@/engine/types';
 
 export const DEPT_ICONS: Record<DeptId, LucideIcon> = {
   support: Headset,
@@ -36,6 +39,13 @@ export const APPROACH_ICONS: Record<ApproachId, LucideIcon> = {
   agentic: Bot,
   finetune: SlidersHorizontal,
   predictive: LineChart,
+};
+
+/** One per company on the setup screen: a retailer, a freight company and an insurer. */
+export const SCENARIO_ICONS: Record<ScenarioId, LucideIcon> = {
+  lumen: Store,
+  pemberton: Container,
+  crestline: Umbrella,
 };
 
 export const BrandIcon = BrainCircuit;

@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
-import { ArrowLeft, Building2, Check, Rocket } from 'lucide-react';
+import { ArrowLeft, Check, Rocket } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { SCENARIO_ORDER, SCENARIOS } from '@/data/scenarios';
 import { BALANCE, type ScenarioId } from '@/engine';
 import { cn } from '@/lib/cn';
 import { fmtMoney } from '@/lib/format';
+import { SCENARIO_ICONS } from '@/lib/icons';
 import { moraleLabel, regulationLabel } from '@/lib/labels';
 import { rovingKeyDown } from '@/lib/roving';
 import { play } from '@/lib/sfx';
@@ -52,6 +53,7 @@ export function SetupScreen() {
           {SCENARIO_ORDER.map((id, i) => {
             const sc = SCENARIOS[id];
             const selected = scenario === id;
+            const ScenarioIcon = SCENARIO_ICONS[id];
             return (
               <motion.button
                 key={id}
@@ -81,7 +83,7 @@ export function SetupScreen() {
                     </span>
                   )}
                 </div>
-                <Building2 size={22} className="mt-4 text-ink-300" aria-hidden />
+                <ScenarioIcon size={22} className="mt-4 text-ink-300" aria-hidden />
                 <h2 className="mt-2 font-display text-xl font-bold text-white">{sc.company}</h2>
                 <div className="text-xs text-ink-400">{sc.industry}</div>
                 <p className="mt-3 text-sm italic text-ink-200">{sc.tagline}</p>

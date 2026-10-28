@@ -1,13 +1,38 @@
 import { motion } from 'framer-motion';
-import { Check, GraduationCap, Landmark, Megaphone, Presentation, ShieldCheck, TrendingDown, UserPlus, type LucideIcon } from 'lucide-react';
+import {
+  Check,
+  ClipboardList,
+  EyeOff,
+  FlaskConical,
+  GraduationCap,
+  Landmark,
+  LayoutGrid,
+  Megaphone,
+  Presentation,
+  Scale,
+  ScrollText,
+  ShieldCheck,
+  TrendingDown,
+  UserPlus,
+  type LucideIcon,
+} from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { DisabledReason } from '@/components/ui/DisabledReason';
 import { INITIATIVE_ORDER, INITIATIVES, POLICIES, POLICY_ORDER } from '@/data/policies';
-import { getActionCost, pendingHires, validateAction, STAKEHOLDER_SHORT, type GameAction, type InitiativeId, type StakeholderId } from '@/engine';
+import { getActionCost, pendingHires, validateAction, STAKEHOLDER_SHORT, type GameAction, type InitiativeId, type PolicyId, type StakeholderId } from '@/engine';
 import { cn } from '@/lib/cn';
 import { fmtCost } from '@/lib/format';
 import { useGame, useGameStore } from '@/store/gameStore';
 import { PALETTE } from '@/lib/palette';
+
+const POLICY_ICONS: Record<PolicyId, LucideIcon> = {
+  aup: ScrollText,
+  catalog: LayoutGrid,
+  review_board: ClipboardList,
+  evals: FlaskConical,
+  privacy: EyeOff,
+  bias_audit: Scale,
+};
 
 const INITIATIVE_ICONS: Record<InitiativeId, LucideIcon> = {
   literacy: GraduationCap,
@@ -133,7 +158,7 @@ export function StrategyPanel() {
                 key={id}
                 index={i}
                 title={def.name}
-                icon={ShieldCheck}
+                icon={POLICY_ICONS[id]}
                 accent={PALETTE.hue.rose}
                 description={def.description}
                 benefit={def.benefit}

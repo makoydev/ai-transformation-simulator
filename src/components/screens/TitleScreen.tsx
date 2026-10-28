@@ -134,7 +134,6 @@ export function TitleScreen() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.75 + i * 0.07 }}
-                whileHover={{ y: -4 }}
                 className="glass p-4"
               >
                 <Icon size={18} className="text-brand-cyan" aria-hidden />

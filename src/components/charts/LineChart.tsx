@@ -1,5 +1,6 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { cn } from '@/lib/cn';
+import { niceMax } from '@/lib/niceMax';
 import { PALETTE } from '@/lib/palette';
 
 export interface Series {
@@ -24,14 +25,6 @@ interface Props {
 const SURFACE = PALETTE.chart.surface;
 // left fits a 12px "$10.0M" tick label; right fits the end-of-line value labels.
 const PAD = { top: 16, right: 64, bottom: 28, left: 56 };
-
-function niceMax(v: number): number {
-  if (v <= 0) return 1;
-  const pow = 10 ** Math.floor(Math.log10(v));
-  const n = v / pow;
-  const step = n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10;
-  return step * pow;
-}
 
 function useWidth<T extends HTMLElement>(): [React.RefObject<T>, number] {
   const ref = useRef<T>(null);
@@ -59,7 +52,7 @@ export function LineChart({ title, subtitle, series, xLabels, format, yMin = 0, 
 
   const { maxY, x, y, ticks } = useMemo(() => {
     const dataMax = Math.max(...series.flatMap((s) => s.values), reference?.value ?? 0, 0);
-    const maxY = yMax ?? niceMax(dataMax * 1.1);
+    const maxY = yMax ?? niceMax(dataMax * 1.05);
     const innerW = Math.max(10, width - PAD.left - PAD.right);
     const innerH = height - PAD.top - PAD.bottom;
     const x = (i: number) => PAD.left + (n <= 1 ? innerW / 2 : (i / (n - 1)) * innerW);
@@ -90,14 +83,15 @@ export function LineChart({ title, subtitle, series, xLabels, format, yMin = 0, 
   return (
     // min-w-0 lets the chart shrink inside a one-column grid; otherwise its first 600px render fixes the width.
     <figure className="glass min-w-0 p-4">
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div>
+      {/* The button stays top-right on every chart, however long the subtitle. */}
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0">
           <figcaption className="font-display text-base font-semibold text-white">{title}</figcaption>
           {subtitle && <p className="text-xs text-ink-400">{subtitle}</p>}
         </div>
         <button
           onClick={() => setShowTable((v) => !v)}
-          className="rounded-lg border border-white/10 px-2 py-1 text-xs font-semibold text-ink-300 hover:text-white"
+          className="shrink-0 rounded-lg border border-white/10 px-2 py-1 text-xs font-semibold text-ink-300 hover:text-white"
           aria-pressed={showTable}
         >
           {showTable ? 'Chart view' : 'Table view'}

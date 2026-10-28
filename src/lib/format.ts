@@ -7,7 +7,8 @@ export function fmtMoney(v: number, opts: { sign?: boolean } = {}): string {
   const abs = Math.abs(v);
   const sign = v < -0.0005 ? MINUS : opts.sign && v > 0.0005 ? '+' : '';
   if (abs >= 1) return `${sign}$${abs.toFixed(abs >= 10 ? 1 : 2)}M`;
-  return `${sign}$${Math.round(abs * 1000)}K`;
+  const k = Math.round(abs * 1000);
+  return k === 0 ? '$0' : `${sign}$${k}K`;
 }
 
 export function fmtSigned(v: number, digits = 0): string {

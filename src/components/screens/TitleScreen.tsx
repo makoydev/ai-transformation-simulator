@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Bot, FileSearch, Gauge, Info, Play, ShieldCheck, TrendingUp, Users, Workflow, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { Credits } from '@/components/ui/Credits';
 import { SCENARIOS } from '@/data/scenarios';
 import { quarterLabel } from '@/lib/format';
 import { BrandIcon } from '@/lib/icons';
@@ -147,6 +148,7 @@ export function TitleScreen() {
         <p className="mt-10 flex items-center gap-1.5 text-xs text-ink-400">
           <Bot size={13} aria-hidden /> Every crisis comes with a debrief grounded in real-world enterprise AI cases.
         </p>
+        <Credits className="mt-4" />
       </div>
     </div>
   );

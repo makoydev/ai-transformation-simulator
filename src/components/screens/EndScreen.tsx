@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { LineChart } from '@/components/charts/LineChart';
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import { Button } from '@/components/ui/Button';
+import { Credits } from '@/components/ui/Credits';
 import { LESSON_CATEGORIES, LESSON_MAP, LESSONS } from '@/data/lessons';
 import { SCENARIOS } from '@/data/scenarios';
 import { computeBadges, computeFinalScore, determineArchetype, sel, shareText, trustLosses, type GameState } from '@/engine';
@@ -318,6 +319,7 @@ function Scorecard({ game }: { game: GameState }) {
             />
           </div>
         )}
+        <Credits className="mt-10" />
       </div>
     </div>
   );

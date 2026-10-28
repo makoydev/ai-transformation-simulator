@@ -73,6 +73,8 @@ interface StoreState {
   menuOpen: boolean;
   /** A debrief the Playbook should open in its decision log, set by a toast's "Read in Playbook" link. */
   playbookDebrief: string | null;
+  /** Set when an update couldn't load the saved game, so the title screen can say so. Not saved. */
+  saveDiscarded: boolean;
 
   newGame: (scenarioId: ScenarioId, playerName: string) => void;
   continueGame: () => void;
@@ -89,6 +91,7 @@ interface StoreState {
   setHowTo: (open: boolean) => void;
   setMenu: (open: boolean) => void;
   hideCoach: () => void;
+  dismissSaveNotice: () => void;
   toggleMute: () => void;
   dismissToast: (id: number) => void;
   markRevealed: (projectId: string) => void;
@@ -133,6 +136,7 @@ export const useGameStore = create<StoreState>()(
       revealed: [],
       menuOpen: false,
       playbookDebrief: null,
+      saveDiscarded: false,
 
       newGame: (scenarioId, playerName) => {
         play('whoosh');
@@ -146,6 +150,7 @@ export const useGameStore = create<StoreState>()(
           eventOutcome: null,
           revealed: [],
           menuOpen: false,
+          saveDiscarded: false,
           transition: { key: Date.now(), quarter: 1 },
           howTo: !get().seenHowTo,
         });
@@ -250,6 +255,7 @@ export const useGameStore = create<StoreState>()(
       setHowTo: (open) => set(open ? { howTo: true } : { howTo: false, seenHowTo: true }),
       setMenu: (open) => set({ menuOpen: open }),
       hideCoach: () => set({ coachOff: true }),
+      dismissSaveNotice: () => set({ saveDiscarded: false }),
       toggleMute: () => set((st) => ({ muted: !st.muted })),
       dismissToast: (id) => set((st) => ({ toasts: st.toasts.filter((t) => t.id !== id) })),
       markRevealed: (projectId) =>
@@ -271,9 +277,19 @@ export const useGameStore = create<StoreState>()(
         revealed: st.revealed,
       }),
       migrate: (persisted, version) => {
-        // Saves from an incompatible engine version are discarded rather than crashing the game.
-        if (version !== SAVE_VERSION) return { game: null, seenHowTo: false, finishedGames: 0, coachOff: false, muted: false, revealed: [] };
-        return persisted as Partial<StoreState>;
+        if (version === SAVE_VERSION) return persisted as Partial<StoreState>;
+        // A game saved by an incompatible engine version is dropped rather than crashing the game.
+        // The player's settings don't depend on the engine, so they are kept.
+        const old = (persisted ?? {}) as Partial<StoreState>;
+        return {
+          game: null,
+          revealed: [],
+          seenHowTo: old.seenHowTo ?? false,
+          finishedGames: old.finishedGames ?? 0,
+          coachOff: old.coachOff ?? false,
+          muted: old.muted ?? false,
+          saveDiscarded: Boolean(old.game),
+        };
       },
     },
   ),

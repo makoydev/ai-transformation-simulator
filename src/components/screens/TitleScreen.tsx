@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Bot, FileSearch, Gauge, Play, ShieldCheck, TrendingUp, Users, Workflow } from 'lucide-react';
+import { ArrowRight, Bot, FileSearch, Gauge, Info, Play, ShieldCheck, TrendingUp, Users, Workflow, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { SCENARIOS } from '@/data/scenarios';
 import { quarterLabel } from '@/lib/format';
@@ -27,6 +27,8 @@ export function TitleScreen() {
   const continueGame = useGameStore((s) => s.continueGame);
   const goTo = useGameStore((s) => s.goTo);
   const setHowTo = useGameStore((s) => s.setHowTo);
+  const saveDiscarded = useGameStore((s) => s.saveDiscarded);
+  const dismissSaveNotice = useGameStore((s) => s.dismissSaveNotice);
   const canContinue = game && game.phase !== 'ended';
 
   return (
@@ -89,6 +91,20 @@ export function TitleScreen() {
           You're the new Head of AI Transformation at a 90-year-old company. Eight quarters. Six opinionated executives. One
           board that wants ROI. <span className="text-white">Don't get fired.</span>
         </motion.p>
+
+        {saveDiscarded && (
+          <div className="mt-6 flex items-center gap-2 rounded-xl border border-amber-300/30 bg-amber-400/10 py-1 pl-3 pr-1 text-sm text-amber-100">
+            <Info size={15} className="shrink-0" aria-hidden />
+            The game was updated, and your saved game couldn't be kept.
+            <button
+              onClick={dismissSaveNotice}
+              aria-label="Dismiss"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-amber-200 hover:bg-white/10"
+            >
+              <X size={15} aria-hidden />
+            </button>
+          </div>
+        )}
 
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-8 flex flex-wrap justify-center gap-3">
           {canContinue && game && (

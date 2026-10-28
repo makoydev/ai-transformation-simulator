@@ -28,7 +28,7 @@ import {
 import { actionAnnouncement } from '@/lib/actionAnnouncement';
 import { announce } from '@/lib/announce';
 import { celebrateDeploy, celebrateSmall } from '@/lib/fx';
-import { play } from '@/lib/sfx';
+import { play, setMuted, setVolume } from '@/lib/sfx';
 
 export type Screen = 'title' | 'setup' | 'game' | 'end';
 export type Tab = 'org' | 'portfolio' | 'strategy' | 'playbook' | 'people';
@@ -65,6 +65,8 @@ interface StoreState {
   /** The player hid the first-quarter tips. */
   coachOff: boolean;
   muted: boolean;
+  /** Sound volume when not muted: 1 is normal, lower is quieter. */
+  volume: number;
   toasts: Toast[];
   eventOutcome: EventOutcome | null;
   transition: { key: number; quarter: number } | null;
@@ -93,6 +95,7 @@ interface StoreState {
   hideCoach: () => void;
   dismissSaveNotice: () => void;
   toggleMute: () => void;
+  setSound: (level: SoundLevel) => void;
   dismissToast: (id: number) => void;
   markRevealed: (projectId: string) => void;
   clearTransition: () => void;
@@ -116,6 +119,11 @@ function toastsFor(before: GameState, after: GameState): Toast[] {
 
 const MAX_TOASTS = 4;
 
+export type SoundLevel = 'off' | 'quiet' | 'normal';
+export const QUIET_VOLUME = 0.4;
+
+export const selectSoundLevel = (s: StoreState): SoundLevel => (s.muted ? 'off' : s.volume < 1 ? 'quiet' : 'normal');
+
 export const useGameStore = create<StoreState>()(
   persist(
     (set, get) => ({
@@ -128,7 +136,9 @@ export const useGameStore = create<StoreState>()(
       seenHowTo: false,
       finishedGames: 0,
       coachOff: false,
-      muted: false,
+      // Starts silent: many people try the game at work. The sound button and the menu turn it on.
+      muted: true,
+      volume: 1,
       toasts: [],
       eventOutcome: null,
       transition: null,
@@ -257,6 +267,20 @@ export const useGameStore = create<StoreState>()(
       hideCoach: () => set({ coachOff: true }),
       dismissSaveNotice: () => set({ saveDiscarded: false }),
       toggleMute: () => set((st) => ({ muted: !st.muted })),
+      setSound: (level) => {
+        // Off keeps the volume, so the sound button brings back the same level.
+        if (level === 'off') {
+          set({ muted: true });
+          setMuted(true);
+          return;
+        }
+        const volume = level === 'quiet' ? QUIET_VOLUME : 1;
+        set({ muted: false, volume });
+        // Applied straight away (not after App's effect) so the preview plays at the new level.
+        setMuted(false);
+        setVolume(volume);
+        play('select');
+      },
       dismissToast: (id) => set((st) => ({ toasts: st.toasts.filter((t) => t.id !== id) })),
       markRevealed: (projectId) =>
         set((st) => (st.revealed.includes(projectId) ? st : { revealed: [...st.revealed, projectId] })),
@@ -274,6 +298,7 @@ export const useGameStore = create<StoreState>()(
         finishedGames: st.finishedGames,
         coachOff: st.coachOff,
         muted: st.muted,
+        volume: st.volume,
         revealed: st.revealed,
       }),
       migrate: (persisted, version) => {
@@ -287,7 +312,8 @@ export const useGameStore = create<StoreState>()(
           seenHowTo: old.seenHowTo ?? false,
           finishedGames: old.finishedGames ?? 0,
           coachOff: old.coachOff ?? false,
-          muted: old.muted ?? false,
+          muted: old.muted ?? true,
+          volume: old.volume ?? 1,
           saveDiscarded: Boolean(old.game),
         };
       },

@@ -10,7 +10,7 @@ import { TitleScreen } from '@/components/screens/TitleScreen';
 import { createBackHistory } from '@/lib/backHistory';
 import { closableDialogCount, closeTopDialog, subscribeDialogs } from '@/lib/dialogStack';
 import { quarterLabel } from '@/lib/format';
-import { setMuted } from '@/lib/sfx';
+import { setMuted, setVolume } from '@/lib/sfx';
 import { selectScreen, useGameStore, type Screen } from '@/store/gameStore';
 
 /**
@@ -63,7 +63,10 @@ export default function App() {
   const current = useGameStore(selectScreen);
   const muted = useGameStore((s) => s.muted);
 
+  const volume = useGameStore((s) => s.volume);
+
   useEffect(() => setMuted(muted), [muted]);
+  useEffect(() => setVolume(volume), [volume]);
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [current]);

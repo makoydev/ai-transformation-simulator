@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { HelpCircle, LogOut, Menu, RotateCcw, Volume2, VolumeX } from 'lucide-react';
+import { Check, HelpCircle, LogOut, Menu, RotateCcw, Volume1, Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
@@ -7,12 +7,20 @@ import { SCENARIOS } from '@/data/scenarios';
 import { cn } from '@/lib/cn';
 import { quarterLabel } from '@/lib/format';
 import { BrandIcon } from '@/lib/icons';
-import { useGame, useGameStore } from '@/store/gameStore';
+import { selectSoundLevel, useGame, useGameStore, type SoundLevel } from '@/store/gameStore';
+
+const SOUND_LEVELS: { level: SoundLevel; label: string; Icon: typeof Volume2 }[] = [
+  { level: 'off', label: 'Off', Icon: VolumeX },
+  { level: 'quiet', label: 'Quiet', Icon: Volume1 },
+  { level: 'normal', label: 'Normal', Icon: Volume2 },
+];
 
 export function TopBar() {
   const game = useGame();
   const muted = useGameStore((s) => s.muted);
   const toggleMute = useGameStore((s) => s.toggleMute);
+  const soundLevel = useGameStore(selectSoundLevel);
+  const setSound = useGameStore((s) => s.setSound);
   const setHowTo = useGameStore((s) => s.setHowTo);
   const menuOpen = useGameStore((s) => s.menuOpen);
   const setMenu = useGameStore((s) => s.setMenu);
@@ -26,7 +34,7 @@ export function TopBar() {
   // An open menu takes focus, and closes on Escape, an outside click or tapping away.
   useEffect(() => {
     if (!menuOpen) return;
-    menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]')?.focus();
+    menuRef.current?.querySelector<HTMLElement>('[role^="menuitem"]')?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
       setMenu(false);
@@ -46,7 +54,7 @@ export function TopBar() {
 
   // Arrow keys, Home and End move between menu items; Tab leaves and closes the menu.
   const onMenuKeyDown = (e: React.KeyboardEvent) => {
-    const items = [...(menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? [])];
+    const items = [...(menuRef.current?.querySelectorAll<HTMLElement>('[role^="menuitem"]') ?? [])];
     const i = items.indexOf(document.activeElement as HTMLElement);
     const next =
       e.key === 'ArrowDown' ? (i + 1) % items.length
@@ -120,7 +128,7 @@ export function TopBar() {
           size="sm"
           onClick={toggleMute}
           aria-label={muted ? 'Unmute sound' : 'Mute sound'}
-          icon={muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+          icon={muted ? <VolumeX size={16} /> : soundLevel === 'quiet' ? <Volume1 size={16} /> : <Volume2 size={16} />}
         />
         <Button
           ref={menuButtonRef}
@@ -163,6 +171,24 @@ export function TopBar() {
             >
               <RotateCcw size={15} /> Abandon & start over
             </button>
+            <div role="separator" className="my-1.5 h-px bg-white/10" />
+            <div role="group" aria-labelledby="sound-label">
+              <div id="sound-label" className="label-caps px-3 pb-1 pt-1">
+                Sound
+              </div>
+              {SOUND_LEVELS.map(({ level, label, Icon }) => (
+                <button
+                  key={level}
+                  role="menuitemradio"
+                  aria-checked={soundLevel === level}
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-ink-100 hover:bg-white/10 focus-visible:bg-white/10"
+                  onClick={() => setSound(level)}
+                >
+                  <Icon size={15} aria-hidden /> {label}
+                  {soundLevel === level && <Check size={14} className="ml-auto text-brand-cyan" aria-hidden />}
+                </button>
+              ))}
+            </div>
           </motion.div>
         )}
       </div>

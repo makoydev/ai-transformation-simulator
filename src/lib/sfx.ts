@@ -6,9 +6,15 @@ export type Sound = 'click' | 'select' | 'success' | 'fail' | 'coin' | 'alert' |
 
 let ctx: AudioContext | null = null;
 let muted = false;
+let volume = 1;
 
 export function setMuted(value: boolean): void {
   muted = value;
+}
+
+/** Master volume from 0 to 1, applied to every sound. */
+export function setVolume(value: number): void {
+  volume = Math.min(1, Math.max(0, value));
 }
 
 function audio(): AudioContext | null {
@@ -47,7 +53,8 @@ function tones(list: Tone[]): void {
     osc.frequency.setValueAtTime(t.freq, start);
     if (t.to) osc.frequency.exponentialRampToValueAtTime(t.to, start + t.duration);
     gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(t.gain ?? 0.08, start + 0.01);
+    // Exponential ramps can't reach zero, so the quietest peak stays just above the floor.
+    gain.gain.exponentialRampToValueAtTime(Math.max(0.0002, (t.gain ?? 0.08) * volume), start + 0.01);
     gain.gain.exponentialRampToValueAtTime(0.0001, start + t.duration);
     osc.connect(gain).connect(ac.destination);
     osc.start(start);

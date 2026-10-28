@@ -27,7 +27,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 |---|---|---|---|
 | **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
 | **P2** | Makes the game noticeably harder to learn or use. | 15 | 15 |
-| **P3** | Polish and nice-to-haves. | 30 | 25 |
+| **P3** | Polish and nice-to-haves. | 30 | 30 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
 
@@ -201,9 +201,10 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** add one or two suggestions based on the biggest trust factors, for example "Value is 0% of target: get a pilot into production."
   - **Where:** `src/components/report/QuarterReportModal.tsx`
 
-- [ ] **UX-31: Nothing says how long a game takes** · Onboarding · S
+- [x] **UX-31: Nothing says how long a game takes** · Onboarding · S
   - **Fix:** time a few playthroughs, then show the typical length on the title and setup screens (for example "about N minutes · saves automatically").
   - **Where:** `src/components/screens/TitleScreen.tsx:83-91`
+  - **Status:** the title and setup screens say "8 quarters · saves after every move". Add a minutes estimate once a few real playthroughs have been timed.
 
 - [x] **UX-32: Long dialogs on phones lose their close button** · Phone · S
   - **What happens:** the ✕ scrolls away with the content in long bottom sheets (department and project). The height limit uses `92vh`, which mobile browser toolbars can cover.
@@ -279,22 +280,22 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - On phones, open the system share sheet (`navigator.share`). If copying fails, say so; at the moment it fails silently.
   - **Where:** `src/components/screens/EndScreen.tsx:40-49`
 
-- [ ] **UX-47: No confirmation where you act** · Feedback · S
+- [x] **UX-47: No confirmation where you act** · Feedback · S
   - **What happens:** after "Launch pilot" the dialog goes back to the use-case list. The only feedback is a sound, a changed button label and number changes on the scoreboard behind the dialog.
   - **Fix:** a short confirmation inside the dialog, for example "RAG pilot launched · results at the end of Q2 · −$550K · −1 capacity".
   - **Where:** `src/components/org/TriagePanel.tsx:32-35`
 
-- [ ] **UX-48: Auditing takes two clicks** · Core loop · S
+- [x] **UX-48: Auditing takes two clicks** · Core loop · S
   - **What happens:** the department card says "Audit to reveal 3 use cases", but clicking it opens a dialog that contains only the Audit button.
   - **Fix:** put an "Audit" button on the card itself, and keep the dialog for the details.
   - **Where:** `src/components/org/OrgMap.tsx:88-95`, `src/components/org/DepartmentModal.tsx:117`
 
-- [ ] **UX-49: Events hide your numbers** · Core loop · M
+- [x] **UX-49: Events hide your numbers** · Core loop · M
   - **What happens:** the event dialog can't be closed or minimised, so you can't check your budget or trust before you choose, even though some choices cost money.
   - **Fix:** show budget, trust and capacity in the event dialog's header, or add a "peek at dashboard" option.
   - **Where:** `src/components/events/EventModal.tsx:38`
 
-- [ ] **UX-50: Sound is on by default** · Polish · S
+- [x] **UX-50: Sound is on by default** · Polish · S
   - Many people will try the game at work. Consider starting muted (or asking once), and add a volume setting.
   - **Where:** `src/store/gameStore.ts:113`
 

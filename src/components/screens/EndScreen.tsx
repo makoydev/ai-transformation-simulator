@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Award, Check, Copy, Home, Lightbulb, Lock, RotateCcw, Sparkles, Target, TrendingDown } from 'lucide-react';
+import { Award, Check, Copy, Home, Lightbulb, Lock, RotateCcw, Share2, Sparkles, Target, TrendingDown } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { LineChart } from '@/components/charts/LineChart';
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
@@ -7,9 +7,11 @@ import { Button } from '@/components/ui/Button';
 import { LESSON_CATEGORIES, LESSON_MAP, LESSONS } from '@/data/lessons';
 import { SCENARIOS } from '@/data/scenarios';
 import { computeBadges, computeFinalScore, determineArchetype, sel, shareText, trustLosses, type GameState } from '@/engine';
+import { announce } from '@/lib/announce';
 import { cn } from '@/lib/cn';
 import { fmtMoney, fmtRoi, fmtSigned, quarterLabel } from '@/lib/format';
 import { play } from '@/lib/sfx';
+import { useMediaQuery } from '@/lib/useMediaQuery';
 import { useGameStore } from '@/store/gameStore';
 import { PALETTE } from '@/lib/palette';
 
@@ -31,7 +33,10 @@ export function EndScreen() {
 
 function Scorecard({ game }: { game: GameState }) {
   const goTo = useGameStore((s) => s.goTo);
-  const [copied, setCopied] = useState(false);
+  const [shared, setShared] = useState<'idle' | 'copied' | 'failed'>('idle');
+  // Phones and tablets open the system share sheet; elsewhere the results go to the clipboard.
+  const touch = useMediaQuery('(pointer: coarse)');
+  const canShare = touch && typeof navigator.share === 'function';
   const score = useMemo(() => computeFinalScore(game), [game]);
   const archetype = useMemo(() => determineArchetype(game, score), [game, score]);
   const badges = useMemo(() => computeBadges(game), [game]);
@@ -40,14 +45,29 @@ function Scorecard({ game }: { game: GameState }) {
   const losses = useMemo(() => (fired ? trustLosses(game) : []), [game, fired]);
   const xLabels = game.history.map((h) => `Q${h.quarter}`);
 
+  const url = `${location.origin}${location.pathname}`;
+  const text = `${shareText(game, score, archetype)}\n${url}`;
+
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(shareText(game, score, archetype));
-      setCopied(true);
+      await navigator.clipboard.writeText(text);
+      setShared('copied');
+      announce('Results copied.');
       play('coin');
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setShared('idle'), 2000);
     } catch {
-      setCopied(false);
+      // Blocked clipboard (an insecure page, or permission denied): show the text to copy by hand.
+      setShared('failed');
+      announce("Couldn't copy. The results are shown below to copy by hand.");
+    }
+  };
+
+  const share = async () => {
+    try {
+      await navigator.share({ title: 'AI Transformation Simulator', text: shareText(game, score, archetype), url });
+    } catch (e) {
+      // Closing the share sheet isn't a failure; anything else falls back to copying.
+      if (!(e instanceof DOMException && e.name === 'AbortError')) await copy();
     }
   };
 
@@ -270,13 +290,34 @@ function Scorecard({ game }: { game: GameState }) {
           <Button variant="ghost" onClick={() => goTo('title')} icon={<Home size={16} />}>
             Title screen
           </Button>
-          <Button variant="secondary" onClick={copy} icon={copied ? <Check size={16} /> : <Copy size={16} />}>
-            {copied ? 'Copied!' : 'Copy results'}
-          </Button>
+          {canShare ? (
+            <Button variant="secondary" onClick={share} icon={<Share2 size={16} />}>
+              Share results
+            </Button>
+          ) : (
+            <Button variant="secondary" onClick={copy} icon={shared === 'copied' ? <Check size={16} /> : <Copy size={16} />}>
+              {shared === 'copied' ? 'Copied!' : 'Copy results'}
+            </Button>
+          )}
           <Button variant="primary" onClick={() => goTo('setup')} icon={<RotateCcw size={16} />}>
             Play again
           </Button>
         </div>
+        {shared === 'failed' && (
+          <div className="mt-4">
+            <label htmlFor="share-text" className="text-sm text-amber-100">
+              Couldn't copy automatically. Select the text below and copy it.
+            </label>
+            <textarea
+              id="share-text"
+              readOnly
+              value={text}
+              rows={7}
+              onFocus={(e) => e.currentTarget.select()}
+              className="mt-2 w-full resize-none rounded-xl border border-white/10 bg-ink-800/80 p-3 font-mono text-xs text-ink-100"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

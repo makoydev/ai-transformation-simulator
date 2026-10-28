@@ -28,3 +28,14 @@ export function dataNeedLabel(req: number): string {
   if (req < 60) return 'Moderate data needs';
   return 'Heavy data needs';
 }
+
+export const moraleLabel = (morale: number): string => (morale >= 60 ? 'Curious & engaged' : morale >= 40 ? 'Cautious' : 'Fearful');
+
+/** A scenario's regulation multiplier in words: "Heavy", "AI risk 35% higher". */
+export function regulationLabel(multiplier: number): { label: string; detail: string } {
+  const pct = Math.round((multiplier - 1) * 100);
+  if (pct === 0) return { label: 'Standard', detail: 'AI risk as usual' };
+  return pct > 0
+    ? { label: 'Heavy', detail: `AI risk ${pct}% higher` }
+    : { label: 'Light', detail: `AI risk ${-pct}% lower` };
+}

@@ -3,9 +3,10 @@ import { ArrowLeft, Building2, Check, Rocket } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { SCENARIO_ORDER, SCENARIOS } from '@/data/scenarios';
-import type { ScenarioId } from '@/engine';
+import { BALANCE, type ScenarioId } from '@/engine';
 import { cn } from '@/lib/cn';
 import { fmtMoney } from '@/lib/format';
+import { moraleLabel, regulationLabel } from '@/lib/labels';
 import { rovingKeyDown } from '@/lib/roving';
 import { play } from '@/lib/sfx';
 import { useGameStore } from '@/store/gameStore';
@@ -93,14 +94,17 @@ export function SetupScreen() {
                   <div className="rounded-lg bg-white/4 p-2">
                     <dt className="text-ink-400">Board trust</dt>
                     <dd className="font-semibold text-white">{sc.startTrust}</dd>
+                    <dd className="text-ink-400">Fired below {BALANCE.fireThreshold}</dd>
                   </div>
                   <div className="rounded-lg bg-white/4 p-2">
                     <dt className="text-ink-400">Regulation</dt>
-                    <dd className="font-semibold text-white">×{sc.regulation.toFixed(2)}</dd>
+                    <dd className="font-semibold text-white">{regulationLabel(sc.regulation).label}</dd>
+                    <dd className="text-ink-400">{regulationLabel(sc.regulation).detail}</dd>
                   </div>
                   <div className="rounded-lg bg-white/4 p-2">
                     <dt className="text-ink-400">Morale</dt>
                     <dd className="font-semibold text-white">{sc.startMorale}</dd>
+                    <dd className="text-ink-400">{moraleLabel(sc.startMorale)} staff</dd>
                   </div>
                 </dl>
               </motion.button>

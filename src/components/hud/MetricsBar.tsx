@@ -5,6 +5,7 @@ import { Meter } from '@/components/ui/Meter';
 import { BALANCE, sel } from '@/engine';
 import { cn } from '@/lib/cn';
 import { fmtMoney, fmtRoi, fmtSigned } from '@/lib/format';
+import { moraleLabel } from '@/lib/labels';
 import { useGame } from '@/store/gameStore';
 import { DeltaFloats, MetricTile } from './MetricTile';
 import { FLASH_RING, useDeltaFloats } from './useDeltaFloats';
@@ -229,7 +230,7 @@ export function MetricsBar() {
           formatDelta={signedPoints}
           icon={HeartPulse}
           accent={PALETTE.metric.morale}
-          sub={game.morale >= 60 ? 'Curious & engaged' : game.morale >= 40 ? 'Cautious' : 'Fearful'}
+          sub={moraleLabel(game.morale)}
           tooltip="How employees feel about AI. Fear slows adoption everywhere; transparency, training, and champions build it."
           className="col-span-2 sm:col-span-1"
         >

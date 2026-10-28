@@ -279,7 +279,8 @@ export function computeBadges(s: GameState): Badge[] {
 
 export function shareText(s: GameState, score: FinalScore, archetype: Archetype): string {
   const sc = scenarioOf(s);
-  const outcome = s.outcome === 'fired' ? `fired in Q${s.quarter}` : 'survived all 8 quarters';
+  const outcome =
+    s.outcome === 'fired' ? `fired in Q${((s.quarter - 1) % 4) + 1} of year ${Math.ceil(s.quarter / 4)}` : 'survived all 8 quarters';
   return [
     `🧠 AI Transformation Simulator: ${sc.company} (${sc.difficulty})`,
     `Grade ${score.grade} · ${score.total}/1000 · ${outcome}`,

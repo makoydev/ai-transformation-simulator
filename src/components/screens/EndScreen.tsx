@@ -8,7 +8,7 @@ import { LESSON_CATEGORIES, LESSON_MAP, LESSONS } from '@/data/lessons';
 import { SCENARIOS } from '@/data/scenarios';
 import { computeBadges, computeFinalScore, determineArchetype, sel, shareText, trustLosses, type GameState } from '@/engine';
 import { cn } from '@/lib/cn';
-import { fmtMoney, fmtRoi, fmtSigned } from '@/lib/format';
+import { fmtMoney, fmtRoi, fmtSigned, quarterLabel } from '@/lib/format';
 import { play } from '@/lib/sfx';
 import { useGameStore } from '@/store/gameStore';
 import { PALETTE } from '@/lib/palette';
@@ -59,7 +59,7 @@ function Scorecard({ game }: { game: GameState }) {
           {sc.company} · {sc.difficulty} · {game.playerName || 'Head of AI Transformation'}
         </motion.p>
         <motion.h1 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mt-2 text-4xl font-bold text-white sm:text-5xl">
-          {fired ? `Fired in Q${game.quarter}` : 'Transformation complete'}
+          {fired ? `Fired in ${quarterLabel(game.quarter)}` : 'Transformation complete'}
         </motion.h1>
         <p className="mt-2 max-w-2xl text-ink-300">
           {fired

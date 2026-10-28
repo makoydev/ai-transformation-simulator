@@ -17,7 +17,7 @@ export const STAKEHOLDER_SHORT: Record<StakeholderId, string> = {
   cfo: 'CFO',
   ciso: 'CISO',
   coo: 'COO',
-  chro: 'CHRO',
+  chro: 'CPO',
   cto: 'CTO',
 };
 

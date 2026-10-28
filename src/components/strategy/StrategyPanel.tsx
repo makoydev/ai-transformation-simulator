@@ -43,6 +43,8 @@ interface CardProps {
   tradeoff: string;
   stakeholders: Partial<Record<StakeholderId, number>>;
   action: GameAction;
+  /** What the button does: "Adopt", "Hire". */
+  verb: string;
   done?: boolean;
   doneLabel?: string;
   level?: string;
@@ -50,7 +52,7 @@ interface CardProps {
   accent: string;
 }
 
-function ActionCard({ title, icon: Icon, description, benefit, tradeoff, stakeholders, action, done, doneLabel, level, index, accent }: CardProps) {
+function ActionCard({ title, icon: Icon, description, benefit, tradeoff, stakeholders, action, verb, done, doneLabel, level, index, accent }: CardProps) {
   const game = useGame();
   const perform = useGameStore((s) => s.perform);
   const reason = validateAction(game, action);
@@ -88,7 +90,7 @@ function ActionCard({ title, icon: Icon, description, benefit, tradeoff, stakeho
         <StakeholderReactions deltas={stakeholders} />
         {!done && (
           <Button size="sm" variant="secondary" disabled={!!reason} onClick={() => perform(action)} className="shrink-0">
-            {fmtCost(cost)}
+            {verb} · {fmtCost(cost)}
           </Button>
         )}
       </div>
@@ -96,6 +98,15 @@ function ActionCard({ title, icon: Icon, description, benefit, tradeoff, stakeho
     </motion.div>
   );
 }
+
+const INITIATIVE_VERB: Record<InitiativeId, string> = {
+  literacy: 'Fund',
+  townhall: 'Hold',
+  kpi: 'Build',
+  demoday: 'Hold',
+  expectations: 'Hold',
+  hire: 'Hire',
+};
 
 export function StrategyPanel() {
   const game = useGame();
@@ -129,6 +140,7 @@ export function StrategyPanel() {
                 tradeoff={def.tradeoff}
                 stakeholders={def.stakeholders}
                 action={{ type: 'policy', policy: id }}
+                verb="Adopt"
                 done={game.policies.includes(id)}
               />
             );
@@ -167,6 +179,7 @@ export function StrategyPanel() {
                 tradeoff={def.tradeoff}
                 stakeholders={def.stakeholders}
                 action={{ type: 'initiative', initiative: id }}
+                verb={INITIATIVE_VERB[id]}
                 done={done}
                 doneLabel={id === 'literacy' ? 'Maxed' : id === 'hire' ? 'Cap reached' : 'Active'}
                 level={level}

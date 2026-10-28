@@ -6,6 +6,7 @@ import { VerdictBadge } from '@/components/ui/Verdict';
 import { LESSON_CATEGORIES, LESSONS } from '@/data/lessons';
 import type { LessonCategory } from '@/engine';
 import { cn } from '@/lib/cn';
+import { quarterLabel } from '@/lib/format';
 import { rovingKeyDown } from '@/lib/roving';
 import { useGame, useGameStore } from '@/store/gameStore';
 
@@ -157,7 +158,7 @@ export function PlaybookPanel() {
                     aria-controls={open ? `debrief-${d.id}-body` : undefined}
                     className="glass flex w-full flex-wrap items-center gap-3 px-4 py-3 text-left hover:border-white/20"
                   >
-                    <span className="text-xs font-semibold text-ink-400">Q{d.quarter}</span>
+                    <span className="text-xs font-semibold text-ink-400">{quarterLabel(d.quarter)}</span>
                     <VerdictBadge verdict={d.verdict} />
                     <span className="min-w-0 flex-1 truncate text-sm font-medium text-white">{d.title}</span>
                     <span className="text-xs capitalize text-ink-400">{d.kind}</span>

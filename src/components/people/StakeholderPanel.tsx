@@ -6,6 +6,7 @@ import { Tooltip } from '@/components/ui/Tooltip';
 import { STAKEHOLDER_ORDER, STAKEHOLDERS } from '@/data/stakeholders';
 import { sel } from '@/engine';
 import { cn } from '@/lib/cn';
+import { quarterLabel } from '@/lib/format';
 import { useGame } from '@/store/gameStore';
 
 const MOOD_LABEL: Record<ReturnType<typeof sel.mood>, { label: string; cls: string }> = {
@@ -116,7 +117,7 @@ export function StakeholderPanel({ className, detailed = false }: { className?: 
                     )}
                   >
                     <div className="mb-0.5 text-xs font-semibold text-ink-400">
-                      {STAKEHOLDERS[m.stakeholder].name} · Q{m.quarter}
+                      {STAKEHOLDERS[m.stakeholder].name} · {quarterLabel(m.quarter)}
                     </div>
                     {m.text}
                   </div>

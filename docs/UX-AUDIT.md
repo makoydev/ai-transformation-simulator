@@ -27,7 +27,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
 |---|---|---|---|
 | **P1** | Visibly broken, can lose progress, or blocks some players. Fix first. | 7 | 7 |
 | **P2** | Makes the game noticeably harder to learn or use. | 15 | 15 |
-| **P3** | Polish and nice-to-haves. | 30 | 14 |
+| **P3** | Polish and nice-to-haves. | 30 | 20 |
 
 **Effort:** S = under 2 hours · M = half a day to a day · L = more than a day.
 
@@ -168,7 +168,7 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** `overflow-x: hidden` (or `overflow: clip`) on the flip container.
   - **Where:** `src/components/events/EventModal.tsx:40-56`, `src/components/ui/Modal.tsx:64`
 
-- [ ] **UX-24: The tutorial's Next button moves between slides** · Polish · S
+- [x] **UX-24: The tutorial's Next button moves between slides** · Polish · S
   - **What happens:** the slides have different heights, so "Next" moves (by 23px between slides 1 and 2) and quick clicks miss it.
   - **Fix:** give the slide body a fixed minimum height.
   - **Where:** `src/components/feedback/HowToPlay.tsx:119-127`
@@ -177,17 +177,17 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** close it on an outside click, on Escape and after choosing an item, and move focus into the menu when it opens.
   - **Where:** `src/components/hud/TopBar.tsx:80-103`
 
-- [ ] **UX-26: An incompatible update deletes saves without telling the player** · Trust · S
+- [x] **UX-26: An incompatible update deletes saves without telling the player** · Trust · S
   - **What happens:** when `SAVE_VERSION` changes, the saved game is thrown away with no message, and the player just finds "New game".
   - **Fix:** show a one-line notice on the title screen ("The game was updated and your previous save couldn't be kept."). This matters as soon as UX-18 changes the save format.
   - **Where:** `src/store/gameStore.ts:245-249`
 
-- [ ] **UX-27: Setup cards use unexplained numbers** · Onboarding · S
+- [x] **UX-27: Setup cards use unexplained numbers** · Onboarding · S
   - **What happens:** "Regulation ×1.35" means nothing until you've read the design document.
   - **Fix:** say it in plain words ("AI risk counts 35% more here"), and do the same for "Board trust 50" ("you're fired below 15").
   - **Where:** `src/components/screens/SetupScreen.tsx:86-89`
 
-- [ ] **UX-28: Clues get smaller just when you need them** · Core loop · S
+- [x] **UX-28: Clues get smaller just when you need them** · Core loop · S
   - **What happens:** the audit clues are 14px and bright on the use-case card, but 12px and dimmer on the triage screen, where you actually choose the approach.
   - **Fix:** make them at least as prominent on the triage screen.
   - **Where:** `src/components/org/TriagePanel.tsx:50-56`
@@ -254,13 +254,13 @@ This is the working list of UI and UX improvements. Tick an item when it ships a
   - **Fix:** move the colours into tokens in `index.css`. Pick the chart colours from the soft palette and check that each pair of lines is easy to tell apart.
   - **Where:** `src/components/screens/EndScreen.tsx:170-183`, `src/components/hud/MetricsBar.tsx:10-15`, `src/styles/index.css:3-29`
 
-- [ ] **UX-42: The same thing has different labels** · Copy · S
+- [x] **UX-42: The same thing has different labels** · Copy · S
   - The scorecard says "Fired in Q6"; everywhere else says "Q2 · Year 2".
   - The impact chips say "CHRO", but the executive's title is "Chief People Officer".
   - Strategy buttons say "1 cap" (elsewhere "1 capacity") and show only a price, not the action ("Adopt · $100K · 1 capacity").
   - **Where:** `src/components/screens/EndScreen.tsx:59`, `src/engine/diff.ts:20`, `src/components/strategy/StrategyPanel.tsx:89-91`
 
-- [ ] **UX-43: Department names and titles get cut off** · Visual · S
+- [x] **UX-43: Department names and titles get cut off** · Visual · S
   - **What happens:** at 1440px wide the Org Map shows "Operations & Supply …", "Group Control…" and "Chief Reven…".
   - **Fix:** allow two lines, or shorten the text in the data.
   - **Where:** `src/components/org/OrgMap.tsx:81-84`
